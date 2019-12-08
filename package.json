@@ -1,0 +1,18 @@
+{
+  "name": "my-utils",
+  "version": "0.0.10",
+  "description": "FTON and ObjUtil helpers",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "babelify",
+    "prepare": "yarn run build"
+  },
+  "repository": {},
+  "author": "Kevin Frei (kevinfrei@hotmail.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "build-tools": "file:../build-tools",
+    "jest": "^24.9.0"
+  },
+  "dependencies": {}
+}

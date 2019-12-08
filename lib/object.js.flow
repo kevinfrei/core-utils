@@ -1,0 +1,22 @@
+// @flow
+// @format
+declare var deQuote: (str: string) => string;
+declare var reQuote: (str: string) => {
+  [key: string]: string
+};
+declare var prefixObj: (str: string, obj: {
+  [key: string]: string
+}) => Array<string>;
+declare var isArray: (obj: mixed) => boolean;
+declare var isString: (obj: mixed) => boolean;
+declare var isNumber: (obj: mixed) => boolean;
+declare var isFunction: (obj: any) => boolean;
+module.exports = {
+  deQuote,
+  reQuote,
+  prefixObj,
+  isArray,
+  isString,
+  isNumber,
+  isFunction
+};

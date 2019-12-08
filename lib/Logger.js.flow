@@ -1,0 +1,13 @@
+// @flow
+// @format
+import type { LoggerFuncType } from './index';
+let limit = 1;
+declare var logger: (level: number, ...data: Array<any>) => any;
+
+logger.getLimit = (): number => limit;
+
+logger.setLimit = (newLimit: number) => {
+  limit = newLimit;
+};
+
+module.exports = logger;
