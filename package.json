@@ -9,7 +9,7 @@
   },
   "repository": {},
   "author": "Kevin Frei (kevinfrei@hotmail.com)",
-  "license": "MIT",
+  "license": "Unlicense",
   "devDependencies": {
     "build-tools": "file:../build-tools",
     "jest": "^24.9.0"
