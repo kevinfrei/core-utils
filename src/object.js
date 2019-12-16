@@ -33,9 +33,10 @@ const isNumber = (obj: mixed): boolean %checks => {
   return typeof obj === "number" && !isNaN(obj - 0);
 };
 
-const isFunction = (obj: any): boolean %checks => {
+const isFunction = (obj: mixed): boolean %checks => {
   return (
     obj !== null &&
+    typeof obj === 'object' &&
     obj.hasOwnProperty("constructor") &&
     obj.hasOwnProperty("call") &&
     obj.hasOwnProperty("apply")

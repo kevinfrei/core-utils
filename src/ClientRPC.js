@@ -32,7 +32,7 @@ const MakeTypedMessage = (theMessage: FTONData): ?rpcMessageType => {
 };
 
 const InvokeFunc = (
-  func: Function,
+  func: (...args:Array<mixed>) => mixed,
   args: Array<any>,
   handler: rpcHandlerType,
   result: ?string

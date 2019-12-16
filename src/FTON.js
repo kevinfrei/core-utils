@@ -3,7 +3,7 @@
 
 import type { FTONData, FTONObject, FTONArray } from './index';
 
-const typecheck = (x: any): FTONData => {
+const typecheck = (x: mixed): FTONData => {
   if (x === null ||
     typeof x === 'string' ||
     typeof x === 'number' ||
