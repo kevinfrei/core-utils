@@ -1,7 +1,7 @@
 //@flow
 //@format
 import type { FTONData, FTONObject, FTONArray } from './index';
-declare var typecheck: (x: any) => FTONData;
+declare var typecheck: (x: mixed) => FTONData;
 declare var parse: (input: string) => FTONData;
 declare var stringify: (input: FTONData) => string;
 module.exports = {

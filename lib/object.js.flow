@@ -10,7 +10,7 @@ declare var prefixObj: (str: string, obj: {
 declare var isArray: (obj: mixed) => boolean;
 declare var isString: (obj: mixed) => boolean;
 declare var isNumber: (obj: mixed) => boolean;
-declare var isFunction: (obj: any) => boolean;
+declare var isFunction: (obj: mixed) => boolean;
 module.exports = {
   deQuote,
   reQuote,

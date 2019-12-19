@@ -6,6 +6,6 @@ const FTON = require('./FTON');
 
 import type { FTONData, rpcMessageType, rpcHandlerType } from './index';
 declare var MakeTypedMessage: (theMessage: FTONData) => ?rpcMessageType;
-declare var InvokeFunc: (func: Function, args: Array<any>, handler: rpcHandlerType, result: ?string) => any;
+declare var InvokeFunc: (func: (...args: Array<mixed>) => mixed, args: Array<any>, handler: rpcHandlerType, result: ?string) => any;
 declare var ClientRPC: (message: FTONData, handler: rpcHandlerType) => void;
 module.exports = ClientRPC;
