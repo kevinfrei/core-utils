@@ -22,7 +22,7 @@ const typecheck = (x: mixed): FTONData => {
 
   if (typeof x === 'object') {
     let o: FTONObject = {};
-    for (let k of x) {
+    for (let k in x) {
       o[k] = typecheck(x[k]);
     }
     return o;
