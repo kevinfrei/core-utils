@@ -2,6 +2,8 @@
 //@format
 import type { FTONData, FTONObject, FTONArray } from './index';
 declare var typecheck: (x: mixed) => FTONData;
+declare function replacer(key: mixed, value: mixed): mixed;
+declare function reviver(key: mixed, value: mixed): mixed;
 declare var parse: (input: string) => FTONData;
 declare var stringify: (input: FTONData) => string;
 module.exports = {

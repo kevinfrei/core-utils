@@ -6,12 +6,15 @@ const ObjUtil = require('./object');
 const SeqNum = require('./SeqNum');
 const ClientRPC = require('./ClientRPC');
 
-export type FTONData = string
+export type FTONData =
+  | string
   | number
   | boolean
   | null
   | FTONObject
-  | FTONArray;
+  | FTONArray
+  | Map<string | number, FTONData>
+  | Set<FTONData>;
 export type FTONObject = { [key: string]: FTONData };
 export type FTONArray = Array<FTONData>;
 

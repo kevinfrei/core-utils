@@ -8,7 +8,7 @@ const SeqNum = require('./SeqNum');
 
 const ClientRPC = require('./ClientRPC');
 
-export type FTONData = string | number | boolean | null | FTONObject | FTONArray;
+export type FTONData = string | number | boolean | null | FTONObject | FTONArray | Map<string | number, FTONData> | Set<FTONData>;
 export type FTONObject = {
   [key: string]: FTONData
 };

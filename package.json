@@ -1,6 +1,6 @@
 {
   "name": "my-utils",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "FTON and ObjUtil helpers",
   "main": "./lib/index.js",
   "scripts": {
