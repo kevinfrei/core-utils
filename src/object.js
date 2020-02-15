@@ -36,10 +36,10 @@ const isNumber = (obj: mixed): boolean %checks => {
 const isFunction = (obj: mixed): boolean %checks => {
   return (
     obj !== null &&
-    typeof obj === 'object' &&
+    (typeof obj === 'object' &&
     obj.hasOwnProperty("constructor") &&
     obj.hasOwnProperty("call") &&
-    obj.hasOwnProperty("apply")
+    obj.hasOwnProperty("apply")) || (typeof obj === 'function')
   );
 };
 
