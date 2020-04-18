@@ -1,0 +1,3 @@
+// @flow
+declare export function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean;
+declare export function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean;

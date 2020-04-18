@@ -8,6 +8,8 @@ const SeqNum = require('./SeqNum');
 
 const ClientRPC = require('./ClientRPC');
 
+const Comparisons = require('./Comparisons');
+
 export type FTONData = string | number | boolean | null | FTONObject | FTONArray | Map<string | number, FTONData> | Set<FTONData>;
 export type FTONObject = {
   [key: string]: FTONData
@@ -23,5 +25,6 @@ module.exports = {
   FTON,
   ObjUtil,
   SeqNum,
-  ClientRPC
+  ClientRPC,
+  Comparisons
 };

@@ -83,3 +83,15 @@ getId(); // returns 'id1'
 plainId(); // returns '0'
 
 // You get the idea, hopefully
+```
+
+### Comparisons: Package up some commonly used comparisons
+
+```typescript
+function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean;
+function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean
+```
+
+They seem mostly self-explanatory. They return true of the set of stuff in each
+collect are identical. Note that `ArraySetEqual` doesn't care about order of the
+arrays passed in (that's why it's called ArraySet and not just ArrayEqual!)
