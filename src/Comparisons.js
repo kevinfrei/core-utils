@@ -1,6 +1,6 @@
 // @flow
 
-export function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean {
+function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean {
   if (s1.size !== s2.size) {
     return false;
   }
@@ -12,7 +12,7 @@ export function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean {
   return true;
 }
 
-export function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean {
+function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean {
   if ((a1 === undefined && a2 === undefined) || (a1 === null && a2 === null)) {
     return true;
   }
@@ -24,3 +24,5 @@ export function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean {
   }
   return SetEqual(new Set(a1), new Set(a2));
 }
+
+module.exports = { SetEqual, ArraySetEqual };
