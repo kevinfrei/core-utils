@@ -6,8 +6,10 @@ declare function replacer(key: mixed, value: mixed): mixed;
 declare function reviver(key: mixed, value: mixed): mixed;
 declare var parse: (input: string) => FTONData;
 declare var stringify: (input: FTONData) => string;
+declare var arrayOfStrings: (input: FTONData) => ?Array<string>;
 module.exports = {
   parse,
   stringify,
-  typecheck
+  typecheck,
+  arrayOfStrings
 };
