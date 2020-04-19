@@ -36,16 +36,16 @@ const typecheck = (x: mixed): FTONData => {
 };
 
 function replacer(key: mixed, value: mixed): mixed {
-  const originalObject:mixed = this[key];
+  const originalObject: mixed = this[key];
   if (originalObject instanceof Map) {
     return {
       dataType: 'Map',
-      dataValue: [...originalObject]
+      dataValue: [...originalObject],
     };
   } else if (originalObject instanceof Set) {
     return {
       dataType: 'Set',
-      dataValue: [...originalObject]
+      dataValue: [...originalObject],
     };
   } else {
     return value;
@@ -78,8 +78,15 @@ const stringify = (input: FTONData): string => {
   return JSON.stringify(input, replacer);
 };
 
+const arrayOfStrings = (input: FTONData): ?Array<string> => {
+  if (input && Array.isArray(input)) {
+    return input.filter(elem => typeof elem === 'string');
+  }
+};
+
 module.exports = {
   parse,
   stringify,
-  typecheck
+  typecheck,
+  arrayOfStrings,
 };
