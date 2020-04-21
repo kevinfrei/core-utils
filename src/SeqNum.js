@@ -2,12 +2,16 @@
 // @format
 
 // usage:
-// const generator = require('SeqNum)('prefix');
+// const generator = require('SeqNum')('prefix');
 // newSeqNum = generator();
 // anotherSeqNum = generator();
 
-module.exports = (prefix: ?string): (() => string) => {
-  let curId = 0;
+module.exports = (prefix: ?string, resume: ?string): (() => string) => {
   const pref = prefix || '';
-  return (): string => pref + (curId++).toString(36);
+  let curId = 0;
+  if (resume) {
+    curId = parseInt(resume.substr(pref.length), 36);
+    curId++;
+  }
+  return () => pref + (curId++).toString(36);
 };

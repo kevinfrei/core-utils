@@ -67,9 +67,13 @@ function isFunction(obj: mixed): boolean %checks;
 They do what they say...
 
 ## SeqNum: a unique ID generator
-This is a pretty simple little unique ID generator, that takes an optional prefix, and returns the generator:
+
+This is a pretty simple little unique ID generator, that takes an optional
+prefix, and potentially the last sequence number generated, and returns the
+generator:
+
 ```typescript
-function SeqNum(prefix: ?string) => (() => string);
+function SeqNum(prefix: ?string, resumeId: ?string) => (() => string);
 ```
 in action:
 ```typescript
