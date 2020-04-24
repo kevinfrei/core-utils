@@ -25,4 +25,8 @@ function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean {
   return SetEqual(new Set(a1), new Set(a2));
 }
 
-module.exports = { SetEqual, ArraySetEqual };
+function StringCaseInsensitiveEqual(s1: string, s2: string): boolean {
+  return s1.toLocaleUpperCase() === s2.toLocaleUpperCase();
+}
+
+module.exports = { SetEqual, ArraySetEqual, StringCaseInsensitiveEqual };

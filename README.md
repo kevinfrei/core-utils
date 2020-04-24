@@ -94,6 +94,7 @@ plainId(); // returns '0'
 ```typescript
 function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean;
 function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean
+function StringCaseInsensitiveEqual(a: string, b: string): boolean
 ```
 
 They seem mostly self-explanatory. They return true of the set of stuff in each
