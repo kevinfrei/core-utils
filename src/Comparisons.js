@@ -12,7 +12,7 @@ function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean {
   return true;
 }
 
-function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean {
+function ArraySetEqual<T>(a1: ?Array<T>, a2: ?Array<T>): boolean {
   if ((a1 === undefined && a2 === undefined) || (a1 === null && a2 === null)) {
     return true;
   }
@@ -25,7 +25,13 @@ function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean {
   return SetEqual(new Set(a1), new Set(a2));
 }
 
-function StringCaseInsensitiveEqual(s1: string, s2: string): boolean {
+function StringCaseInsensitiveEqual(s1: ?string, s2: ?string): boolean {
+  if ((s1 && !s2) || (!s1 && s2)) {
+    return false;
+  }
+  if (!s1 && !s2) {
+    return s1 === s2;
+  }
   return s1.toLocaleUpperCase() === s2.toLocaleUpperCase();
 }
 
