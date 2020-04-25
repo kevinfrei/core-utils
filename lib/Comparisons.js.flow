@@ -1,7 +1,9 @@
 // @flow
 declare function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean;
 declare function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean;
+declare function StringCaseInsensitiveEqual(s1: string, s2: string): boolean;
 module.exports = {
   SetEqual,
-  ArraySetEqual
+  ArraySetEqual,
+  StringCaseInsensitiveEqual
 };
