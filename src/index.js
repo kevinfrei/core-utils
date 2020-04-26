@@ -22,15 +22,19 @@ export type FTONArray = Array<FTONData>;
 export type rpcMessageType = {
   func: string,
   args: FTONData,
-  result?: string
+  result?: string,
 };
 
 export type rpcHandlerType = Map<string, Function>;
+export type SeqNumGenerator = {
+  (): string,
+  keyCompare: (a: string, b: string) => number,
+};
 
 module.exports = {
   FTON,
   ObjUtil,
   SeqNum,
   ClientRPC,
-  Comparisons
+  Comparisons,
 };

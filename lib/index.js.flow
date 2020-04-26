@@ -21,6 +21,10 @@ export type rpcMessageType = {
   result?: string,
 };
 export type rpcHandlerType = Map<string, Function>;
+export type SeqNumGenerator = {
+  keyCompare: (a: string, b: string) => number,
+  (): string,
+};
 module.exports = {
   FTON,
   ObjUtil,

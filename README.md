@@ -82,12 +82,20 @@ const { SeqNum } = require('js-freik-utils');
 const getId = SeqNum('id');
 const plainId = SeqNum();
 
-getId(); // returns 'id0' or something like it
-getId(); // returns 'id1'
-plainId(); // returns '0'
+const id1 = getId(); // returns 'id0' or something like it
+const id2 = getId(); // returns 'id1'
+const plainId1 = plainId(); // returns '0'
 
 // You get the idea, hopefully
 ```
+There's also the ability to compare keys to each other.
+The sort result reflects key 'age'.
+```typescript
+getId.keyCompare(id1, id2); // returns -1 (negative)
+getId.keyCompare(id2, id1); // returns 1 (positive)
+getId.keyCompare(id1, plainId1); // returns NaN: They're not comparable!
+```
+
 
 ### Comparisons: Package up some commonly used comparisons
 
