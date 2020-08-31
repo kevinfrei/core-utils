@@ -19,4 +19,3 @@ export type SeqNumGenerator = {
   (): string;
   keyCompare: (a: string, b: string) => number;
 };
-
