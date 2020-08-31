@@ -1,5 +1,5 @@
 export * as FTON from './FTON';
-export * as Objutil from './object';
+export * as ObjUtil from './object';
 export * as SeqNum from './SeqNum';
 export * as Comparisons from './Comparisons';
 
