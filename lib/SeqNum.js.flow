@@ -1,9 +1,0 @@
-// @flow
-// @format
-// usage:
-// const generator = require('SeqNum')('prefix');
-// newSeqNum = generator();
-// anotherSeqNum = generator();
-import type { SeqNumGenerator } from './index';
-declare function makeSeqNumGenerator(prefix: ?string, resume: ?string): SeqNumGenerator;
-module.exports = makeSeqNumGenerator;
