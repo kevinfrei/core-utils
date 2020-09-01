@@ -5,10 +5,7 @@
 
 import type { SeqNumGenerator } from './index';
 
-export function SeqNum(
-  prefix?: string,
-  resume?: string,
-): SeqNumGenerator {
+export function SeqNum(prefix?: string, resume?: string): SeqNumGenerator {
   const pref = prefix || '';
   const pl = pref.length;
   let curId = 0;
