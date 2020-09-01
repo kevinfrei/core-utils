@@ -1,6 +1,6 @@
 export * as FTON from './FTON';
 export * as ObjUtil from './object';
-export * as SeqNum from './SeqNum';
+export { SeqNum } from './SeqNum';
 export * as Comparisons from './Comparisons';
 
 export type FTONData =

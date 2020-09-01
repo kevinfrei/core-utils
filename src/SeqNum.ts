@@ -5,7 +5,7 @@
 
 import type { SeqNumGenerator } from './index';
 
-export default function makeSeqNumGenerator(
+export function SeqNum(
   prefix?: string,
   resume?: string,
 ): SeqNumGenerator {
