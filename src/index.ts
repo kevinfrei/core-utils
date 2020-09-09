@@ -2,7 +2,7 @@ export * as FTON from './FTON';
 export * as ObjUtil from './object';
 export { SeqNum } from './SeqNum';
 export * as Comparisons from './Comparisons';
-export * as Logger from './logger';
+export { Log as Logger } from './logger';
 
 export type FTONData =
   | string

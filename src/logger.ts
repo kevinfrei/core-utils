@@ -14,7 +14,7 @@ export type logType = {
   bind: (id: unknown, enabled?: boolean) => (...args: unknown[]) => void;
 };
 
-export default function log(id: unknown, ...args: unknown[]) {
+export function Log(id: unknown, ...args: unknown[]): void {
   if (
     (defaultToShow && !disabled.has(id)) ||
     (!defaultToShow && enabled.has(id))
@@ -24,37 +24,36 @@ export default function log(id: unknown, ...args: unknown[]) {
   }
 }
 
-log.disable = (id: unknown) => {
+Log.disable = (id: unknown) => {
   disabled.add(id);
   enabled.delete(id);
 };
 
-log.enable = (id: unknown) => {
+Log.enable = (id: unknown) => {
   enabled.add(id);
   disabled.delete(id);
 };
 
-log.defaultToOff = () => {
+Log.defaultToOff = () => {
   defaultToShow = false;
 };
 
-log.defaultToOn = () => {
+Log.defaultToOn = () => {
   defaultToShow = true;
 };
 
-log.isEnabled = (id: unknown): boolean => enabled.has(id);
+Log.isEnabled = (id: unknown): boolean => enabled.has(id);
 
-log.isDisabled = (id: unknown): boolean => disabled.has(id);
+Log.isDisabled = (id: unknown): boolean => disabled.has(id);
 
-log.bind = (
+Log.bind = (
   id: unknown,
   isEnabled?: boolean,
 ): ((...args: unknown[]) => void) => {
-  const boundLogger = (...args: unknown[]) => log(id, ...args);
   if (isEnabled) {
-    log.enable(id);
+    Log.enable(id);
   } else {
-    log.disable(id);
+    Log.disable(id);
   }
-  return boundLogger;
+  return (...args: unknown[]) => Log(id, ...args);
 };
