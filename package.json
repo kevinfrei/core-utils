@@ -6,15 +6,15 @@
   "license": "Unlicense",
   "private": false,
   "bugs": {
-    "url": "https://github.com/kevinfrei/js-freik-utils/issues"
+    "url": "https://github.com/kevinfrei/core-utils/issues"
   },
-  "homepage": "https://github.com/kevinfrei/js-freik-utils#readme",
+  "homepage": "https://github.com/kevinfrei/core-utils#readme",
   "keywords": [
     "js-utils"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kevinfrei/js-freik-utils.git"
+    "url": "git+https://github.com/kevinfrei/core-utils.git"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
