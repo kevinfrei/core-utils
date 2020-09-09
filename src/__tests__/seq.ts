@@ -1,4 +1,4 @@
-import SeqNum from '../SeqNum';
+import { SeqNum } from '../SeqNum';
 
 test('SeqNum Sanity', () => {
   const sn = SeqNum();
