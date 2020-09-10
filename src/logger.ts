@@ -14,7 +14,7 @@ export type logType = {
   bind: (id: unknown, enabled?: boolean) => (...args: unknown[]) => void;
 };
 
-export function Log(id: unknown, ...args: unknown[]): void {
+function Log(id: unknown, ...args: unknown[]): void {
   if (
     (defaultToShow && !disabled.has(id)) ||
     (!defaultToShow && enabled.has(id))
@@ -57,3 +57,5 @@ Log.bind = (
   }
   return (...args: unknown[]) => Log(id, ...args);
 };
+
+export const Logger: logType = Log;
