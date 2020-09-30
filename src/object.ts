@@ -1,10 +1,12 @@
+import { isNumber, isString } from './types';
+
 export const deQuote = (str: string): string => str.replace(/\"/g, '~!~');
 
 export function reQuote(str: string): { [key: string]: string } {
   let res: string = str.replace(/\\/g, '\\\\');
   res = res.replace(/\"/g, '\\"');
   res = res.replace(/~!~/g, '"');
-  return JSON.parse(res);
+  return JSON.parse(res) as { [key: string]: string };
 }
 
 export function prefixObj(
@@ -21,23 +23,33 @@ export function prefixObj(
   return res;
 }
 
-export const isArray = (obj: unknown): boolean => Array.isArray(obj);
-
-export function isString(obj: unknown): boolean {
-  return obj !== null && obj !== undefined && typeof obj === 'string';
+export function has<K extends string>(
+  key: K,
+  x: { [key: string]: unknown },
+  // eslint-disable-next-line no-shadow
+): x is { [key in K]: unknown } {
+  return key in x;
 }
 
-export function isNumber(obj: unknown): boolean {
-  return typeof obj === 'number' && !isNaN(obj - 0);
+// eslint-disable-next-line no-shadow
+export function hasStr<K extends string>(
+  key: K,
+  x: { [key: string]: unknown },
+  // eslint-disable-next-line no-shadow
+): x is { [key in K]: string } {
+  return has(key, x) && typeof x[key] === 'string';
 }
 
-export function isFunction(obj: unknown): boolean {
-  return (
-    (obj !== null &&
-      typeof obj === 'object' &&
-      obj!.hasOwnProperty('constructor') &&
-      obj!.hasOwnProperty('call') &&
-      obj!.hasOwnProperty('apply')) ||
-    typeof obj === 'function'
-  );
+export function objToMap(o: {
+  [key: string]: string | number;
+}): Map<string, string> {
+  const res = new Map<string, string>();
+  for (const i in o) {
+    if (isString(i) && i.length > 0 && i[0] !== '@' && i in o) {
+      if (isString(o[i]) || isNumber(o[i])) {
+        res.set(i, o[i].toString());
+      }
+    }
+  }
+  return res;
 }

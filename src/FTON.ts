@@ -1,53 +1,53 @@
-import type { FTONData, FTONObject, FTONArray } from './index';
+import type { FTONData } from './index';
+import {
+  isArrayOf,
+  isBoolean,
+  isMapOf,
+  isNumber,
+  isObjectOf,
+  isSetOf,
+  isString,
+} from './types';
 
-export function typecheck(x: any): FTONData {
-  if (
-    x === null ||
-    typeof x === 'string' ||
-    typeof x === 'number' ||
-    typeof x === 'boolean'
-  ) {
-    return x;
-  }
-
-  if (x === undefined) {
-    return null;
-  }
-
-  if (Array.isArray(x)) {
-    return x.map(typecheck);
-  }
-
-  if (typeof x === 'object') {
-    if (x instanceof Map || x instanceof Set) {
-      return x;
-    }
-    const o: FTONObject = {};
-    for (const k in x) {
-      if (x.hasOwnProperty(k)) {
-        o[k] = typecheck(x[k]);
-      }
-    }
-    return o;
-  }
-
-  throw new Error('Invalid FTON');
+export function isFTON(x: unknown): x is FTONData {
+  if (x === null || isString(x) || isNumber(x) || isBoolean(x)) return true;
+  if (isArrayOf(x, isFTON)) return true;
+  if (isSetOf(x, isFTON)) return true;
+  if (isMapOf(x, isString, isFTON)) return true;
+  if (isObjectOf(x, isFTON)) return true;
+  return false;
 }
 
-type flattenedCustom = { dataType: 'Map' | 'Set'; dataValue: unknown[] };
+export function typecheck(x: unknown): FTONData {
+  if (isFTON(x)) {
+    return x;
+  } else {
+    throw new Error('Invalid FTON');
+  }
+}
 
-function replacer(key: unknown, value: unknown): unknown | flattenedCustom {
-  // @ts-ignore
-  const originalObject: any = this[key];
+export function asFTON(x: unknown): FTONData | void {
+  if (isFTON(x)) return x;
+}
+
+type FlattenedCustom = { dataType: 'Map' | 'Set'; dataValue: unknown[] };
+
+function replacer(
+  this: any,
+  key: string,
+  value: unknown,
+): unknown | FlattenedCustom {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const originalObject: unknown = this[key];
   if (originalObject instanceof Map) {
     return {
-      dataType: 'Map',
-      dataValue: [...originalObject],
+      '@dataType': 'Map',
+      '@dataValue': [...originalObject],
     };
   } else if (originalObject instanceof Set) {
     return {
-      dataType: 'Set',
-      dataValue: [...originalObject],
+      '@dataType': 'Set',
+      '@dataValue': [...originalObject],
     };
   } else {
     return value;
@@ -57,11 +57,11 @@ function replacer(key: unknown, value: unknown): unknown | flattenedCustom {
 function reviver(key: unknown, value: unknown): unknown {
   if (typeof value !== 'object' || value === null || value === undefined)
     return value;
-  if ('dataValue' in value && 'dataType' in value) {
-    const filt = value as flattenedCustom;
+  if ('@dataValue' in value && '@dataType' in value) {
+    const filt = value as FlattenedCustom;
     const val: unknown = filt.dataValue;
     if (!Array.isArray(val)) return value;
-    if (!('dataType' in value)) return value;
+    if (!('@dataType' in value)) return value;
     const type: string = filt.dataType as string;
     if (type === 'Map') return new Map(val);
     if (type === 'Set') return new Set(val);

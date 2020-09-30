@@ -3,7 +3,7 @@ const enabled: Set<unknown> = new Set();
 
 let defaultToShow = true;
 
-export type logType = {
+export type LogType = {
   (id: unknown, ...args: unknown[]): void;
   disable: (id: unknown) => void;
   enable: (id: unknown) => void;
@@ -11,7 +11,7 @@ export type logType = {
   defaultToOn: () => void;
   isEnabled: (id: unknown) => boolean;
   isDisabled: (id: unknown) => boolean;
-  bind: (id: unknown, enabled?: boolean) => (...args: unknown[]) => void;
+  bind: (id: unknown, enable?: boolean) => (...args: unknown[]) => void;
 };
 
 function Log(id: unknown, ...args: unknown[]): void {
@@ -19,7 +19,7 @@ function Log(id: unknown, ...args: unknown[]): void {
     (defaultToShow && !disabled.has(id)) ||
     (!defaultToShow && enabled.has(id))
   ) {
-    // tslint:disable-next-line
+    // eslint-disable-next-line no-console
     console.log(...args);
   }
 }
@@ -58,4 +58,5 @@ Log.bind = (
   return (...args: unknown[]) => Log(id, ...args);
 };
 
-export const Logger: logType = Log;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const Logger: LogType = Log;

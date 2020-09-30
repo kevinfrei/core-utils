@@ -6,6 +6,7 @@ public repo, as I'm trying to build something in it's own repo, instead of in
 my same private repo I've been using for years.
 
 ## ClientRPC
+
 Deprecated. Honestly, I think I started it and never actually used it. Don't use it.
 
 ## FTON: Flow Type Object Notation
@@ -41,11 +42,13 @@ little cleaner & easier to deal with.
 function deQuote(str: string) => string;
 function reQuote(str: string) => {[key:string]: string};
 ```
+
 Honestly, use at your own risk. They don't invert each other :/
 
 ```typescript
-function prefixObj(str: string, obj: {[key:string]: string}): Array<string>;
+function prefixObj(str: string, obj: { [key: string]: string }): Array<string>;
 ```
+
 This is easiest explained by providing results:
 
 `ObjUtil.prefixObj("test", {a: "b", c: null, d: "e"})`
@@ -64,6 +67,7 @@ function isString(obj: mixed): boolean %checks;
 function isNumber(obj: mixed): boolean %checks;
 function isFunction(obj: mixed): boolean %checks;
 ```
+
 They do what they say...
 
 ## SeqNum: a unique ID generator
@@ -75,7 +79,9 @@ generator:
 ```typescript
 function SeqNum(prefix: ?string, resumeId: ?string) => (() => string);
 ```
+
 in action:
+
 ```typescript
 const { SeqNum } = require('js-freik-utils');
 
@@ -88,21 +94,22 @@ const plainId1 = plainId(); // returns '0'
 
 // You get the idea, hopefully
 ```
+
 There's also the ability to compare keys to each other.
 The sort result reflects key 'age'.
+
 ```typescript
 getId.keyCompare(id1, id2); // returns -1 (negative)
 getId.keyCompare(id2, id1); // returns 1 (positive)
 getId.keyCompare(id1, plainId1); // returns NaN: They're not comparable!
 ```
 
-
 ### Comparisons: Package up some commonly used comparisons
 
 ```typescript
 function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean;
-function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean
-function StringCaseInsensitiveEqual(a: string, b: string): boolean
+function ArraySetEqual<T>(a1: Array<T>, a2: Array<T>): boolean;
+function StringCaseInsensitiveEqual(a: string, b: string): boolean;
 ```
 
 They seem mostly self-explanatory. They return true of the set of stuff in each

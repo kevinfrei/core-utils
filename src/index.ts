@@ -1,6 +1,7 @@
 export * as FTON from './FTON';
 export * as ObjUtil from './object';
 export { SeqNum } from './SeqNum';
+export * as Type from './types';
 export * as Comparisons from './Comparisons';
 export { Logger } from './logger';
 
@@ -10,11 +11,12 @@ export type FTONData =
   | boolean
   | null
   | FTONObject
-  | FTONArray
+  | FTONData[]
   | Map<string | number, FTONData>
   | Set<FTONData>;
 export type FTONObject = { [key: string]: FTONData };
-export type FTONArray = FTONData[];
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type typecheck<T> = (val: any) => val is T;
 
 export type SeqNumGenerator = {
   (): string;
