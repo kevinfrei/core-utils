@@ -1,3 +1,4 @@
+import { Type } from '.';
 import { isNumber, isString } from './types';
 
 export const deQuote = (str: string): string => str.replace(/\"/g, '~!~');
@@ -25,19 +26,19 @@ export function prefixObj(
 
 export function has<K extends string>(
   key: K,
-  x: { [key: string]: unknown },
+  x: unknown,
   // eslint-disable-next-line no-shadow
 ): x is { [key in K]: unknown } {
-  return key in x;
+  return Type.isObjectNonNull(x) && key in x;
 }
 
 // eslint-disable-next-line no-shadow
 export function hasStr<K extends string>(
   key: K,
-  x: { [key: string]: unknown },
+  x: unknown,
   // eslint-disable-next-line no-shadow
 ): x is { [key in K]: string } {
-  return has(key, x) && typeof x[key] === 'string';
+  return Type.isObjectNonNull(x) && has(key, x) && Type.isString(x[key]);
 }
 
 export function objToMap(o: {

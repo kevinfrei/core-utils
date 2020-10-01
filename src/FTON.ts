@@ -1,4 +1,5 @@
-import type { FTONData } from './index';
+import { FTONData, ObjUtil, Type } from './index';
+import { has } from './object';
 import {
   isArrayOf,
   isBoolean,
@@ -30,7 +31,7 @@ export function asFTON(x: unknown): FTONData | void {
   if (isFTON(x)) return x;
 }
 
-type FlattenedCustom = { dataType: 'Map' | 'Set'; dataValue: unknown[] };
+type FlattenedCustom = { '@dataType': 'Map' | 'Set'; '@dataValue': unknown[] };
 
 function replacer(
   this: any,
@@ -55,14 +56,15 @@ function replacer(
 }
 
 function reviver(key: unknown, value: unknown): unknown {
-  if (typeof value !== 'object' || value === null || value === undefined)
+  if (!Type.isObject(value)) {
     return value;
-  if ('@dataValue' in value && '@dataType' in value) {
-    const filt = value as FlattenedCustom;
-    const val: unknown = filt.dataValue;
+  }
+  if (has('@dataValue', value) && has('@dataType', value)) {
+    const filt = value;
+    const val: unknown = filt['@dataValue'];
     if (!Array.isArray(val)) return value;
     if (!('@dataType' in value)) return value;
-    const type: string = filt.dataType as string;
+    const type: string = filt['@dataType'] as string;
     if (type === 'Map') return new Map(val);
     if (type === 'Set') return new Set(val);
   }
