@@ -9,8 +9,6 @@ test('FTON set roundtrip', () => {
   const setString = FTON.stringify(set);
   const newSet = FTON.parse(setString);
   const next = FTON.stringify(newSet);
-  console.log(next);
-  console.log(setString);
   expect(next).toEqual(setString);
 });
 
@@ -24,7 +22,5 @@ test('FTON map roundtrip', () => {
   const mapString = FTON.stringify(map);
   const newMap = FTON.parse(mapString);
   const next = FTON.stringify(newMap);
-  console.log(next);
-  console.log(mapString);
   expect(next).toEqual(mapString);
 });

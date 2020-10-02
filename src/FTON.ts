@@ -1,4 +1,4 @@
-import { FTONData, ObjUtil, Type } from './index';
+import { FTONData, Type } from './index';
 import { has } from './object';
 import {
   isArrayOf,
