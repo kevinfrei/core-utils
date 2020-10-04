@@ -1,25 +1,17 @@
-import { FTONData, Type } from './index';
-import { has } from './object';
-import {
-  isArrayOf,
-  isBoolean,
-  isMapOf,
-  isNumber,
-  isObjectOf,
-  isSetOf,
-  isString,
-} from './types';
+import type { FTONData } from './index';
+import { Type, ObjUtil } from './index';
 
-export function isFTON(x: unknown): x is FTONData {
-  if (x === null || isString(x) || isNumber(x) || isBoolean(x)) return true;
-  if (isArrayOf(x, isFTON)) return true;
-  if (isSetOf(x, isFTON)) return true;
-  if (isMapOf(x, isString, isFTON)) return true;
-  if (isObjectOf(x, isFTON)) return true;
+function isFTON(x: unknown): x is FTONData {
+  if (x === null || Type.isString(x) || Type.isNumber(x) || Type.isBoolean(x))
+    return true;
+  if (Type.isArrayOf(x, isFTON)) return true;
+  if (Type.isSetOf(x, isFTON)) return true;
+  if (Type.isMapOf(x, Type.isString, isFTON)) return true;
+  if (Type.isObjectOf(x, isFTON)) return true;
   return false;
 }
 
-export function typecheck(x: unknown): FTONData {
+function typecheck(x: unknown): FTONData {
   if (isFTON(x)) {
     return x;
   } else {
@@ -27,7 +19,7 @@ export function typecheck(x: unknown): FTONData {
   }
 }
 
-export function asFTON(x: unknown): FTONData | void {
+function asFTON(x: unknown): FTONData | void {
   if (isFTON(x)) return x;
 }
 
@@ -59,11 +51,14 @@ function reviver(key: unknown, value: unknown): unknown {
   if (!Type.isObject(value)) {
     return value;
   }
-  if (has('@dataValue', value) && has('@dataType', value)) {
+  if (ObjUtil.has('@dataValue', value) && ObjUtil.has('@dataType', value)) {
     const filt = value;
     const val: unknown = filt['@dataValue'];
-    if (!Array.isArray(val)) return value;
     if (!('@dataType' in value)) return value;
+    const isMapTuple = (v: unknown): v is [FTONData, FTONData] => {
+      return Type.isArray(v) && v.length === 2 && isFTON(v[0]) && isFTON(v[1]);
+    };
+    if (!Type.isArrayOf<[FTONData, FTONData]>(val, isMapTuple)) return value;
     const type: string = filt['@dataType'] as string;
     if (type === 'Map') return new Map(val);
     if (type === 'Set') return new Set(val);
@@ -71,16 +66,25 @@ function reviver(key: unknown, value: unknown): unknown {
   return value;
 }
 
-export function parse(input: string): FTONData {
+function parse(input: string): FTONData {
   return typecheck(JSON.parse(input, reviver));
 }
 
-export function stringify(input: FTONData): string {
+function stringify(input: FTONData): string {
   return JSON.stringify(input, replacer);
 }
 
-export function arrayOfStrings(input: FTONData): string[] | void {
-  if (input && Array.isArray(input)) {
+function arrayOfStrings(input: FTONData): string[] | void {
+  if (input && Type.isArray(input)) {
     return input.filter((elem) => typeof elem === 'string') as string[];
   }
 }
+
+export const FTON = {
+  isFTON,
+  typecheck,
+  asFTON,
+  parse,
+  stringify,
+  arrayOfStrings,
+};

@@ -1,4 +1,4 @@
-import * as FTON from '../FTON';
+import { FTON } from '../index';
 
 test('FTON sanity', () => {
   FTON.stringify([]);

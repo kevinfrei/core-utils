@@ -1,4 +1,4 @@
-export function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean {
+function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean {
   if (s1.size !== s2.size) {
     return false;
   }
@@ -10,7 +10,7 @@ export function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean {
   return true;
 }
 
-export function ArraySetEqual<T>(a1?: T[], a2?: T[]): boolean {
+function ArraySetEqual<T>(a1?: T[], a2?: T[]): boolean {
   if ((a1 === undefined && a2 === undefined) || (a1 === null && a2 === null)) {
     return true;
   }
@@ -23,7 +23,7 @@ export function ArraySetEqual<T>(a1?: T[], a2?: T[]): boolean {
   return SetEqual(new Set(a1), new Set(a2));
 }
 
-export function StringCaseInsensitiveEqual(s1?: string, s2?: string): boolean {
+function StringCaseInsensitiveEqual(s1?: string, s2?: string): boolean {
   if ((s1 && !s2) || (!s1 && s2)) {
     return false;
   }
@@ -32,3 +32,9 @@ export function StringCaseInsensitiveEqual(s1?: string, s2?: string): boolean {
   }
   return s1!.toLocaleUpperCase() === s2!.toLocaleUpperCase();
 }
+
+export const Comparisons = {
+  SetEqual,
+  ArraySetEqual,
+  StringCaseInsensitiveEqual,
+};

@@ -1,13 +1,13 @@
-import * as typ from '../types';
+import { Type } from '../index';
 
 test('Object.isString empty', () => {
-  expect(typ.isString('')).toBe(true);
+  expect(Type.isString('')).toBe(true);
 });
 test('Object.isString something', () => {
-  expect(typ.isString('s')).toBe(true);
+  expect(Type.isString('s')).toBe(true);
 });
 test('Object.isString notStr', () => {
-  expect(typ.isString(0)).toBe(false);
+  expect(Type.isString(0)).toBe(false);
 });
 
 // TODO: moar tests

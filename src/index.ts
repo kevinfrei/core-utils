@@ -1,8 +1,8 @@
-export * as FTON from './FTON';
-export * as ObjUtil from './object';
+export { FTON } from './FTON';
+export { ObjUtil } from './object';
 export { SeqNum } from './SeqNum';
-export * as Type from './types';
-export * as Comparisons from './Comparisons';
+export { Type } from './types';
+export { Comparisons } from './Comparisons';
 export { Logger } from './logger';
 
 export type FTONData =
