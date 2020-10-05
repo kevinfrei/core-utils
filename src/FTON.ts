@@ -47,6 +47,10 @@ function replacer(
   }
 }
 
+function isMapTuple(v: unknown): v is [FTONData, FTONData] {
+  return Type.isArray(v) && v.length === 2 && isFTON(v[0]) && isFTON(v[1]);
+}
+
 function reviver(key: unknown, value: unknown): unknown {
   if (!Type.isObject(value)) {
     return value;
@@ -55,13 +59,19 @@ function reviver(key: unknown, value: unknown): unknown {
     const filt = value;
     const val: unknown = filt['@dataValue'];
     if (!('@dataType' in value)) return value;
-    const isMapTuple = (v: unknown): v is [FTONData, FTONData] => {
-      return Type.isArray(v) && v.length === 2 && isFTON(v[0]) && isFTON(v[1]);
-    };
-    if (!Type.isArrayOf<[FTONData, FTONData]>(val, isMapTuple)) return value;
     const type: string = filt['@dataType'] as string;
-    if (type === 'Map') return new Map(val);
-    if (type === 'Set') return new Set(val);
+    switch (type) {
+      case 'Map':
+        if (Type.isArrayOf<[FTONData, FTONData]>(val, isMapTuple)) {
+          return new Map(val);
+        }
+        break;
+      case 'Set':
+        if (Type.isArrayOf<FTONData>(val, isFTON)) {
+          return new Set(val);
+        }
+        break;
+    }
   }
   return value;
 }
