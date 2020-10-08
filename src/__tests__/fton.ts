@@ -28,3 +28,11 @@ test('FTON map roundtrip', () => {
   const next = FTON.stringify(newMap);
   expect(next).toEqual(mapString);
 });
+
+test('FTON filtering', () => {
+  expect(FTON.isFTON(/abcd/)).toBe(false);
+  const obj = 'a';
+  expect(FTON.filter(obj)).toBe('a');
+  const otherObj = { a: 1, b: 2, c: /1.2/ };
+  expect(FTON.filter(otherObj)).toEqual({ a: 1, b: 2, c: null });
+});

@@ -37,6 +37,10 @@ function isFunction(obj: unknown): obj is Function {
   );
 }
 
+function isRegex(obj: unknown): obj is RegExp {
+  return obj !== null && typeof obj === 'object' && obj instanceof RegExp;
+}
+
 function isMap(obj: unknown): obj is Map<unknown, unknown> {
   return isObjectNonNull(obj) && obj instanceof Map;
 }
@@ -92,6 +96,7 @@ export const Type = {
   isObjectNonNull,
   isSet,
   isSetOf,
+  isRegex,
   isArray,
   isArrayOf,
   isMap,
