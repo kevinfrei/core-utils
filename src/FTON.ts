@@ -4,11 +4,10 @@ import { Type, ObjUtil } from './index';
 function isFTON(x: unknown): x is FTONData {
   if (x === null || Type.isString(x) || Type.isNumber(x) || Type.isBoolean(x))
     return true;
-  if (Type.isRegex(x)) return false;
   if (Type.isArrayOf(x, isFTON)) return true;
   if (Type.isSetOf(x, isFTON)) return true;
   if (Type.isMapOf(x, Type.isString, isFTON)) return true;
-  if (Type.isObjectNonNull(x)) {
+  if (Type.isObjectNonNull(x) && x.constructor.name === 'Object') {
     for (const i in x) {
       if (Type.isString(i) && ObjUtil.has(i, x)) {
         if (!isFTON(x[i])) return false;
@@ -53,7 +52,7 @@ function filter(x: unknown): FTONData {
       ]),
     );
   }
-  if (Type.isObjectNonNull(x)) {
+  if (Type.isObjectNonNull(x) && x.constructor.name === 'Object') {
     const newObj: FTONObject = {};
     for (const i in x) {
       if (Type.isString(i) && ObjUtil.has(i, x)) {

@@ -30,9 +30,11 @@ test('FTON map roundtrip', () => {
 });
 
 test('FTON filtering', () => {
+  expect(FTON.isFTON(new Date())).toBeFalsy();
   expect(FTON.isFTON(/abcd/)).toBe(false);
-  const obj = 'a';
-  expect(FTON.filter(obj)).toBe('a');
+  expect(FTON.filter('a')).toBe('a');
   const otherObj = { a: 1, b: 2, c: /1.2/ };
   expect(FTON.filter(otherObj)).toEqual({ a: 1, b: 2, c: null });
+  const buf = { b: Buffer.from('as;lkasdfkjadl;sf') };
+  expect(FTON.filter(buf)).toEqual({ b: null });
 });
