@@ -91,7 +91,7 @@ function restore() {
 // I prefer this interface
 // I'd like to make it possible to turn on all logging from anywhere
 // Just need to think about what interface I want for that
-function MakeLogger(
+function LogMaker(
   id?: string,
   enabledByDefault?: boolean,
 ): {
@@ -121,10 +121,10 @@ function MakeLogger(
   return log;
 }
 
-MakeLogger.enable = enable;
-MakeLogger.disable = disable;
-MakeLogger.all = all;
-MakeLogger.none = none;
-MakeLogger.restore = restore;
+LogMaker.enable = enable;
+LogMaker.disable = disable;
+LogMaker.all = all;
+LogMaker.none = none;
+LogMaker.restore = restore;
 
-export default MakeLogger;
+export const MakeLogger = LogMaker;

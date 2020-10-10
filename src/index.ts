@@ -3,7 +3,7 @@ export { ObjUtil } from './object';
 export { SeqNum } from './SeqNum';
 export { Type } from './types';
 export { Comparisons } from './Comparisons';
-export { Logger } from './logger';
+export { Logger, MakeLogger } from './logger';
 
 export type FTONData =
   | string
