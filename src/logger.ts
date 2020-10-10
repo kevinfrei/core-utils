@@ -11,7 +11,7 @@ export type LogType = {
   defaultToOn: () => void;
   isEnabled: (id: unknown) => boolean;
   isDisabled: (id: unknown) => boolean;
-  bind: (id: unknown, enable?: boolean) => (...args: unknown[]) => void;
+  bind: (id: unknown, isEnabled?: boolean) => (...args: unknown[]) => void;
 };
 
 function Log(id: unknown, ...args: unknown[]): void {
@@ -60,3 +60,71 @@ Log.bind = (
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const Logger: LogType = Log;
+
+const newDisabled: Set<string | symbol> = new Set();
+const newEnabled: Set<string | symbol> = new Set();
+const allLoggers: Set<string | symbol> = new Set();
+
+function enable(id: string | symbol) {
+  newEnabled.add(id);
+  newDisabled.delete(id);
+}
+
+function disable(id: string | symbol) {
+  newEnabled.delete(id);
+  newDisabled.add(id);
+}
+
+function all() {
+  newDisabled.clear();
+  allLoggers.forEach((v) => newEnabled.add(v));
+}
+function none() {
+  newEnabled.clear();
+  allLoggers.forEach((v) => newDisabled.add(v));
+}
+function restore() {
+  newEnabled.clear();
+  newDisabled.clear();
+}
+
+// I prefer this interface
+// I'd like to make it possible to turn on all logging from anywhere
+// Just need to think about what interface I want for that
+function MakeLogger(
+  id?: string,
+  enabledByDefault?: boolean,
+): {
+  (...args: unknown[]): void;
+  enable: () => void;
+  disable: () => void;
+  getId: () => string | symbol;
+  isEnabled: () => boolean;
+} {
+  const name: string | symbol = id ? id : Symbol();
+  allLoggers.add(name);
+  function isEnabled(): boolean {
+    if (newDisabled.has(name)) return false;
+    if (newEnabled.has(name)) return true;
+    return enabledByDefault === true;
+  }
+  function log(...args: unknown[]): void {
+    if (isEnabled()) {
+      // eslint-disable-next-line no-console
+      console.log(...args);
+    }
+  }
+  log.enable = () => enable(name);
+  log.disable = () => disable(name);
+  log.getId = () => name;
+  log.isEnabled = isEnabled;
+  return log;
+}
+
+MakeLogger.enable = enable;
+MakeLogger.disable = disable;
+MakeLogger.all = all;
+MakeLogger.none = none;
+MakeLogger.restore = restore;
+
+export default MakeLogger;
