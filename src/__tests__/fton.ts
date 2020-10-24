@@ -24,6 +24,7 @@ test('FTON map roundtrip', () => {
   const mapString = FTON.stringify(map);
   const newMap = FTON.parse(mapString);
   expect(ObjUtil.has('a', newMap)).toBe(true);
+  expect(Type.has(newMap, 'a')).toBe(true);
   expect((newMap as any).a).toBeInstanceOf(Map);
   const next = FTON.stringify(newMap);
   expect(next).toEqual(mapString);

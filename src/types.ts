@@ -91,8 +91,8 @@ function isObjectOf<T>(
 }
 
 function has<K extends string>(
-  key: K,
   x: unknown,
+  key: K,
   // eslint-disable-next-line no-shadow
 ): x is { [key in K]: unknown } {
   return Type.isObjectNonNull(x) && key in x;
@@ -100,11 +100,11 @@ function has<K extends string>(
 
 // eslint-disable-next-line no-shadow
 function hasStr<K extends string>(
-  key: K,
   x: unknown,
+  key: K,
   // eslint-disable-next-line no-shadow
 ): x is { [key in K]: string } {
-  return Type.isObjectNonNull(x) && has(key, x) && Type.isString(x[key]);
+  return Type.isObjectNonNull(x) && has(x, key) && Type.isString(x[key]);
 }
 
 export const Type = {
