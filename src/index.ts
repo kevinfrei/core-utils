@@ -12,8 +12,9 @@ export type FTONData =
   | null
   | FTONObject
   | FTONData[]
-  | Map<string | number, FTONData>
+  | FTONMap
   | Set<FTONData>;
+export type FTONMap = Map<string | number, FTONData>;
 export type FTONObject = { [key: string]: FTONData };
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type typecheck<T> = (val: any) => val is T;

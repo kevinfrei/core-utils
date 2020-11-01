@@ -21,6 +21,10 @@ function isNumber(obj: unknown): obj is number {
   return typeof obj === 'number' && !isNaN(obj - 0);
 }
 
+function isNumberOrString(obj: unknown): obj is number | string {
+  return Type.isString(obj) || Type.isNumber(obj);
+}
+
 function isBoolean(obj: unknown): obj is boolean {
   return typeof obj === 'boolean';
 }
@@ -122,6 +126,7 @@ export const Type = {
   isBoolean,
   isNumber,
   isString,
+  isNumberOrString,
   has,
   hasStr,
 };

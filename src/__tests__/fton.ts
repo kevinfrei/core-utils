@@ -28,6 +28,9 @@ test('FTON map roundtrip', () => {
   expect((newMap as any).a).toBeInstanceOf(Map);
   const next = FTON.stringify(newMap);
   expect(next).toEqual(mapString);
+  expect(FTON.valEqual(newMap, map)).toBe(true);
+  map.a.set('e', 'f');
+  expect(FTON.valEqual(newMap, map)).toBe(false);
 });
 
 test('FTON filtering', () => {

@@ -1,12 +1,12 @@
-import type { FTONData, FTONObject } from './index';
-import { Type, ObjUtil } from './index';
+import type { FTONData, FTONMap, FTONObject } from './index';
+import { ObjUtil, Type } from './index';
 
 function isFTON(x: unknown): x is FTONData {
   if (x === null || Type.isString(x) || Type.isNumber(x) || Type.isBoolean(x))
     return true;
   if (Type.isArrayOf(x, isFTON)) return true;
   if (Type.isSetOf(x, isFTON)) return true;
-  if (Type.isMapOf(x, Type.isString, isFTON)) return true;
+  if (Type.isMapOf(x, Type.isNumberOrString, isFTON)) return true;
   if (Type.isObjectNonNull(x) && x.constructor.name === 'Object') {
     for (const i in x) {
       if (Type.isString(i) && ObjUtil.has(i, x)) {
@@ -28,6 +28,75 @@ function typecheck(x: unknown): FTONData {
 
 function asFTON(x: unknown): FTONData | void {
   if (isFTON(x)) return x;
+}
+
+function arrayEqual(x: FTONData[], y: FTONData[]): boolean {
+  if (x.length !== y.length) return false;
+  for (let i = 0; i < x.length; i++) {
+    if (!valEqual(x[i], y[i])) return false;
+  }
+  return true;
+}
+
+function mapEqual(x: FTONMap, y: FTONMap): boolean {
+  if (x.size !== y.size) return false;
+  for (const [k, xv] of x) {
+    const yv = y.get(k);
+    if (!yv || !valEqual(xv, yv)) return false;
+  }
+  return true;
+}
+
+function setEqual(x: Set<FTONData>, y: Set<FTONData>): boolean {
+  if (x.size !== y.size) return false;
+  for (const xv of x) {
+    // Value equality is super slow :(
+    let equal = false;
+    for (const yv of y) {
+      if (valEqual(xv, yv)) {
+        equal = true;
+        break;
+      }
+    }
+    if (!equal) return false;
+  }
+  return true;
+}
+
+function objEqual(a: FTONObject, b: FTONObject): boolean {
+  const aProps = Object.getOwnPropertyNames(a);
+  const bProps = Object.getOwnPropertyNames(b);
+
+  if (aProps.length !== bProps.length) {
+    return false;
+  }
+
+  for (const propName of aProps) {
+    if (!valEqual(a[propName], b[propName])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function valEqual(x: FTONData, y: FTONData): boolean {
+  if (x === y) {
+    return true;
+  }
+  if (Type.isArray(x)) {
+    return Type.isArray(y) ? arrayEqual(x, y) : false;
+  }
+  if (Type.isMap(x)) {
+    return Type.isMap(y) ? mapEqual(x, y) : false;
+  }
+  if (Type.isSet(x)) {
+    return Type.isSet(y) ? setEqual(x, y) : false;
+  }
+  if (Type.isObjectNonNull(x)) {
+    return Type.isObjectNonNull(y) ? objEqual(x, y) : false;
+  }
+  return false;
 }
 
 function filter(x: unknown): FTONData {
@@ -138,4 +207,5 @@ export const FTON = {
   parse,
   stringify,
   arrayOfStrings,
+  valEqual,
 };
