@@ -88,43 +88,65 @@ function restore() {
   newDisabled.clear();
 }
 
+export type LogCreator = {
+  (id?: string, enabledByDefault?: boolean): {
+    (...args: unknown[]): void;
+    enable: () => void;
+    disable: () => void;
+    getId: () => string | symbol;
+    isEnabled: () => boolean;
+  };
+  enable: (id: string | symbol) => void;
+  disable: (id: string | symbol) => void;
+  all: () => void;
+  none: () => void;
+  restore: () => void;
+};
+
 // I prefer this interface
 // I'd like to make it possible to turn on all logging from anywhere
 // Just need to think about what interface I want for that
-function LogMaker(
-  id?: string,
-  enabledByDefault?: boolean,
-): {
-  (...args: unknown[]): void;
-  enable: () => void;
-  disable: () => void;
-  getId: () => string | symbol;
-  isEnabled: () => boolean;
-} {
-  const name: string | symbol = id ? id : Symbol();
-  allLoggers.add(name);
-  function isEnabled(): boolean {
-    if (newDisabled.has(name)) return false;
-    if (newEnabled.has(name)) return true;
-    return enabledByDefault === true;
-  }
-  function log(...args: unknown[]): void {
-    if (isEnabled()) {
-      // eslint-disable-next-line no-console
-      console.log(...args);
+function bindLogger(which: 'std' | 'err'): LogCreator {
+  const theLogger = which === 'std' ? console.log : console.error;
+  function LogMaker(
+    id?: string,
+    enabledByDefault?: boolean,
+  ): {
+    (...args: unknown[]): void;
+    enable: () => void;
+    disable: () => void;
+    getId: () => string | symbol;
+    isEnabled: () => boolean;
+  } {
+    const defaultOn =
+      enabledByDefault !== undefined ? enabledByDefault : which === 'err';
+    const name: string | symbol = id ? id : Symbol();
+    allLoggers.add(name);
+    function isEnabled(): boolean {
+      if (newDisabled.has(name)) return false;
+      if (newEnabled.has(name)) return true;
+      return defaultOn;
     }
+    function log(...args: unknown[]): void {
+      if (isEnabled()) {
+        // eslint-disable-next-line no-console
+        theLogger(...args);
+      }
+    }
+    log.enable = () => enable(name);
+    log.disable = () => disable(name);
+    log.getId = () => name;
+    log.isEnabled = isEnabled;
+    return log;
   }
-  log.enable = () => enable(name);
-  log.disable = () => disable(name);
-  log.getId = () => name;
-  log.isEnabled = isEnabled;
-  return log;
+
+  LogMaker.enable = enable;
+  LogMaker.disable = disable;
+  LogMaker.all = all;
+  LogMaker.none = none;
+  LogMaker.restore = restore;
+  return LogMaker;
 }
 
-LogMaker.enable = enable;
-LogMaker.disable = disable;
-LogMaker.all = all;
-LogMaker.none = none;
-LogMaker.restore = restore;
-
-export const MakeLogger = LogMaker;
+export const MakeLogger: LogCreator = bindLogger('std');
+export const MakeError: LogCreator = bindLogger('err');
