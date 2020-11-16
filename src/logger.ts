@@ -107,6 +107,7 @@ export type LogCreator = {
 // I'd like to make it possible to turn on all logging from anywhere
 // Just need to think about what interface I want for that
 function bindLogger(which: 'std' | 'err'): LogCreator {
+  // eslint-disable-next-line no-console
   const theLogger = which === 'std' ? console.log : console.error;
   function LogMaker(
     id?: string,
@@ -129,7 +130,6 @@ function bindLogger(which: 'std' | 'err'): LogCreator {
     }
     function log(...args: unknown[]): void {
       if (isEnabled()) {
-        // eslint-disable-next-line no-console
         theLogger(...args);
       }
     }
