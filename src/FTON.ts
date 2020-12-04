@@ -2,7 +2,13 @@ import type { FTONData, FTONMap, FTONObject } from './index';
 import { ObjUtil, Type } from './index';
 
 function isFTON(x: unknown): x is FTONData {
-  if (x === null || Type.isString(x) || Type.isNumber(x) || Type.isBoolean(x))
+  if (
+    x === null ||
+    x === undefined ||
+    Type.isString(x) ||
+    Type.isNumber(x) ||
+    Type.isBoolean(x)
+  )
     return true;
   if (Type.isArrayOf(x, isFTON)) return true;
   if (Type.isSetOf(x, isFTON)) return true;
@@ -100,7 +106,13 @@ function valEqual(x: FTONData, y: FTONData): boolean {
 }
 
 function filter(x: unknown): FTONData {
-  if (x === null || Type.isString(x) || Type.isNumber(x) || Type.isBoolean(x))
+  if (
+    x === null ||
+    x === undefined ||
+    Type.isString(x) ||
+    Type.isNumber(x) ||
+    Type.isBoolean(x)
+  )
     return x;
   if (Type.isRegex(x)) return null;
   if (Type.isArrayOf(x, isFTON)) return x;

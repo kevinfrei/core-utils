@@ -6,6 +6,7 @@ export { Comparisons } from './Comparisons';
 export { Logger, MakeLogger, MakeError } from './logger';
 
 export type FTONData =
+  | undefined
   | string
   | number
   | boolean
