@@ -61,6 +61,10 @@ function isArrayOf<T>(obj: unknown, chk: typecheck<T>): obj is T[] {
   return true;
 }
 
+function isArrayOfString(obj: unknown): obj is string[] {
+  return isArrayOf(obj, isString);
+}
+
 function isMapOf<K, V>(
   obj: unknown,
   key: typecheck<K>,
@@ -75,12 +79,20 @@ function isMapOf<K, V>(
   return true;
 }
 
+function isMapOfStrings(obj: unknown): obj is Map<string, string> {
+  return isMapOf(obj, isString, isString);
+}
+
 function isSetOf<T>(obj: unknown, chk: typecheck<T>): obj is Set<T> {
   if (!isSet(obj)) return false;
   for (const t of obj) {
     if (!chk(t)) return false;
   }
   return true;
+}
+
+function isSetOfString(obj: unknown): obj is Set<string> {
+  return isSetOf(obj, isString);
 }
 
 function isObjectOf<T>(
@@ -94,12 +106,16 @@ function isObjectOf<T>(
   return true;
 }
 
+function isObjectOfString(obj: unknown): obj is { [key: string]: string } {
+  return isObjectOf(obj, isString);
+}
+
 function has<K extends string>(
   x: unknown,
   key: K,
   // eslint-disable-next-line no-shadow
 ): x is { [key in K]: unknown } {
-  return Type.isObjectNonNull(x) && key in x;
+  return isObjectNonNull(x) && key in x;
 }
 
 // eslint-disable-next-line no-shadow
@@ -108,20 +124,24 @@ function hasStr<K extends string>(
   key: K,
   // eslint-disable-next-line no-shadow
 ): x is { [key in K]: string } {
-  return Type.isObjectNonNull(x) && has(x, key) && Type.isString(x[key]);
+  return isObjectNonNull(x) && has(x, key) && isString(x[key]);
 }
 
 export const Type = {
   isObject,
   isObjectOf,
+  isObjectOfString,
   isObjectNonNull,
   isSet,
   isSetOf,
+  isSetOfString,
   isRegex,
   isArray,
   isArrayOf,
+  isArrayOfString,
   isMap,
   isMapOf,
+  isMapOfStrings,
   isFunction,
   isBoolean,
   isNumber,
