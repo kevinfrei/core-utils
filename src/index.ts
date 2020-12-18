@@ -5,6 +5,7 @@ export { Type } from './types';
 export { Comparisons } from './Comparisons';
 export { Logger, MakeLogger, MakeError } from './logger';
 import * as media from './media';
+export { toSafeName, fromSafeName } from './translation';
 
 export type FTONData =
   | undefined
