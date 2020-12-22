@@ -23,6 +23,30 @@ it('Generic path', () => {
   });
 });
 
+
+it('Generic path with a disk number', () => {
+  const filename = 'something/player - 1983 - record/1234 - name.m4a';
+  const md = Media.fromPath(filename);
+  expect(md).toEqual({
+    artist: 'player',
+    year: '1983',
+    album: 'record',
+    track: '1234',
+    title: 'name',
+  });
+  log(md);
+  const fmd = Media.FullFromObj(filename, (md as unknown) as Attributes);
+  expect(fmd).toEqual({
+    originalPath: filename,
+    artist: 'player',
+    year: 1983,
+    album: 'record',
+    track: 34,
+    disk: 12,
+    title: 'name',
+  });
+});
+
 it('Generic path, Two Primary artists', () => {
   const filename =
     'something/artist 1 & artist 2 - 1983 - album/01 - title.m4a';
