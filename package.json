@@ -20,7 +20,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "jest --config jestconfig.json",
-    "build": "rimraf lib && tsc",
+    "build": "rimraf lib && tsc && minify -i lib",
     "prepare": "yarn run build",
     "prepublishOnly": "yarn test && yarn run lint",
     "format": "prettier --write \"src/**/*.ts\" \"*.md\" \"*.json\" \".vscode/*.json\"",
@@ -32,8 +32,10 @@
     "chk": "yarn format && yarn lint && yarn compile && yarn test"
   },
   "devDependencies": {
-    "@freik/ts-tooling": "^0.1.0",
-    "prettier": "^2.2.1"
+    "@freik/build-tools": "^2.1.0",
+    "husky": "^4.3.8",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.5.0"
   },
   "husky": {
     "hooks": {
