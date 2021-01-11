@@ -23,7 +23,6 @@ it('Generic path', () => {
   });
 });
 
-
 it('Generic path with a disk number', () => {
   const filename = 'something/player - 1983 - record/1234 - name.m4a';
   const md = Media.fromPath(filename);

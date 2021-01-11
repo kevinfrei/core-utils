@@ -68,14 +68,14 @@ export type MediaInfo = {
 export type Attributes = { [key: string]: string };
 
 // This is the most simplistic strongly typed metadata you'll find
-export interface SimpleMetadata {
+export type SimpleMetadata = {
   artist: string;
   album: string;
   year?: string;
   track: string;
   title: string;
   compilation?: 'va' | 'ost';
-}
+};
 
 // This is a more robust metadata type, meant to be used in,
 // among other scenarios, situations where you're moving files around
