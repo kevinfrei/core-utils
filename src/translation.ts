@@ -1,4 +1,4 @@
-export function toSafeName(name: string): string {
+export function ToPathSafeName(name: string): string {
   // I want to produce a name that *looks* close to the original wherever
   // possible, while being encodable on a case-insensitive platform as a file
   // name.
@@ -24,7 +24,7 @@ export function toSafeName(name: string): string {
   return res.join('');
 }
 
-export function fromSafeName(safe: string): string {
+export function FromPathSafeName(safe: string): string {
   // This just undoes what the above function does
   let curCase = (a: string) => a.toUpperCase();
   let notCase = (a: string) => a.toLowerCase();

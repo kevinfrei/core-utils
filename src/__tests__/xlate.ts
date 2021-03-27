@@ -1,12 +1,12 @@
-import { toSafeName, fromSafeName } from '../index';
+import { FromPathSafeName, ToPathSafeName } from '../translation';
 
 test('Simplistic name encoding', () => {
-  expect(toSafeName('TEST')).toBe('TEST');
-  expect(fromSafeName('TEST')).toBe('TEST');
+  expect(ToPathSafeName('TEST')).toBe('TEST');
+  expect(FromPathSafeName('TEST')).toBe('TEST');
 });
 
 test('Simple name round-tripping', () => {
-  expect(fromSafeName(toSafeName('TesT'))).toBe('TesT');
+  expect(FromPathSafeName(ToPathSafeName('TesT'))).toBe('TesT');
 });
 
 function allSafe(str: string): boolean {
@@ -22,9 +22,9 @@ test('Slightly complex round-tripping with basic validation', () => {
     '',
   ];
   for (const name of messyNames) {
-    const safe = toSafeName(name);
+    const safe = ToPathSafeName(name);
     expect(allSafe(safe)).toBeTruthy();
-    expect(fromSafeName(safe)).toBe(name);
+    expect(FromPathSafeName(safe)).toBe(name);
   }
 });
 
@@ -43,8 +43,8 @@ test('Truly messy stuff round-tripping with basic validation', () => {
     'אני לא מדבר שום עברית. אני גם לא מדבר יידיש.',
   ];
   for (const name of messyNames) {
-    const safe = toSafeName(name);
+    const safe = ToPathSafeName(name);
     expect(allSafe(safe)).toBeTruthy();
-    expect(fromSafeName(safe)).toBe(name);
+    expect(FromPathSafeName(safe)).toBe(name);
   }
 });
