@@ -80,6 +80,22 @@ function isArrayOfString(obj: unknown): obj is string[] {
   return isArrayOf(obj, isString);
 }
 
+function asArrayOfString(
+  obj: unknown,
+  defVal: string[] | string | null,
+): string[] {
+  if (!isArray(obj)) {
+    return isArray(defVal) ? defVal : [];
+  }
+  if (isArray(defVal)) {
+    return isArrayOf(obj, isString) ? obj : defVal;
+  } else {
+    return defVal === null
+      ? (obj.filter((val) => isString(val)) as string[])
+      : obj.map((val) => asString(val, defVal));
+  }
+}
+
 function isMapOf<K, V>(
   obj: unknown,
   key: typecheck<K>,
@@ -162,6 +178,10 @@ export const Type = {
   isNumber,
   isString,
   isNumberOrString,
+  asString,
+  asArrayOfString,
+  asNumber,
+  asNumberOrString,
   has,
   hasStr,
 };
