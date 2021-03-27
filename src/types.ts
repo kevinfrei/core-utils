@@ -17,12 +17,27 @@ function isString(obj: unknown): obj is string {
   return typeof obj === 'string';
 }
 
+function asString(obj: unknown, notStr: string): string {
+  return isString(obj) ? obj : notStr;
+}
+
 function isNumber(obj: unknown): obj is number {
   return typeof obj === 'number' && !isNaN(obj - 0);
 }
 
+function asNumber(obj: unknown, notNum: number): number {
+  return Type.isNumber(obj) ? obj : notNum;
+}
+
 function isNumberOrString(obj: unknown): obj is number | string {
   return Type.isString(obj) || Type.isNumber(obj);
+}
+
+function asNumberOrString(
+  obj: unknown,
+  notNumOrStr: number | string,
+): number | string {
+  return Type.isNumberOrString(obj) ? obj : notNumOrStr;
 }
 
 function isBoolean(obj: unknown): obj is boolean {
