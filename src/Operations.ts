@@ -53,3 +53,14 @@ export function ArrayIntersection<T>(a: T[], b: T[]): Set<T> {
     return SetIntersection(new Set<T>(b), a);
   }
 }
+
+export function SetDifference<T>(a: Set<T>, b: Iterable<T>): Set<T> {
+  // a - b
+  const res = new Set<T>();
+  for (const i of b) {
+    if (!a.has(i)) {
+      res.add(i);
+    }
+  }
+  return res;
+}
