@@ -62,3 +62,37 @@ export function FromPathSafeName(safe: string): string {
   }
   return res.join('');
 }
+
+/* eslint-disable no-bitwise */
+/**
+ *
+ * @param val - An unsigned 32 bit integerr
+ * @returns A string encoding of the value in 4 (or fewer) characters
+ */
+export function ToU8(val: number): string {
+  const res = [];
+  if (val > 4294967295 || val < 0) {
+    throw new Error(`${val} out of range for U8 encoding`);
+  }
+  do {
+    // Run once this for a zero value, so we don't get empty-string
+    // All unicode values between 256 and 511 are defined and independent :)
+    // Plus, this makes it so that other schemes involved ASCII don't conflict
+    res.push((val & 0xff) + 0x100);
+    val = val >>> 8;
+  } while (val > 0);
+  return String.fromCharCode(...res);
+}
+
+export function FromU8(val: string): number {
+  let res = 0;
+  for (let i = val.length - 1; i >= 0; i--) {
+    const code = val.charCodeAt(i) - 0x100;
+    if (code < 0 || code > 0xff) {
+      throw new Error(`Character ${val[i]} (${code}) out of range`);
+    }
+    res *= 256;
+    res += code;
+  }
+  return res;
+}

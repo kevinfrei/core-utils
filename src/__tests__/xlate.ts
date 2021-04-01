@@ -1,4 +1,4 @@
-import { FromPathSafeName, ToPathSafeName } from '../translation';
+import { FromPathSafeName, FromU8, ToPathSafeName, ToU8 } from '../translation';
 
 test('Simplistic name encoding', () => {
   expect(ToPathSafeName('TEST')).toBe('TEST');
@@ -46,5 +46,23 @@ test('Truly messy stuff round-tripping with basic validation', () => {
     const safe = ToPathSafeName(name);
     expect(allSafe(safe)).toBeTruthy();
     expect(FromPathSafeName(safe)).toBe(name);
+  }
+});
+
+test('Some U8 roundtripping with simple checks', () => {
+  for (const value of [
+    0,
+    255,
+    1234,
+    16384,
+    16384 * 8192,
+    4294967294,
+    4294967295,
+  ]) {
+    const after = ToU8(value);
+    const before = FromU8(after);
+    expect(after.length).toBeGreaterThan(0);
+    expect(after.length).toBeLessThan(5);
+    expect(before).toEqual(value);
   }
 });
