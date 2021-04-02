@@ -1,51 +1,55 @@
 import type { typecheck } from './index';
 import { ObjUtil } from './index';
 
-function isObjectNonNull(obj: unknown): obj is { [key: string]: unknown } {
+export function isObjectNonNull(
+  obj: unknown,
+): obj is { [key: string]: unknown } {
   return typeof obj === 'object' && !!obj;
 }
 
-function isObject(obj: unknown): obj is { [key: string]: unknown } | null {
+export function isObject(
+  obj: unknown,
+): obj is { [key: string]: unknown } | null {
   return typeof obj === 'object';
 }
 
-function isArray(obj: unknown): obj is unknown[] {
+export function isArray(obj: unknown): obj is unknown[] {
   return Array.isArray(obj);
 }
 
-function isString(obj: unknown): obj is string {
+export function isString(obj: unknown): obj is string {
   return typeof obj === 'string';
 }
 
-function asString(obj: unknown, notStr: string): string {
+export function asString(obj: unknown, notStr: string): string {
   return isString(obj) ? obj : notStr;
 }
 
-function isNumber(obj: unknown): obj is number {
+export function isNumber(obj: unknown): obj is number {
   return typeof obj === 'number' && !isNaN(obj - 0);
 }
 
-function asNumber(obj: unknown, notNum: number): number {
-  return Type.isNumber(obj) ? obj : notNum;
+export function asNumber(obj: unknown, notNum: number): number {
+  return isNumber(obj) ? obj : notNum;
 }
 
-function isNumberOrString(obj: unknown): obj is number | string {
-  return Type.isString(obj) || Type.isNumber(obj);
+export function isNumberOrString(obj: unknown): obj is number | string {
+  return isString(obj) || isNumber(obj);
 }
 
-function asNumberOrString(
+export function asNumberOrString(
   obj: unknown,
   notNumOrStr: number | string,
 ): number | string {
-  return Type.isNumberOrString(obj) ? obj : notNumOrStr;
+  return isNumberOrString(obj) ? obj : notNumOrStr;
 }
 
-function isBoolean(obj: unknown): obj is boolean {
+export function isBoolean(obj: unknown): obj is boolean {
   return typeof obj === 'boolean';
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-function isFunction(obj: unknown): obj is Function {
+export function isFunction(obj: unknown): obj is Function {
   return (
     (obj !== null &&
       typeof obj === 'object' &&
@@ -56,19 +60,19 @@ function isFunction(obj: unknown): obj is Function {
   );
 }
 
-function isRegex(obj: unknown): obj is RegExp {
+export function isRegex(obj: unknown): obj is RegExp {
   return obj !== null && typeof obj === 'object' && obj instanceof RegExp;
 }
 
-function isMap(obj: unknown): obj is Map<unknown, unknown> {
+export function isMap(obj: unknown): obj is Map<unknown, unknown> {
   return isObjectNonNull(obj) && obj instanceof Map;
 }
 
-function isSet(obj: unknown): obj is Set<unknown> {
+export function isSet(obj: unknown): obj is Set<unknown> {
   return isObjectNonNull(obj) && obj instanceof Set;
 }
 
-function isArrayOf<T>(obj: unknown, chk: typecheck<T>): obj is T[] {
+export function isArrayOf<T>(obj: unknown, chk: typecheck<T>): obj is T[] {
   if (!isArray(obj)) return false;
   for (const t of obj) {
     if (!chk(t)) return false;
@@ -76,11 +80,11 @@ function isArrayOf<T>(obj: unknown, chk: typecheck<T>): obj is T[] {
   return true;
 }
 
-function isArrayOfString(obj: unknown): obj is string[] {
+export function isArrayOfString(obj: unknown): obj is string[] {
   return isArrayOf(obj, isString);
 }
 
-function asArrayOfString(
+export function asArrayOfString(
   obj: unknown,
   defVal: string[] | string | null,
 ): string[] {
@@ -96,7 +100,7 @@ function asArrayOfString(
   }
 }
 
-function isMapOf<K, V>(
+export function isMapOf<K, V>(
   obj: unknown,
   key: typecheck<K>,
   val: typecheck<V>,
@@ -110,11 +114,11 @@ function isMapOf<K, V>(
   return true;
 }
 
-function isMapOfStrings(obj: unknown): obj is Map<string, string> {
+export function isMapOfStrings(obj: unknown): obj is Map<string, string> {
   return isMapOf(obj, isString, isString);
 }
 
-function isSetOf<T>(obj: unknown, chk: typecheck<T>): obj is Set<T> {
+export function isSetOf<T>(obj: unknown, chk: typecheck<T>): obj is Set<T> {
   if (!isSet(obj)) return false;
   for (const t of obj) {
     if (!chk(t)) return false;
@@ -122,11 +126,11 @@ function isSetOf<T>(obj: unknown, chk: typecheck<T>): obj is Set<T> {
   return true;
 }
 
-function isSetOfString(obj: unknown): obj is Set<string> {
+export function isSetOfString(obj: unknown): obj is Set<string> {
   return isSetOf(obj, isString);
 }
 
-function isObjectOf<T>(
+export function isObjectOf<T>(
   obj: unknown,
   chk: typecheck<T>,
 ): obj is { [key: string]: T } {
@@ -137,11 +141,17 @@ function isObjectOf<T>(
   return true;
 }
 
-function isObjectOfString(obj: unknown): obj is { [key: string]: string } {
+export function isObjectOfString(
+  obj: unknown,
+): obj is { [key: string]: string } {
   return isObjectOf(obj, isString);
 }
 
-function has<K extends string>(
+export function isPromise<T>(obj: unknown): obj is Promise<T> {
+  return has(obj, 'then') && isFunction(obj.then);
+}
+
+export function has<K extends string>(
   x: unknown,
   key: K,
   // eslint-disable-next-line no-shadow
@@ -150,38 +160,10 @@ function has<K extends string>(
 }
 
 // eslint-disable-next-line no-shadow
-function hasStr<K extends string>(
+export function hasStr<K extends string>(
   x: unknown,
   key: K,
   // eslint-disable-next-line no-shadow
 ): x is { [key in K]: string } {
   return isObjectNonNull(x) && has(x, key) && isString(x[key]);
 }
-
-export const Type = {
-  isObject,
-  isObjectOf,
-  isObjectOfString,
-  isObjectNonNull,
-  isSet,
-  isSetOf,
-  isSetOfString,
-  isRegex,
-  isArray,
-  isArrayOf,
-  isArrayOfString,
-  isMap,
-  isMapOf,
-  isMapOfStrings,
-  isFunction,
-  isBoolean,
-  isNumber,
-  isString,
-  isNumberOrString,
-  asString,
-  asArrayOfString,
-  asNumber,
-  asNumberOrString,
-  has,
-  hasStr,
-};

@@ -26,3 +26,5 @@ export function SeqNum(prefix?: string, resume?: string): SeqNumGenerator {
   };
   return theFunc;
 }
+
+export const MakeSeqNum = SeqNum;

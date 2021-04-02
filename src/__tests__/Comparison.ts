@@ -1,5 +1,5 @@
-import { Comparisons } from '@freik/core-utils';
+import { Operations } from '../index';
 
 test('Comparisons String Case Insensitive Equality', () => {
-  expect(Comparisons.StringCaseInsensitiveEqual('a', 'A')).toBe(true);
+  expect(Operations.StringCaseInsensitiveEqual('a', 'A')).toBe(true);
 });

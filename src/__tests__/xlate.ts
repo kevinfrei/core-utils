@@ -1,4 +1,4 @@
-import { FromPathSafeName, FromU8, ToPathSafeName, ToU8 } from '../translation';
+import { FromPathSafeName, FromU8, ToPathSafeName, ToU8 } from '../index';
 
 test('Simplistic name encoding', () => {
   expect(ToPathSafeName('TEST')).toBe('TEST');

@@ -1,7 +1,7 @@
 import type { FTONData, FTONMap, FTONObject } from './index';
 import { ObjUtil, Type } from './index';
 
-function isFTON(x: unknown): x is FTONData {
+export function isFTON(x: unknown): x is FTONData {
   if (
     x === null ||
     x === undefined ||
@@ -24,7 +24,7 @@ function isFTON(x: unknown): x is FTONData {
   return false;
 }
 
-function typecheck(x: unknown): FTONData {
+export function typecheck(x: unknown): FTONData {
   if (isFTON(x)) {
     return x;
   } else {
@@ -32,7 +32,7 @@ function typecheck(x: unknown): FTONData {
   }
 }
 
-function asFTON(x: unknown): FTONData | void {
+export function asFTON(x: unknown): FTONData | void {
   if (isFTON(x)) return x;
 }
 
@@ -86,7 +86,7 @@ function objEqual(a: FTONObject, b: FTONObject): boolean {
   return true;
 }
 
-function valEqual(x: FTONData, y: FTONData): boolean {
+export function valEqual(x: FTONData, y: FTONData): boolean {
   if (x === y) {
     return true;
   }
@@ -105,7 +105,7 @@ function valEqual(x: FTONData, y: FTONData): boolean {
   return false;
 }
 
-function filter(x: unknown): FTONData {
+export function filter(x: unknown): FTONData {
   if (
     x === null ||
     x === undefined ||
@@ -197,27 +197,16 @@ function reviver(key: unknown, value: unknown): unknown {
   return value;
 }
 
-function parse(input: string): FTONData {
+export function parse(input: string): FTONData {
   return typecheck(JSON.parse(input, reviver));
 }
 
-function stringify(input: FTONData): string {
+export function stringify(input: FTONData): string {
   return JSON.stringify(input, replacer);
 }
 
-function arrayOfStrings(input: FTONData): string[] | void {
+export function arrayOfStrings(input: FTONData): string[] | void {
   if (input && Type.isArray(input)) {
     return input.filter((elem) => typeof elem === 'string') as string[];
   }
 }
-
-export const FTON = {
-  isFTON,
-  typecheck,
-  asFTON,
-  filter,
-  parse,
-  stringify,
-  arrayOfStrings,
-  valEqual,
-};

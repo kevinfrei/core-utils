@@ -1,12 +1,12 @@
-export { FTON } from './FTON';
-export { ObjUtil } from './object';
-export { SeqNum } from './SeqNum';
-export { Type } from './types';
+export * as FTON from './FTON';
+export * as ObjUtil from './object';
+export * from './SeqNum';
+export * as Type from './types';
 export * as Operations from './Operations';
 export * as Helpers from './Helpers';
-export { Logger, MakeLogger, MakeError } from './logger';
-export { ToPathSafeName, FromPathSafeName, ToU8, FromU8 } from './translation';
-export { Sleep, MakeSingleWaiter } from './Sync';
+export * from './logger';
+export * from './translation';
+export * from './Sync';
 
 export type FTONData =
   | undefined

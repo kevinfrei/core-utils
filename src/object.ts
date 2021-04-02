@@ -1,15 +1,18 @@
-import { Type } from './types';
+import { Type } from './index';
 
-const deQuote = (str: string): string => str.replace(/\"/g, '~!~');
+export const deQuote = (str: string): string => str.replace(/\"/g, '~!~');
 
-function reQuote(str: string): { [key: string]: string } {
+export function reQuote(str: string): { [key: string]: string } {
   let res: string = str.replace(/\\/g, '\\\\');
   res = res.replace(/\"/g, '\\"');
   res = res.replace(/~!~/g, '"');
   return JSON.parse(res) as { [key: string]: string };
 }
 
-function prefixObj(str: string, obj: { [key: string]: string }): string[] {
+export function prefixObj(
+  str: string,
+  obj: { [key: string]: string },
+): string[] {
   const res: string[] = [];
   for (const elem of Object.keys(obj)) {
     res.push(str + elem);
@@ -20,7 +23,7 @@ function prefixObj(str: string, obj: { [key: string]: string }): string[] {
   return res;
 }
 
-function has<K extends string>(
+export function has<K extends string>(
   key: K,
   x: unknown,
   // eslint-disable-next-line no-shadow
@@ -29,7 +32,7 @@ function has<K extends string>(
 }
 
 // eslint-disable-next-line no-shadow
-function hasStr<K extends string>(
+export function hasStr<K extends string>(
   key: K,
   x: unknown,
   // eslint-disable-next-line no-shadow
@@ -37,7 +40,9 @@ function hasStr<K extends string>(
   return Type.isObjectNonNull(x) && has(key, x) && Type.isString(x[key]);
 }
 
-function objToMap(o: { [key: string]: string | number }): Map<string, string> {
+export function objToMap(o: {
+  [key: string]: string | number;
+}): Map<string, string> {
   const res = new Map<string, string>();
   for (const i in o) {
     if (Type.isString(i) && i.length > 0 && i[0] !== '@' && i in o) {
@@ -48,5 +53,3 @@ function objToMap(o: { [key: string]: string | number }): Map<string, string> {
   }
   return res;
 }
-
-export const ObjUtil = { deQuote, reQuote, prefixObj, has, hasStr, objToMap };
