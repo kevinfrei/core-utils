@@ -5,7 +5,7 @@ export { Type } from './types';
 export * as Operations from './Operations';
 export * as Helpers from './Helpers';
 export { Logger, MakeLogger, MakeError } from './logger';
-export { ToPathSafeName, FromPathSafeName } from './translation';
+export { ToPathSafeName, FromPathSafeName, ToU8, FromU8 } from './translation';
 export { Sleep, MakeSingleWaiter } from './Sync';
 
 export type FTONData =
