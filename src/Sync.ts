@@ -1,4 +1,4 @@
-import { Waiter } from '.';
+import { Type, Waiter } from '.';
 
 export function Sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -29,4 +29,14 @@ export function MakeSingleWaiter(timeout?: number): Waiter {
     busy = false;
   }
   return { wait, leave };
+}
+
+// If the result is a promise, await it, otherwise don't
+export async function MaybeWait<T>(func: () => Promise<T> | T): Promise<T> {
+  const res = func();
+  if (Type.isPromise(res)) {
+    return await res;
+  } else {
+    return res;
+  }
 }
