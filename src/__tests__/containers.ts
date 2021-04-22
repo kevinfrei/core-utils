@@ -19,4 +19,14 @@ test('Basic MultiMap tests', () => {
   expect(item1).toBeDefined();
   if (!item1) throw Error('failed');
   expect(item1.size).toEqual(3);
+  for (const [key, values] of mmap) {
+    const s = new Set(values);
+    if (key === 0) {
+      expect(s.size).toBe(2);
+    } else if (key === 1) {
+      expect(s.size).toBe(3);
+    } else {
+      expect(null).toBeTruthy();
+    }
+  }
 });

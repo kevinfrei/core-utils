@@ -15,6 +15,7 @@ export type MultiMap<K, V> = {
   has: (key: K) => boolean;
   set: (key: K, val: V) => MultiMap<K, V>;
   add: (key: K, vals: Iterable<V>) => MultiMap<K, V>;
+  [Symbol.iterator](): IterableIterator<[K, IterableIterator<V>]>;
 };
 
 export function MakeMultiMap<K, V>(
@@ -71,8 +72,13 @@ export function MakeMultiMap<K, V>(
     }
     return multiMap;
   }
+  function* iterator(): Generator<[K, IterableIterator<V>]> {
+    for (const [k, v] of theMap) {
+      yield [k, v.values()];
+    }
+  }
   const size = () => theMap.size;
-  const multiMap = {
+  const multiMap: MultiMap<K, V> = {
     clear,
     delete: del,
     remove,
@@ -83,6 +89,7 @@ export function MakeMultiMap<K, V>(
     set,
     add,
     size,
+    [Symbol.iterator]: iterator,
   };
   return multiMap;
 }
