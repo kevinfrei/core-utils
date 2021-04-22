@@ -7,6 +7,10 @@ export type MultiMap<K, V> = {
     fn: (val: Set<V>, keyList: K, multiMap: MultiMap<K, V>) => void,
     thisArg?: any,
   ) => void;
+  forEachAwaitable: (
+    fn: (val: Set<V>, keyList: K, multiMap: MultiMap<K, V>) => Promise<void>,
+    thisArg?: any,
+  ) => Promise<void>;
   get: (key: K) => Set<V> | undefined;
   has: (key: K) => boolean;
   set: (key: K, val: V) => MultiMap<K, V>;
@@ -33,6 +37,18 @@ export function MakeMultiMap<K, V>(
     fn: (val: Set<V>, keyList: K, multimap: MultiMap<K, V>) => void,
     thisArg?: any,
   ): void => theMap.forEach((v, k) => fn(v, k, multiMap), thisArg);
+  const forEachAwaitable = async (
+    fn: (val: Set<V>, keyList: K, multimap: MultiMap<K, V>) => Promise<void>,
+    thisArg?: any,
+  ): Promise<void> => {
+    for (const [k, v] of theMap) {
+      if (thisArg) {
+        await fn.apply(thisArg, [v, k, multiMap]);
+      } else {
+        await fn(v, k, multiMap);
+      }
+    }
+  };
   const get = (key: K) => theMap.get(key);
   const has = (key: K) => theMap.has(key);
   function set(key: K, value: V): MultiMap<K, V> {
@@ -61,6 +77,7 @@ export function MakeMultiMap<K, V>(
     delete: del,
     remove,
     forEach,
+    forEachAwaitable,
     get,
     has,
     set,
