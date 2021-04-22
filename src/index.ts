@@ -1,12 +1,13 @@
 export * as FTON from './FTON';
-export * as ObjUtil from './object';
-export * from './SeqNum';
-export * as Type from './types';
-export * as Operations from './Operations';
 export * as Helpers from './Helpers';
 export * from './logger';
-export * from './translation';
+export * from './multimap';
+export * as ObjUtil from './object';
+export * as Operations from './Operations';
+export * from './SeqNum';
 export * from './Sync';
+export * from './translation';
+export * as Type from './types';
 
 export type FTONData =
   | undefined
