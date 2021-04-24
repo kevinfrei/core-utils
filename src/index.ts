@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
+import { MultiMap } from './multimap';
+
 export * as FTON from './FTON';
 export * as Helpers from './Helpers';
 export * from './logger';
@@ -16,11 +19,34 @@ export type FTONData =
   | boolean
   | null
   | FTONObject
-  | FTONData[]
+  | FTONArray
   | FTONMap
-  | Set<FTONData>;
-export type FTONMap = Map<string | number, FTONData>;
+  | FTONMultiMap
+  | FTONSet;
+export type FTONSet = Set<FTONData>;
+export type FTONMap = Map<string, FTONData>;
 export type FTONObject = { [key: string]: FTONData };
+export type FTONArray = FTONData[];
+// Well this is really fun (and it's not even close to complete)
+interface FTONMultiMap1 extends MultiMap<string, string> {}
+interface FTONMultiMap2 extends MultiMap<string, number> {}
+interface FTONMultiMap3 extends MultiMap<string, boolean> {}
+interface FTONMultiMap4 extends MultiMap<string, FTONObject> {}
+interface FTONMultiMap5 extends MultiMap<string, FTONArray> {}
+interface FTONMultiMap6 extends MultiMap<string, FTONMap> {}
+interface FTONMultiMap7 extends MultiMap<string, FTONMultiMap> {}
+interface FTONMultiMap8 extends MultiMap<string, FTONSet> {}
+interface FTONMultiMap9 extends MultiMap<string, FTONData> {}
+export type FTONMultiMap =
+  | FTONMultiMap1
+  | FTONMultiMap2
+  | FTONMultiMap3
+  | FTONMultiMap4
+  | FTONMultiMap5
+  | FTONMultiMap6
+  | FTONMultiMap7
+  | FTONMultiMap8
+  | FTONMultiMap9;
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type typecheck<T> = (val: any) => val is T;
 

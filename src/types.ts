@@ -1,5 +1,6 @@
 import type { typecheck } from './index';
 import { ObjUtil } from './index';
+import { MultiMap, MultiMapTypeTag } from './multimap';
 
 export function isObjectNonNull(
   obj: unknown,
@@ -149,6 +150,35 @@ export function isObjectOfString(
 
 export function isPromise<T>(obj: unknown): obj is Promise<T> {
   return has(obj, 'then') && isFunction(obj.then);
+}
+
+export function isMultiMap(obj: unknown): obj is MultiMap<unknown, unknown> {
+  return (
+    has(obj, 'typeId') &&
+    isFunction(obj.typeId) &&
+    obj.typeId() === MultiMapTypeTag
+  );
+}
+
+export function isMultiMapOf<K, V>(
+  obj: unknown,
+  key: typecheck<K>,
+  val: typecheck<V>,
+): obj is MultiMap<K, V> {
+  if (!isMultiMap(obj)) return false;
+  for (const [k, vs] of obj) {
+    if (!key(k)) return false;
+    for (const v of vs) {
+      if (!val(v)) return false;
+    }
+  }
+  return true;
+}
+
+export function isIterable<T>(
+  x: unknown,
+): x is { [Symbol.iterator]: () => IterableIterator<T> } {
+  return isObjectNonNull(x) && Symbol.iterator in x;
 }
 
 export function has<K extends string>(

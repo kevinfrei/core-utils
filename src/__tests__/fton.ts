@@ -1,4 +1,5 @@
-import { FTON, ObjUtil, Type } from '../index';
+import { FTON, FTONData, ObjUtil, Type } from '../index';
+import { MakeMultiMap, MultiMap } from '../multimap';
 
 test('FTON sanity', () => {
   FTON.stringify([]);
@@ -41,4 +42,15 @@ test('FTON filtering', () => {
   expect(FTON.filter(otherObj)).toEqual({ a: 1, b: 2, c: null });
   const buf = { b: Buffer.from('as;lkasdfkjadl;sf') };
   expect(FTON.filter(buf)).toEqual({ b: null });
+});
+
+test('MultiMap roundtrip', () => {
+  const input: FTONData = MakeMultiMap<string, string>([
+    ['First2', ['a', 'b']],
+    ['Next2', ['c', 'd']],
+  ]);
+  expect(FTON.isFTON(input)).toBeTruthy();
+  const mmstr = FTON.stringify(input);
+  const newmm = FTON.parse(mmstr);
+  expect(input.valueEqual(newmm as MultiMap<string, string>)).toBeTruthy();
 });

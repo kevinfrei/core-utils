@@ -1,8 +1,11 @@
-export type MultiMap<K, V> = {
+import { SetEqual } from './Operations';
+
+export interface MultiMap<K, V> {
   clear: () => void;
   size: () => number;
   delete: (key: K) => boolean;
   remove: (key: K, value: V) => boolean;
+  keys: () => IterableIterator<K>;
   forEach: (
     fn: (val: Set<V>, keyList: K, multiMap: MultiMap<K, V>) => void,
     thisArg?: any,
@@ -16,7 +19,11 @@ export type MultiMap<K, V> = {
   set: (key: K, val: V) => MultiMap<K, V>;
   add: (key: K, vals: Iterable<V>) => MultiMap<K, V>;
   [Symbol.iterator](): IterableIterator<[K, IterableIterator<V>]>;
-};
+  typeId: () => symbol;
+  valueEqual: (map: MultiMap<K, V>) => boolean;
+}
+
+export const MultiMapTypeTag = Symbol();
 
 export function MakeMultiMap<K, V>(
   entries?: readonly (readonly [K, Iterable<V>])[],
@@ -34,6 +41,7 @@ export function MakeMultiMap<K, V>(
     }
     return false;
   };
+  const keys = () => theMap.keys();
   const forEach = (
     fn: (val: Set<V>, keyList: K, multimap: MultiMap<K, V>) => void,
     thisArg?: any,
@@ -78,10 +86,20 @@ export function MakeMultiMap<K, V>(
     }
   }
   const size = () => theMap.size;
+  function valueEqual(map: MultiMap<K, V>): boolean {
+    if (size() !== map.size()) return false;
+    for (const [key, xvs] of theMap) {
+      const yvs = map.get(key);
+      if (!yvs) return false;
+      if (!SetEqual(new Set<V>(xvs), new Set<V>(yvs))) return false;
+    }
+    return true;
+  }
   const multiMap: MultiMap<K, V> = {
     clear,
     delete: del,
     remove,
+    keys,
     forEach,
     forEachAwaitable,
     get,
@@ -90,6 +108,8 @@ export function MakeMultiMap<K, V>(
     add,
     size,
     [Symbol.iterator]: iterator,
+    typeId: () => MultiMapTypeTag,
+    valueEqual,
   };
   return multiMap;
 }
