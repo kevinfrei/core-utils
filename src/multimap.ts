@@ -1,6 +1,4 @@
-import { Type } from '.';
-import { SetEqual } from './Operations';
-import { PickleTag, RegisterForPickling } from './Pickle';
+import { Operations, PickleTag, RegisterForPickling, Type } from '.';
 
 export interface MultiMap<K, V> {
   clear: () => void;
@@ -94,7 +92,7 @@ export function MakeMultiMap<K, V>(
     for (const [key, xvs] of theMap) {
       const yvs = map.get(key);
       if (!yvs) return false;
-      if (!SetEqual(new Set<V>(xvs), new Set<V>(yvs))) return false;
+      if (!Operations.SetEqual(new Set<V>(xvs), new Set<V>(yvs))) return false;
     }
     return true;
   }
