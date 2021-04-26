@@ -5,9 +5,25 @@ import {
   MultiMap,
   ObjUtil,
   Pickle,
+  PickleTag,
+  RegisterForPickling,
   Type,
   UnsafelyUnpickle,
-} from '../index';
+} from '..';
+
+const TestSymbol = Symbol.for('pickler.Test');
+function MakeType() {
+  return {
+    value1: 'a',
+    value2: /a/gi,
+    [PickleTag]: TestSymbol,
+    toJSON: () => 'My Test Thingy',
+  };
+}
+
+test('Vinegar', () => {
+  RegisterForPickling<unknown>(TestSymbol, (data) => MakeType());
+});
 
 test('FTON sanity', () => {
   FTON.stringify([]);

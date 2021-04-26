@@ -1,4 +1,7 @@
-import { Operations, PickleTag, RegisterForPickling, Type } from '.';
+import * as foo from './index';
+import { Operations, PickleTag, RegisterForPickling, Type } from './index';
+
+export const MultiMapTypeTag: symbol = Symbol.for('freik.MultiMap');
 
 export interface MultiMap<K, V> {
   clear: () => void;
@@ -23,8 +26,6 @@ export interface MultiMap<K, V> {
   [PickleTag]: symbol;
   toJSON: () => [K, IterableIterator<V>][];
 }
-
-export const MultiMapTypeTag = Symbol.for('freik.MultiMap');
 
 export function MakeMultiMap<K, V>(
   entries?: readonly (readonly [K, Iterable<V>])[],
@@ -132,4 +133,7 @@ function fromJSON(obj: unknown): MultiMap<unknown, unknown> | undefined {
   }
 }
 
-RegisterForPickling(MultiMapTypeTag, fromJSON);
+const bar = (() => {
+  console.log(foo);
+  RegisterForPickling(MultiMapTypeTag, fromJSON);
+})();

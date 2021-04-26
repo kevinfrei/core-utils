@@ -1,5 +1,4 @@
-import type { typecheck } from './index';
-import { Type } from './index';
+import { Type, typecheck } from './index';
 import { isMap, isSet, isSymbol } from './types';
 
 type FlattenedCustom = {
@@ -21,11 +20,12 @@ const MapTag = Symbol.for('freik.Map');
 const SymbolTag = Symbol.for('freik.Symbol');
 
 type ToFlat<T> = (data: T) => unknown;
-type FromFlat<T> = (data: unknown) => T;
+type FromFlat<T> = (data: unknown) => T | undefined;
 
 function MapPickle(val: Map<any, any>): [unknown, unknown][] {
   return [...val.entries()];
 }
+
 function MapUnpickle(val: unknown): Map<any, any> | undefined {
   return Type.isArrayOf(val, Type.is2Tuple) ? new Map(val) : undefined;
 }
@@ -33,6 +33,7 @@ function MapUnpickle(val: unknown): Map<any, any> | undefined {
 function SetPickle(val: Set<any>): unknown[] {
   return [...val];
 }
+
 function SetUnpickle(val: unknown): Set<any> | undefined {
   return Type.isArray(val) ? new Set(val) : undefined;
 }
@@ -43,6 +44,7 @@ function SymbolPickle(val: symbol): string {
     throw new Error('Unable to get a key for a symbol for pickling');
   return theKey;
 }
+
 function SymbolUnpickle(val: unknown): symbol | undefined {
   return Type.isString(val) ? Symbol.for(val) : undefined;
 }
@@ -64,18 +66,6 @@ const unpicklers = new Map<symbol, FromFlat<any>>([
   [SetTag, SetUnpickle],
   [SymbolTag, SymbolUnpickle],
 ]);
-
-// You don't need a toString method, if you use toJSON on your object instead
-export function RegisterForPickling<T>(
-  pickleTag: symbol,
-  fromString: FromFlat<T>,
-  toString?: ToFlat<T>,
-): void {
-  if (toString) {
-    picklers.set(pickleTag, toString);
-  }
-  unpicklers.set(pickleTag, fromString);
-}
 
 function getPickler(obj: unknown): [symbol, ToFlat<any>] | undefined {
   if (Type.hasSymbol(obj, PickleTag)) {
@@ -100,6 +90,7 @@ function getPickler(obj: unknown): [symbol, ToFlat<any>] | undefined {
     }
   }
 }
+
 function getUnpickler(keyName: string): FromFlat<any> | undefined {
   return unpicklers.get(Symbol.for(keyName));
 }
@@ -145,13 +136,31 @@ function reviver(key: unknown, value: unknown): unknown {
 export function Pickle(input: unknown): string {
   return JSON.stringify(input, replacer);
 }
-export function UnsafelyUnpickle<T>(input: string): T {
-  return JSON.parse(input, reviver) as T;
+
+export function Unpickle(input: string): unknown {
+  return JSON.parse(input, reviver);
 }
+
+export function UnsafelyUnpickle<T>(input: string): T {
+  return Unpickle(input) as T;
+}
+
 export function SafelyUnpickle<T>(
   input: string,
   check: typecheck<T>,
 ): T | undefined {
   const res = UnsafelyUnpickle<unknown>(input);
   return check(res) ? res : undefined;
+}
+
+// You don't need a toString method, if you use toJSON on your object instead
+export function RegisterForPickling<T>(
+  pickleTag: symbol,
+  fromString: FromFlat<T>,
+  toString?: ToFlat<T>,
+): void {
+  if (toString) {
+    picklers.set(pickleTag, toString);
+  }
+  unpicklers.set(pickleTag, fromString);
 }

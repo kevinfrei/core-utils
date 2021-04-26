@@ -232,5 +232,5 @@ export function hasStr<K extends string>(
   key: K,
   // eslint-disable-next-line no-shadow
 ): x is { [key in K]: string } {
-  return isObjectNonNull(x) && has(x, key) && isString(x[key]);
+  return has(x, key) && isString(x[key]);
 }
