@@ -1,6 +1,13 @@
-import { FTON, FTONData, ObjUtil, Type } from '../index';
-import { MakeMultiMap, MultiMap } from '../multimap';
-import { Pickle, UnsafelyUnpickle } from '../Pickle';
+import {
+  FTON,
+  FTONData,
+  MakeMultiMap,
+  MultiMap,
+  ObjUtil,
+  Pickle,
+  Type,
+  UnsafelyUnpickle,
+} from '../index';
 
 test('FTON sanity', () => {
   FTON.stringify([]);
