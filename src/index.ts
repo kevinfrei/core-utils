@@ -4,6 +4,7 @@ export * from './logger';
 export * from './multimap';
 export * as ObjUtil from './object';
 export * as Operations from './Operations';
+export * from './Pickle';
 export * from './SeqNum';
 export * from './Sync';
 export * from './translation';
