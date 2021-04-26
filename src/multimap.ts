@@ -1,4 +1,6 @@
+import { Type } from '.';
 import { SetEqual } from './Operations';
+import { PickleTag, RegisterForPickling } from './Pickle';
 
 export interface MultiMap<K, V> {
   clear: () => void;
@@ -18,12 +20,13 @@ export interface MultiMap<K, V> {
   has: (key: K) => boolean;
   set: (key: K, val: V) => MultiMap<K, V>;
   add: (key: K, vals: Iterable<V>) => MultiMap<K, V>;
-  [Symbol.iterator](): IterableIterator<[K, IterableIterator<V>]>;
-  typeId: () => symbol;
   valueEqual: (map: MultiMap<K, V>) => boolean;
+  [Symbol.iterator](): IterableIterator<[K, IterableIterator<V>]>;
+  [PickleTag]: symbol;
+  toJSON: () => [K, IterableIterator<V>][];
 }
 
-export const MultiMapTypeTag = Symbol();
+export const MultiMapTypeTag = Symbol.for('freik.MultiMap');
 
 export function MakeMultiMap<K, V>(
   entries?: readonly (readonly [K, Iterable<V>])[],
@@ -108,8 +111,27 @@ export function MakeMultiMap<K, V>(
     add,
     size,
     [Symbol.iterator]: iterator,
-    typeId: () => MultiMapTypeTag,
+    [PickleTag]: MultiMapTypeTag,
+    toJSON,
     valueEqual,
   };
+  function toJSON(): [K, IterableIterator<V>][] {
+    return [...multiMap];
+  }
   return multiMap;
 }
+
+function fromJSON(obj: unknown): MultiMap<unknown, unknown> | undefined {
+  // Do the type checkin
+  if (
+    Type.isArrayOf<[unknown, unknown[]]>(
+      obj,
+      (v: unknown): v is [unknown, unknown[]] =>
+        Type.is2Tuple(v) && Type.isArray(v[1]),
+    )
+  ) {
+    return MakeMultiMap(obj);
+  }
+}
+
+RegisterForPickling(MultiMapTypeTag, fromJSON);

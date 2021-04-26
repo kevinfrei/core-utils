@@ -1,6 +1,5 @@
-import type { FTONData, FTONMap, FTONMultiMap, FTONObject } from './index';
+import type { FTONData, FTONMap, FTONObject } from './index';
 import { Type } from './index';
-import { MakeMultiMap } from './multimap';
 
 export function isFTON(x: unknown): x is FTONData {
   if (
@@ -14,7 +13,6 @@ export function isFTON(x: unknown): x is FTONData {
   if (Type.isArrayOf(x, isFTON)) return true;
   if (Type.isSetOf(x, isFTON)) return true;
   if (Type.isMapOf(x, Type.isNumberOrString, isFTON)) return true;
-  if (Type.isMultiMapOf(x, Type.isString, isFTON)) return true;
   if (Type.isObjectNonNull(x) && x.constructor.name === 'Object') {
     for (const i in x) {
       if (Type.isString(i) && Type.has(x, i)) {
@@ -71,16 +69,6 @@ function setEqual(x: Set<FTONData>, y: Set<FTONData>): boolean {
   return true;
 }
 
-function multiMapEqual(x: FTONMultiMap, y: FTONMultiMap): boolean {
-  if (x.size() !== y.size()) return false;
-  for (const [key, xvs] of x) {
-    const yvs = y.get(key);
-    if (!yvs) return false;
-    if (!setEqual(new Set<FTONData>(xvs), new Set<FTONData>(yvs))) return false;
-  }
-  return true;
-}
-
 function objEqual(a: FTONObject, b: FTONObject): boolean {
   const aProps = Object.getOwnPropertyNames(a);
   const bProps = Object.getOwnPropertyNames(b);
@@ -110,11 +98,6 @@ export function valEqual(x: FTONData, y: FTONData): boolean {
   }
   if (Type.isSet(x)) {
     return Type.isSet(y) ? setEqual(x, y) : false;
-  }
-  if (Type.isMultiMap(x)) {
-    return Type.isMultiMapOf(y, Type.isString, isFTON)
-      ? multiMapEqual(x as FTONMultiMap, y)
-      : false;
   }
   if (Type.isObjectNonNull(x)) {
     return Type.isObjectNonNull(y) ? objEqual(x, y) : false;
@@ -150,17 +133,6 @@ export function filter(x: unknown): FTONData {
       ]),
     );
   }
-  if (Type.isMultiMap(x)) {
-    // Filter out anything that isn't a number/string key, or FTONData value
-    const keyValuesPair = [...x];
-    const filtered = keyValuesPair.map(([k, vs]): [string, FTONData[]] => {
-      if (!Type.isString(k)) {
-        return ['', []];
-      }
-      return [k, [...vs].map(filter).filter((val) => val !== null)];
-    });
-    return MakeMultiMap(filtered.filter(([, vs]) => vs.length > 0));
-  }
   if (Type.isObjectNonNull(x) && x.constructor.name === 'Object') {
     const newObj: FTONObject = {};
     for (const i in x) {
@@ -174,7 +146,7 @@ export function filter(x: unknown): FTONData {
 }
 
 type FlattenedCustom = {
-  '@dataType': 'Map' | 'Set' | 'MultiMap';
+  '@dataType': 'Map' | 'Set';
   '@dataValue': unknown[];
 };
 
@@ -193,11 +165,6 @@ function replacer(
   } else if (Type.isSet(originalObject)) {
     return {
       '@dataType': 'Set',
-      '@dataValue': [...originalObject],
-    };
-  } else if (Type.isMultiMap(originalObject)) {
-    return {
-      '@dataType': 'MultiMap',
       '@dataValue': [...originalObject],
     };
   } else if (!Type.isArray(originalObject) && Type.isIterable(originalObject)) {
@@ -229,22 +196,6 @@ function reviver(key: unknown, value: unknown): unknown {
       case 'Set':
         if (Type.isArrayOf<FTONData>(val, isFTON)) {
           return new Set(val);
-        }
-        break;
-      case 'MultiMap':
-        if (
-          Type.isArrayOf<[number | string, FTONData[]]>(
-            val,
-            (v: unknown): v is [number | string, FTONData[]] => {
-              if (!Type.isArray(v)) return false;
-              if (v.length !== 2) return false;
-              if (!Type.isNumberOrString(v[0])) return false;
-              if (!Type.isArrayOf(v[1], isFTON)) return false;
-              return true;
-            },
-          )
-        ) {
-          return MakeMultiMap(val);
         }
         break;
     }

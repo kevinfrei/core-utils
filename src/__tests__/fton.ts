@@ -1,5 +1,6 @@
 import { FTON, FTONData, ObjUtil, Type } from '../index';
 import { MakeMultiMap, MultiMap } from '../multimap';
+import { Pickle, UnsafelyUnpickle } from '../Pickle';
 
 test('FTON sanity', () => {
   FTON.stringify([]);
@@ -44,13 +45,45 @@ test('FTON filtering', () => {
   expect(FTON.filter(buf)).toEqual({ b: null });
 });
 
-test('MultiMap roundtrip', () => {
-  const input: FTONData = MakeMultiMap<string, string>([
+test('Pickling sanity', () => {
+  expect(Pickle([])).toBeDefined();
+});
+
+test('Pickling set roundtrip', () => {
+  const set = [new Set<string>(['a', 'b'])];
+  const setString = Pickle(set);
+  const newSet = UnsafelyUnpickle(setString);
+  expect(Type.isArray(newSet)).toBe(true);
+  expect(((newSet as any) as Set<unknown>[])[0]).toBeInstanceOf(Set);
+  const next = Pickle(newSet);
+  expect(next).toEqual(setString);
+});
+
+test('Pickling map roundtrip', () => {
+  const map = {
+    a: new Map<string, string>([
+      ['a', 'b'],
+      ['c', 'd'],
+    ]),
+  };
+  const mapString = Pickle(map);
+  const newMap = UnsafelyUnpickle(mapString);
+  expect(ObjUtil.has('a', newMap)).toBe(true);
+  expect(Type.has(newMap, 'a')).toBe(true);
+  expect((newMap as any).a).toBeInstanceOf(Map);
+  const next = Pickle(newMap);
+  expect(next).toEqual(mapString);
+  expect(FTON.valEqual(newMap as FTONData, map)).toBe(true);
+  map.a.set('e', 'f');
+  expect(FTON.valEqual(newMap as FTONData, map)).toBe(false);
+});
+
+test('MultiMap Pickling roundtrip', () => {
+  const input = MakeMultiMap<string, string>([
     ['First2', ['a', 'b']],
     ['Next2', ['c', 'd']],
   ]);
-  expect(FTON.isFTON(input)).toBeTruthy();
-  const mmstr = FTON.stringify(input);
-  const newmm = FTON.parse(mmstr);
+  const mmstr = Pickle(input);
+  const newmm = UnsafelyUnpickle(mmstr);
   expect(input.valueEqual(newmm as MultiMap<string, string>)).toBeTruthy();
 });

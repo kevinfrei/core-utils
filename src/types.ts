@@ -18,6 +18,14 @@ export function isArray(obj: unknown): obj is unknown[] {
   return Array.isArray(obj);
 }
 
+export function is2Tuple(obj: unknown): obj is [unknown, unknown] {
+  return Array.isArray(obj) && obj.length === 2;
+}
+
+export function is3Tuple(obj: unknown): obj is [unknown, unknown, unknown] {
+  return Array.isArray(obj) && obj.length === 3;
+}
+
 export function isString(obj: unknown): obj is string {
   return typeof obj === 'string';
 }
@@ -79,6 +87,23 @@ export function isArrayOf<T>(obj: unknown, chk: typecheck<T>): obj is T[] {
     if (!chk(t)) return false;
   }
   return true;
+}
+
+export function is2TupleOf<T, U>(
+  obj: unknown,
+  t: typecheck<T>,
+  u: typecheck<U>,
+): obj is [T, U] {
+  return is2Tuple(obj) && t(obj[0]) && u(obj[1]);
+}
+
+export function is3TupleOf<T, U, V>(
+  obj: unknown,
+  t: typecheck<T>,
+  u: typecheck<U>,
+  v: typecheck<V>,
+): obj is [T, U, V] {
+  return is3Tuple(obj) && t(obj[0]) && u(obj[1]) && v(obj[2]);
 }
 
 export function isArrayOfString(obj: unknown): obj is string[] {
@@ -173,6 +198,18 @@ export function isMultiMapOf<K, V>(
     }
   }
   return true;
+}
+
+export function isSymbol(x: unknown): x is symbol {
+  return typeof x === 'symbol';
+}
+
+export function hasSymbol<S extends symbol>(
+  x: unknown,
+  sym: S,
+  // eslint-disable-next-line no-shadow
+): x is { [sym in S]: unknown } {
+  return isObjectNonNull(x) && sym in x;
 }
 
 export function isIterable<T>(
