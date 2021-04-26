@@ -1,6 +1,9 @@
-import type { typecheck } from './index';
-import { ObjUtil } from './index';
-import { MultiMap, MultiMapTypeTag } from './multimap';
+import {
+  FreikTypeTag,
+  MultiMap,
+  MultiMapTypeTag,
+  typecheck,
+} from './definitions';
 
 export function isObjectNonNull(
   obj: unknown,
@@ -162,7 +165,7 @@ export function isObjectOf<T>(
 ): obj is { [key: string]: T } {
   if (!isObjectNonNull(obj)) return false;
   for (const k in obj) {
-    if (ObjUtil.has(k, obj) && !chk(obj[k])) return false;
+    if (has(obj, k) && !chk(obj[k])) return false;
   }
   return true;
 }
@@ -177,12 +180,12 @@ export function isPromise<T>(obj: unknown): obj is Promise<T> {
   return has(obj, 'then') && isFunction(obj.then);
 }
 
+export function isCustomType<T>(obj: unknown, sym: symbol): obj is T {
+  return hasSymbol(obj, FreikTypeTag) && obj[FreikTypeTag] === sym;
+}
+
 export function isMultiMap(obj: unknown): obj is MultiMap<unknown, unknown> {
-  return (
-    has(obj, 'typeId') &&
-    isFunction(obj.typeId) &&
-    obj.typeId() === MultiMapTypeTag
-  );
+  return isCustomType<MultiMap<unknown, unknown>>(obj, MultiMapTypeTag);
 }
 
 export function isMultiMapOf<K, V>(

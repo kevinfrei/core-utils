@@ -1,31 +1,7 @@
-import * as foo from './index';
-import { Operations, PickleTag, RegisterForPickling, Type } from './index';
-
-export const MultiMapTypeTag: symbol = Symbol.for('freik.MultiMap');
-
-export interface MultiMap<K, V> {
-  clear: () => void;
-  size: () => number;
-  delete: (key: K) => boolean;
-  remove: (key: K, value: V) => boolean;
-  keys: () => IterableIterator<K>;
-  forEach: (
-    fn: (val: Set<V>, keyList: K, multiMap: MultiMap<K, V>) => void,
-    thisArg?: any,
-  ) => void;
-  forEachAwaitable: (
-    fn: (val: Set<V>, keyList: K, multiMap: MultiMap<K, V>) => Promise<void>,
-    thisArg?: any,
-  ) => Promise<void>;
-  get: (key: K) => Set<V> | undefined;
-  has: (key: K) => boolean;
-  set: (key: K, val: V) => MultiMap<K, V>;
-  add: (key: K, vals: Iterable<V>) => MultiMap<K, V>;
-  valueEqual: (map: MultiMap<K, V>) => boolean;
-  [Symbol.iterator](): IterableIterator<[K, IterableIterator<V>]>;
-  [PickleTag]: symbol;
-  toJSON: () => [K, IterableIterator<V>][];
-}
+import { FreikTypeTag, MultiMap, MultiMapTypeTag } from './definitions';
+import * as Operations from './Operations';
+import { RegisterForPickling } from './Pickle';
+import * as Type from './types';
 
 export function MakeMultiMap<K, V>(
   entries?: readonly (readonly [K, Iterable<V>])[],
@@ -110,7 +86,7 @@ export function MakeMultiMap<K, V>(
     add,
     size,
     [Symbol.iterator]: iterator,
-    [PickleTag]: MultiMapTypeTag,
+    [FreikTypeTag]: MultiMapTypeTag,
     toJSON,
     valueEqual,
   };
@@ -133,7 +109,4 @@ function fromJSON(obj: unknown): MultiMap<unknown, unknown> | undefined {
   }
 }
 
-const bar = (() => {
-  console.log(foo);
-  RegisterForPickling(MultiMapTypeTag, fromJSON);
-})();
+RegisterForPickling(MultiMapTypeTag, fromJSON);

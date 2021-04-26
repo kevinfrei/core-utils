@@ -1,4 +1,5 @@
-import { Type, Waiter } from '.';
+import { Waiter } from './definitions';
+import * as Type from './types';
 
 export function Sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));

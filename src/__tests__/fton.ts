@@ -1,22 +1,22 @@
 import {
+  FreikTypeTag,
   FTON,
   FTONData,
   MakeMultiMap,
   MultiMap,
   ObjUtil,
   Pickle,
-  PickleTag,
   RegisterForPickling,
   Type,
   UnsafelyUnpickle,
-} from '..';
+} from '../index';
 
 const TestSymbol = Symbol.for('pickler.Test');
 function MakeType() {
   return {
     value1: 'a',
     value2: /a/gi,
-    [PickleTag]: TestSymbol,
+    [FreikTypeTag]: TestSymbol,
     toJSON: () => 'My Test Thingy',
   };
 }

@@ -1,10 +1,14 @@
-import { Type, typecheck } from './index';
-import { isMap, isSet, isSymbol } from './types';
+import { FreikTypeTag, typecheck } from './definitions';
+import * as Type from './types';
 
 type FlattenedCustom = {
   '@dataType': string;
   '@dataValue': unknown;
 };
+
+function isFlattened(obj: unknown): obj is FlattenedCustom {
+  return Type.hasStr(obj, '@dataType') && Type.has(obj, '@dataValue');
+}
 
 function MakeFlat(name: string, data: unknown): FlattenedCustom {
   return { '@dataType': name, '@dataValue': data };
@@ -14,7 +18,6 @@ function GetFlat(val: FlattenedCustom): [string, unknown] {
   return [val['@dataType'], val['@dataValue']];
 }
 
-export const PickleTag = Symbol.for('freik.unpickler');
 const SetTag = Symbol.for('freik.Set');
 const MapTag = Symbol.for('freik.Map');
 const SymbolTag = Symbol.for('freik.Symbol');
@@ -49,10 +52,10 @@ function SymbolUnpickle(val: unknown): symbol | undefined {
   return Type.isString(val) ? Symbol.for(val) : undefined;
 }
 
-const builtInPickleTypes: [typecheck<any>, symbol][] = [
-  [isMap, MapTag],
-  [isSet, SetTag],
-  [isSymbol, SymbolTag],
+const builtInPickleTypes: [typecheck<unknown>, symbol][] = [
+  [Type.isMap, MapTag],
+  [Type.isSet, SetTag],
+  [Type.isSymbol, SymbolTag],
 ];
 
 const picklers = new Map<symbol, ToFlat<any>>([
@@ -68,8 +71,8 @@ const unpicklers = new Map<symbol, FromFlat<any>>([
 ]);
 
 function getPickler(obj: unknown): [symbol, ToFlat<any>] | undefined {
-  if (Type.hasSymbol(obj, PickleTag)) {
-    const s = obj[PickleTag];
+  if (Type.hasSymbol(obj, FreikTypeTag)) {
+    const s = obj[FreikTypeTag];
     if (Type.isSymbol(s)) {
       const p = picklers.get(s);
       if (p) {
@@ -117,10 +120,7 @@ function replacer(
 }
 
 function reviver(key: unknown, value: unknown): unknown {
-  if (!Type.isObject(value)) {
-    return value;
-  }
-  if (Type.hasStr(value, '@dataType') && Type.has(value, '@dataValue')) {
+  if (isFlattened(value)) {
     const [name, forUnpickling] = GetFlat(value);
     const pickler = getUnpickler(name);
     if (pickler) {

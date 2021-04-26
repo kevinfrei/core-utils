@@ -21,7 +21,7 @@
   "scripts": {
     "test": "jest --config jestconfig.json",
     "watch": "jest --watch --config jestconfig.json",
-    "build": "rimraf lib && tsc",
+    "build": "rimraf lib && tsc && minify -i lib",
     "prepare": "yarn run build",
     "postinstall": "husky install",
     "prepublishOnly": "yarn test && yarn run lint && pinst --disable",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@freik/build-tools": "^2.6.0",
-    "@types/jest": "^26.0.22",
+    "@types/jest": "^26.0.23",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "eslint": "^7.25.0",
     "husky": "^6.0.0",

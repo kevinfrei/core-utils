@@ -1,5 +1,5 @@
-import type { FTONData, FTONMap, FTONObject } from './index';
-import { Type } from './index';
+import type { FTONData, FTONMap, FTONObject } from './definitions';
+import * as Type from './types';
 
 export function isFTON(x: unknown): x is FTONData {
   if (
