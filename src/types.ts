@@ -180,6 +180,58 @@ export function isPromise<T>(obj: unknown): obj is Promise<T> {
   return has(obj, 'then') && isFunction(obj.then);
 }
 
+export function isSymbol(x: unknown): x is symbol {
+  return typeof x === 'symbol';
+}
+
+export function has<K extends string>(
+  x: unknown,
+  key: K,
+  // eslint-disable-next-line no-shadow
+): x is { [key in K]: unknown } {
+  return isObjectNonNull(x) && key in x;
+}
+
+export function hasType<T, K extends string>(
+  x: unknown,
+  key: K,
+  chcker: typecheck<T>,
+  // eslint-disable-next-line no-shadow
+): x is { [key in K]: T } {
+  return has(x, key) && chcker(x[key]);
+}
+
+export function hasStr<K extends string>(
+  x: unknown,
+  key: K,
+  // eslint-disable-next-line no-shadow
+): x is { [key in K]: string } {
+  return hasType(x, key, isString);
+}
+
+export function hasSymbol<S extends symbol>(
+  x: unknown,
+  sym: S,
+  // eslint-disable-next-line no-shadow
+): x is { [sym in S]: unknown } {
+  return isObjectNonNull(x) && sym in x;
+}
+
+export function hasSymbolType<T, S extends symbol>(
+  x: unknown,
+  sym: S,
+  checker: typecheck<T>,
+  // eslint-disable-next-line no-shadow
+): x is { [sym in S]: T } {
+  return hasSymbol(x, sym) && checker(x[sym]);
+}
+
+export function isIterable<T>(
+  x: unknown,
+): x is { [Symbol.iterator]: () => IterableIterator<T> } {
+  return hasSymbolType(x, Symbol.iterator, isFunction);
+}
+
 export function isCustomType<T>(obj: unknown, sym: symbol): obj is T {
   return hasSymbol(obj, FreikTypeTag) && obj[FreikTypeTag] === sym;
 }
@@ -201,39 +253,4 @@ export function isMultiMapOf<K, V>(
     }
   }
   return true;
-}
-
-export function isSymbol(x: unknown): x is symbol {
-  return typeof x === 'symbol';
-}
-
-export function hasSymbol<S extends symbol>(
-  x: unknown,
-  sym: S,
-  // eslint-disable-next-line no-shadow
-): x is { [sym in S]: unknown } {
-  return isObjectNonNull(x) && sym in x;
-}
-
-export function isIterable<T>(
-  x: unknown,
-): x is { [Symbol.iterator]: () => IterableIterator<T> } {
-  return isObjectNonNull(x) && Symbol.iterator in x;
-}
-
-export function has<K extends string>(
-  x: unknown,
-  key: K,
-  // eslint-disable-next-line no-shadow
-): x is { [key in K]: unknown } {
-  return isObjectNonNull(x) && key in x;
-}
-
-// eslint-disable-next-line no-shadow
-export function hasStr<K extends string>(
-  x: unknown,
-  key: K,
-  // eslint-disable-next-line no-shadow
-): x is { [key in K]: string } {
-  return has(x, key) && isString(x[key]);
 }

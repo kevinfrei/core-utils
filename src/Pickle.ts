@@ -71,15 +71,13 @@ const unpicklers = new Map<symbol, FromFlat<any>>([
 ]);
 
 function getPickler(obj: unknown): [symbol, ToFlat<any>] | undefined {
-  if (Type.hasSymbol(obj, FreikTypeTag)) {
+  if (Type.hasSymbolType(obj, FreikTypeTag, Type.isSymbol)) {
     const s = obj[FreikTypeTag];
-    if (Type.isSymbol(s)) {
-      const p = picklers.get(s);
-      if (p) {
-        return [s, p];
-      } else if (Type.has(obj, 'toJSON') && Type.isFunction(obj.toJSON)) {
-        return [s, (val: { toJSON: () => unknown }) => val.toJSON()];
-      }
+    const p = picklers.get(s);
+    if (p) {
+      return [s, p];
+    } else if (Type.has(obj, 'toJSON') && Type.isFunction(obj.toJSON)) {
+      return [s, (val: { toJSON: () => unknown }) => val.toJSON()];
     }
   }
   // If we don't have a PickleTag, then check to see if it's a built-in type
