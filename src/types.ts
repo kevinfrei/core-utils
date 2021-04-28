@@ -6,6 +6,14 @@ import {
   typecheck,
 } from './definitions';
 
+export function isUndefined(obj: unknown): obj is undefined {
+  return obj === undefined;
+}
+
+export function isNull(obj: unknown): obj is null {
+  return obj === null;
+}
+
 export function isObjectNonNull(
   obj: unknown,
 ): obj is { [key: string]: unknown } {
