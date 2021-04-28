@@ -1,3 +1,4 @@
+import { Type } from '.';
 import {
   FreikTypeTag,
   MultiMap,
@@ -60,6 +61,13 @@ export function isBoolean(obj: unknown): obj is boolean {
   return typeof obj === 'boolean';
 }
 
+export function isDate(obj: unknown): obj is Date {
+  return Type.isObjectNonNull(obj) && obj instanceof Date;
+}
+
+export function isBigInt(obj: unknown): obj is BigInt {
+  return typeof obj === 'bigint';
+}
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(obj: unknown): obj is Function {
   return (

@@ -21,6 +21,9 @@ function GetFlat(val: FlattenedCustom): [string, unknown] {
 const SetTag = Symbol.for('freik.Set');
 const MapTag = Symbol.for('freik.Map');
 const SymbolTag = Symbol.for('freik.Symbol');
+const RegexTag = Symbol.for('freik.RegExp');
+const DateTag = Symbol.for('freik.Date');
+const BigIntTag = Symbol.for('freik.BigInt');
 
 type ToFlat<T> = (data: T) => unknown;
 type FromFlat<T> = (data: unknown) => T | undefined;
@@ -52,22 +55,67 @@ function SymbolUnpickle(val: unknown): symbol | undefined {
   return Type.isString(val) ? Symbol.for(val) : undefined;
 }
 
+function RegexPickle(val: RegExp): { source: string; flags: string } {
+  return { source: val.source, flags: val.flags };
+}
+
+function RegexUnpickle(val: unknown): RegExp | undefined {
+  return Type.hasStr(val, 'source') && Type.hasStr(val, 'flags')
+    ? new RegExp(val.source, val.flags)
+    : undefined;
+}
+
+function DatePickle(val: Date): string {
+  return val.toJSON();
+}
+
+function DateUnpickle(val: unknown): Date | undefined {
+  try {
+    return Type.isString(val) ? new Date(val) : undefined;
+  } catch (e) {
+    /* */
+  }
+  return undefined;
+}
+
+function BigIntPickle(val: BigInt): string {
+  return val.toString();
+}
+
+function BigIntUnpickle(val: unknown): BigInt | undefined {
+  try {
+    return Type.isString(val) ? BigInt(val) : undefined;
+  } catch (e) {
+    /* */
+  }
+  return undefined;
+}
+
 const builtInPickleTypes: [typecheck<unknown>, symbol][] = [
   [Type.isMap, MapTag],
   [Type.isSet, SetTag],
   [Type.isSymbol, SymbolTag],
+  [Type.isRegex, RegexTag],
+  [Type.isDate, DateTag],
+  [Type.isBigInt, BigIntTag],
 ];
 
 const picklers = new Map<symbol, ToFlat<any>>([
   [MapTag, MapPickle],
   [SetTag, SetPickle],
   [SymbolTag, SymbolPickle],
+  [RegexTag, RegexPickle],
+  [DateTag, DatePickle],
+  [BigIntTag, BigIntPickle],
 ]);
 
 const unpicklers = new Map<symbol, FromFlat<any>>([
   [MapTag, MapUnpickle],
   [SetTag, SetUnpickle],
   [SymbolTag, SymbolUnpickle],
+  [RegexTag, RegexUnpickle],
+  [DateTag, DateUnpickle],
+  [BigIntTag, BigIntUnpickle],
 ]);
 
 function getPickler(obj: unknown): [symbol, ToFlat<any>] | undefined {
