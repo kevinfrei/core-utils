@@ -46,10 +46,15 @@ export async function MaybeWait<T>(func: () => Promise<T> | T): Promise<T> {
  * This invokes func no *sooner* than `timeout` milliseconds in the future, but
  * will restarts the timer every time the function is invoked, so if you call it
  * every timeout-1 milliseconds, it will never invoke the function
- * @param  {()=>void} func
+ *
+ * WARNING: func must be re-entrant-safe!
+ * @param  {()=>void|Promise<void>} func
  * @param  {number} timeout
  */
-export function DebouncedDelay(func: () => void, timeout: number): () => void {
+export function DebouncedDelay(
+  func: () => Promise<void> | void,
+  timeout: number,
+): () => void {
   let debounceTimer: number | NodeJS.Timer | null = null;
   function ping() {
     if (debounceTimer !== null) {
@@ -57,7 +62,7 @@ export function DebouncedDelay(func: () => void, timeout: number): () => void {
     }
     debounceTimer = setTimeout(() => {
       debounceTimer = null;
-      func();
+      void MaybeWait(func);
     }, timeout);
   }
   return ping;
@@ -67,10 +72,15 @@ export function DebouncedDelay(func: () => void, timeout: number): () => void {
  * This invokes func every `timeout` milliseconds in the future, so if you call
  * it before the timer has completed, it does nothing. Logically, it "buffers"
  * invocations, flushing the buffer every X ms.
+ *
+ * WARNING: func must be re-entrant-safe!
  * @param  {()=>void} func
  * @param  {number} timeout
  */
-export function DebouncedEvery(func: () => void, timeout: number): () => void {
+export function DebouncedEvery(
+  func: () => Promise<void> | void,
+  timeout: number,
+): () => void {
   let debounceTimer: number | NodeJS.Timer | null = null;
   function ping() {
     if (debounceTimer !== null) {
@@ -78,7 +88,7 @@ export function DebouncedEvery(func: () => void, timeout: number): () => void {
     }
     debounceTimer = setTimeout(() => {
       debounceTimer = null;
-      func();
+      void MaybeWait(func);
     }, timeout);
   }
   return ping;
