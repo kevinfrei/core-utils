@@ -1,10 +1,6 @@
 import { Type } from '.';
-import {
-  FreikTypeTag,
-  MultiMap,
-  MultiMapTypeTag,
-  typecheck,
-} from './definitions';
+import { MultiMapTypeTag } from './private-defs';
+import { FreikTypeTag, MultiMap, typecheck } from './public-defs';
 
 export function isUndefined(obj: unknown): obj is undefined {
   return obj === undefined;

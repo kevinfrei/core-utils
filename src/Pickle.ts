@@ -1,4 +1,4 @@
-import { FreikTypeTag, typecheck } from './definitions';
+import { FreikTypeTag, typecheck } from './public-defs';
 import * as Type from './types';
 
 type FlattenedCustom = {

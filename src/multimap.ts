@@ -1,6 +1,7 @@
-import { FreikTypeTag, MultiMap, MultiMapTypeTag } from './definitions';
 import * as Operations from './Operations';
 import { RegisterForPickling } from './Pickle';
+import { MultiMapTypeTag } from './private-defs';
+import { FreikTypeTag, MultiMap } from './public-defs';
 import * as Type from './types';
 
 export function MakeMultiMap<K, V>(

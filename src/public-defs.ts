@@ -28,8 +28,6 @@ export type Waiter = {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type typecheck<T> = (val: any) => val is T;
 
-export const MultiMapTypeTag: symbol = Symbol.for('freik.MultiMap');
-
 export interface MultiMap<K, V> {
   clear: () => void;
   size: () => number;
