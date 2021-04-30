@@ -1,4 +1,4 @@
-import { Waiter } from './public-defs';
+import { SyncFunc, Waiter } from './public-defs';
 import { SeqNum } from './SeqNum';
 import * as Type from './types';
 
@@ -77,9 +77,9 @@ export function MakeSingleWaiter(delay = 10): Waiter {
 export function OnlyOneActive(
   func: () => void | Promise<void>,
   delay = 10,
-): () => Promise<void> {
+): SyncFunc<void> {
   const waiter = MakeWaiter(delay);
-  return async () => {
+  async function invoke() {
     if (await waiter.wait()) {
       try {
         await MaybeWait(func);
@@ -87,15 +87,19 @@ export function OnlyOneActive(
         waiter.leave();
       }
     }
+  }
+  invoke.trigger = async () => {
+    await MaybeWait(func);
   };
+  return invoke;
 }
 
 export function OnlyOneActiveQueue(
   func: () => void | Promise<void>,
   delay = 10,
-): () => Promise<void> {
+): SyncFunc<void> {
   const waiter = MakeWaitingQueue(delay);
-  return async () => {
+  async function invoke() {
     if (await waiter.wait()) {
       try {
         await MaybeWait(func);
@@ -103,15 +107,19 @@ export function OnlyOneActiveQueue(
         waiter.leave();
       }
     }
+  }
+  invoke.trigger = async () => {
+    await MaybeWait(func);
   };
+  return invoke;
 }
 
 export function OnlyOneWaiting(
   func: () => void | Promise<void>,
   delay = 10,
-): () => Promise<boolean> {
+): SyncFunc<boolean> {
   const waiter = MakeSingleWaiter(delay);
-  return async () => {
+  async function invoke() {
     if (await waiter.wait()) {
       try {
         await MaybeWait(func);
@@ -122,7 +130,11 @@ export function OnlyOneWaiting(
     } else {
       return false;
     }
+  }
+  invoke.trigger = async () => {
+    await MaybeWait(func);
   };
+  return invoke;
 }
 
 // If the result is a promise, await it, otherwise don't

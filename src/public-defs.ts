@@ -25,6 +25,11 @@ export type Waiter = {
   leave: () => void;
 };
 
+export type SyncFunc<T> = {
+  (): Promise<T>;
+  trigger: () => Promise<void>;
+};
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type typecheck<T> = (val: any) => val is T;
 
