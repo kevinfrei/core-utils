@@ -1,6 +1,5 @@
-import { Type } from '.';
 import { MultiMapTypeTag } from './private-defs';
-import { FreikTypeTag, MultiMap, typecheck } from './public-defs';
+import { FreikTypeTag, MultiMap, SimpleObject, typecheck } from './public-defs';
 
 export function isUndefined(obj: unknown): obj is undefined {
   return obj === undefined;
@@ -66,7 +65,7 @@ export function isBoolean(obj: unknown): obj is boolean {
 }
 
 export function isDate(obj: unknown): obj is Date {
-  return Type.isObjectNonNull(obj) && obj instanceof Date;
+  return isObjectNonNull(obj) && obj instanceof Date;
 }
 
 export function isBigInt(obj: unknown): obj is BigInt {
@@ -242,6 +241,45 @@ export function isIterable<T>(
   x: unknown,
 ): x is { [Symbol.iterator]: () => IterableIterator<T> } {
   return hasSymbolType(x, Symbol.iterator, isFunction);
+}
+
+export function isSimpleObject(x: unknown): x is SimpleObject {
+  return (
+    x === null ||
+    x === undefined ||
+    isString(x) ||
+    isNumber(x) ||
+    isBoolean(x) ||
+    isArrayOf(x, isSimpleObject) ||
+    (isObjectNonNull(x) &&
+      isArrayOfString(Object.keys(x)) &&
+      isObjectOf(x, isSimpleObject))
+  );
+}
+
+export function asSimpleObject(x: unknown): SimpleObject {
+  if (
+    x === null ||
+    x === undefined ||
+    isString(x) ||
+    isNumber(x) ||
+    isBoolean(x)
+  ) {
+    return x;
+  }
+  if (isArray(x)) {
+    return x.map((val) => asSimpleObject(val));
+  }
+  if (isObjectNonNull(x)) {
+    const res: SimpleObject = {};
+    Object.keys(x).forEach((key) => {
+      if (isString(key)) {
+        res[key] = asSimpleObject(x[key]);
+      }
+    });
+    return res;
+  }
+  return undefined;
 }
 
 export function isCustomType<T>(obj: unknown, sym: symbol): obj is T {

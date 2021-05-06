@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import { FreikTypeTag, typecheck } from './public-defs';
 import * as Type from './types';
 
@@ -72,9 +73,7 @@ function DatePickle(val: Date): string {
 function DateUnpickle(val: unknown): Date | undefined {
   try {
     return Type.isString(val) ? new Date(val) : undefined;
-  } catch (e) {
-    /* */
-  }
+  } catch (e) {}
   return undefined;
 }
 
@@ -85,9 +84,7 @@ function BigIntPickle(val: BigInt): string {
 function BigIntUnpickle(val: unknown): BigInt | undefined {
   try {
     return Type.isString(val) ? BigInt(val) : undefined;
-  } catch (e) {
-    /* */
-  }
+  } catch (e) {}
   return undefined;
 }
 

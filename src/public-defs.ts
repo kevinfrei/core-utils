@@ -15,6 +15,15 @@ export type FTONMap = Map<string, FTONData>;
 export type FTONObject = { [key: string]: FTONData };
 export type FTONArray = FTONData[];
 
+export type SimpleObject =
+  | undefined
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: SimpleObject }
+  | SimpleObject[];
+
 export type SeqNumGenerator = {
   (): string;
   keyCompare: (a: string, b: string) => number;
