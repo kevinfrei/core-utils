@@ -106,6 +106,55 @@ function isMyType(obj: unknown): obj is MyType {
 }
 ```
 
+## Pickle/Unpickle
+
+### An extensible marshalling framework (that also integrates with Type.is\*)
+
+`Pickle`/`Unpickle` are strictly drop-in replacements for `JSON.stringify` and
+`JSON.parse`. Their key value-add is that they can support marshalling &
+unmarshalling any type, if the type is registered properly. By default, it
+supports marshalling core types, including `RegExp`, `Date`, `BigInt`, _global_
+`Symbol`s, `Set`s, and `Map`s.
+
+To add support for your own types, there are three things you must do:
+
+1. Create a globally named symbol, and assign it to the objects of the type (this also enables `Type.isCustomType` to work properly)
+2. Register the type with the Pickling system.
+3. Optionally include a `toJSON` method on your type (this is an alternative to include the `toString` argument to `RegisterForPickling`)
+
+```Typescript
+type MyCustomType = {
+  someData: WeirdType;
+  // Gotta do this:
+  [FreikTypeTag]: symbol;
+  // This is optional:
+  toJSON: () => SimpleObject; // or an Iterable<SimpleObject>
+};
+
+// Create a globally *named* symbol for the type:
+const MyCustomTypeTag = Symbol.for('freik.MyCustomType');
+
+// And here we are, creating it:
+function MakeMyCustomType(name: string) : MyCustomType {
+  return {
+    someData: MakeWeirdType,
+    name,
+    [FreikTypeTag]:
+    MyCustomTypeTag
+  };
+}
+
+function pickler(obj: MyCustomType):string {
+  return 'this is a
+}
+
+RegisterForPickling(MyCustomTypeTag, (str:string)=>MyCustomType | undefined, (obj: MyCustomType) => string);
+```
+
+import { RegisterForPickling } from './Pickle';
+import { MultiMapTypeTag } from './private-defs';
+import { FreikTypeTag, MultiMap } from './public-defs';
+
 ## SeqNum: a unique ID generator
 
 This is a pretty simple little unique ID generator, that takes an optional
