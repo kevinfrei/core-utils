@@ -123,12 +123,15 @@ To add support for your own types, there are three things you must do:
 3. Optionally include a `toJSON` method on your type (this is an alternative to include the `toString` argument to `RegisterForPickling`)
 
 ```Typescript
+
+import { FreikTypeTag, RegisterForPickling } from '@freik/core-utils';
+
 type MyCustomType = {
   someData: WeirdType;
   // Gotta do this:
   [FreikTypeTag]: symbol;
-  // This is optional:
-  toJSON: () => SimpleObject; // or an Iterable<SimpleObject>
+  // This is optional, instead of registering a pickler
+  // toJSON: (key?:unknown) => unknown
 };
 
 // Create a globally *named* symbol for the type:
@@ -137,23 +140,26 @@ const MyCustomTypeTag = Symbol.for('freik.MyCustomType');
 // And here we are, creating it:
 function MakeMyCustomType(name: string) : MyCustomType {
   return {
-    someData: MakeWeirdType,
+    someData: makeSomeData(),
     name,
     [FreikTypeTag]:
     MyCustomTypeTag
   };
 }
 
-function pickler(obj: MyCustomType):string {
-  return 'this is a
+function pickler(obj: MyCustomType):unknown {
+  return { name: obj.name }; // This object is fully JSON-able
 }
 
-RegisterForPickling(MyCustomTypeTag, (str:string)=>MyCustomType | undefined, (obj: MyCustomType) => string);
-```
+function unpickler(data: unknown):MyCustomeType | undefined {
+  if (Type.hasStr(data, 'name')) {
+    return MakeMyCustomType(data.name);
+  }
+}
 
-import { RegisterForPickling } from './Pickle';
-import { MultiMapTypeTag } from './private-defs';
-import { FreikTypeTag, MultiMap } from './public-defs';
+// I could implement a toJSON method instead of registering pickler here
+RegisterForPickling(MyCustomTypeTag, unpickler, pickler);
+```
 
 ## SeqNum: a unique ID generator
 
