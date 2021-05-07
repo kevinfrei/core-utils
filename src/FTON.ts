@@ -1,6 +1,7 @@
 import type { FTONData, FTONMap, FTONObject } from './public-defs';
 import * as Type from './types';
 
+// Deprecated: Use Pickling and/or SimpleObject instead of FTONData
 export function isFTON(x: unknown): x is FTONData {
   if (
     x === null ||
@@ -24,6 +25,7 @@ export function isFTON(x: unknown): x is FTONData {
   return false;
 }
 
+// Deprecated: Use SimpleObject or Type.is* instead
 export function typecheck(x: unknown): FTONData {
   if (isFTON(x)) {
     return x;
@@ -32,6 +34,7 @@ export function typecheck(x: unknown): FTONData {
   }
 }
 
+// Deprecated
 export function asFTON(x: unknown): FTONData | void {
   if (isFTON(x)) return x;
 }
@@ -86,6 +89,7 @@ function objEqual(a: FTONObject, b: FTONObject): boolean {
   return true;
 }
 
+// Deprecated: Use SimpleObject's and Type.is* + Object.equals
 export function valEqual(x: FTONData, y: FTONData): boolean {
   if (x === y) {
     return true;
@@ -105,6 +109,7 @@ export function valEqual(x: FTONData, y: FTONData): boolean {
   return false;
 }
 
+// Deprecated: use SimpleObject's instead
 export function filter(x: unknown): FTONData {
   if (
     x === null ||
@@ -203,14 +208,17 @@ function reviver(key: unknown, value: unknown): unknown {
   return value;
 }
 
+// Deprecated: Use Unpickle instead
 export function parse(input: string): FTONData {
   return typecheck(JSON.parse(input, reviver));
 }
 
+// Deprecated: Use Pickle instead
 export function stringify(input: FTONData): string {
   return JSON.stringify(input, replacer);
 }
 
+// Deprecated: Use SimpleObject's and Type.* for this instead
 export function arrayOfStrings(input: FTONData): string[] | void {
   if (input && Type.isArray(input)) {
     return input.filter((elem) => typeof elem === 'string') as string[];
