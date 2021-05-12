@@ -34,7 +34,7 @@ test('FTON set roundtrip', () => {
   const setString = FTON.stringify(set);
   const newSet = FTON.parse(setString);
   expect(Type.isArray(newSet)).toBe(true);
-  expect(((newSet as any) as Set<unknown>[])[0]).toBeInstanceOf(Set);
+  expect((newSet as any as Set<unknown>[])[0]).toBeInstanceOf(Set);
   const next = FTON.stringify(newSet);
   expect(next).toEqual(setString);
 });
@@ -77,7 +77,7 @@ test('Pickling set roundtrip', () => {
   const setString = Pickle(set);
   const newSet = UnsafelyUnpickle(setString);
   expect(Type.isArray(newSet)).toBe(true);
-  expect(((newSet as any) as Set<unknown>[])[0]).toBeInstanceOf(Set);
+  expect((newSet as any as Set<unknown>[])[0]).toBeInstanceOf(Set);
   const next = Pickle(newSet);
   expect(next).toEqual(setString);
 });
