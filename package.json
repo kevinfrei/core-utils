@@ -35,7 +35,7 @@
     "chk": "yarn format && yarn lint && yarn compile && yarn test"
   },
   "devDependencies": {
-    "@freik/build-tools": "^2.6.0",
+    "@freik/build-tools": "^2.7.2",
     "@types/jest": "^26.0.23",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "eslint": "^7.26.0",
