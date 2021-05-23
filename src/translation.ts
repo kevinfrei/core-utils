@@ -78,8 +78,8 @@ export function ToU8(val: number): string {
     // Run once this for a zero value, so we don't get empty-string
     // All unicode values between 256 and 511 are defined and independent :)
     // Plus, this makes it so that other schemes involved ASCII don't conflict
-    res.push((val & 0xff) + 0x100);
-    val = val >>> 8;
+    res.push((val & 0x1ff) + 0x1400);
+    val = val >>> 9;
   } while (val > 0);
   return String.fromCharCode(...res);
 }
@@ -87,11 +87,11 @@ export function ToU8(val: number): string {
 export function FromU8(val: string): number {
   let res = 0;
   for (let i = val.length - 1; i >= 0; i--) {
-    const code = val.charCodeAt(i) - 0x100;
-    if (code < 0 || code > 0xff) {
+    const code = val.charCodeAt(i) - 0x1400;
+    if (code < 0 || code > 0x1ff) {
       throw new Error(`Character ${val[i]} (${code}) out of range`);
     }
-    res *= 256;
+    res *= 512;
     res += code;
   }
   return res;
