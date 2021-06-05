@@ -1,4 +1,11 @@
-import { FromPathSafeName, FromU8, ToPathSafeName, ToU8 } from '../index';
+import {
+  FromB64,
+  FromPathSafeName,
+  FromU8,
+  ToB64,
+  ToPathSafeName,
+  ToU8,
+} from '../index';
 
 test('Simplistic name encoding', () => {
   expect(ToPathSafeName('TEST')).toBe('TEST');
@@ -58,11 +65,47 @@ test('Some U8 roundtripping with simple checks', () => {
     16384 * 8192,
     4294967294,
     4294967295,
+    Number.MAX_SAFE_INTEGER,
+    Math.floor(Number.MAX_SAFE_INTEGER / 15),
+    4294967291 * 97, // Cus prime products are fun
   ]) {
     const after = ToU8(value);
     const before = FromU8(after);
     expect(after.length).toBeGreaterThan(0);
-    expect(after.length).toBeLessThan(5);
+    let digitCount = 1;
+    let rem = value;
+    while (rem > 511) {
+      digitCount++;
+      rem = Math.floor(rem / 512);
+    }
+    expect(after.length).toEqual(digitCount);
+    expect(before).toEqual(value);
+  }
+});
+
+test('Some B64 roundtripping with simple checks', () => {
+  for (const value of [
+    0,
+    255,
+    1234,
+    16384,
+    16384 * 8192,
+    4294967294,
+    4294967295,
+    Number.MAX_SAFE_INTEGER,
+    Math.floor(Number.MAX_SAFE_INTEGER / 15),
+    4294967291 * 97, // Cus prime products are fun
+  ]) {
+    const after = ToB64(value);
+    const before = FromB64(after);
+    expect(after.length).toBeGreaterThan(0);
+    let digitCount = 1;
+    let rem = value;
+    while (rem > 63) {
+      digitCount++;
+      rem = Math.floor(rem / 64);
+    }
+    expect(after.length).toEqual(digitCount);
     expect(before).toEqual(value);
   }
 });

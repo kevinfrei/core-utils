@@ -63,23 +63,22 @@ export function FromPathSafeName(safe: string): string {
   return res.join('');
 }
 
-/* eslint-disable no-bitwise */
 /**
  *
- * @param val - An unsigned 32 bit integerr
+ * @param val - An unsigned integer
  * @returns A string encoding of the value in 4 (or fewer) characters
  */
 export function ToU8(val: number): string {
   const res = [];
-  if (val > 4294967295 || val < 0) {
+  if (val > Number.MAX_SAFE_INTEGER || val < 0 || Math.floor(val) !== val) {
     throw new Error(`${val} out of range for U8 encoding`);
   }
   do {
     // Run once this for a zero value, so we don't get empty-string
     // All unicode values between 256 and 511 are defined and independent :)
     // Plus, this makes it so that other schemes involved ASCII don't conflict
-    res.push((val & 0x1ff) + 0x1400);
-    val = val >>> 9;
+    res.push((val % 512) + 0x1400);
+    val = Math.floor(val / 512);
   } while (val > 0);
   return String.fromCharCode(...res);
 }
@@ -93,6 +92,54 @@ export function FromU8(val: string): number {
     }
     res *= 512;
     res += code;
+  }
+  return res;
+}
+
+export function ToB64(val: number): string {
+  const res = [];
+  if (val > Number.MAX_SAFE_INTEGER || val < 0 || Math.floor(val) !== val) {
+    throw new Error(`${val} out of range for B64 encoding`);
+  }
+  do {
+    // Run once this for a zero value, so we don't get empty-string
+    // All unicode values between 256 and 511 are defined and independent :)
+    // Plus, this makes it so that other schemes involved ASCII don't conflict
+    const num = val % 64;
+    val = Math.floor(val / 64);
+    if (num < 26) {
+      res.push(num + 65); // "A" = 65
+    } else if (num < 52) {
+      res.push(num + 71); // "a" = 97; 97 - 26 = 71
+    } else if (num < 62) {
+      res.push(num - 4); // "0" = 48; 48 - 52 = -4
+    } else if (num === 62) {
+      res.push(43); // "+" == 43
+    } else if (num === 63) {
+      res.push(47); // "/" == 47
+    }
+  } while (val > 0);
+  return String.fromCharCode(...res);
+}
+
+export function FromB64(val: string): number {
+  let res = 0;
+  for (let i = val.length - 1; i >= 0; i--) {
+    const code = val.charCodeAt(i);
+    res *= 64;
+    if (code > 64 && code < 91) {
+      res += code - 65;
+    } else if (code > 96 && code < 123) {
+      res += code - 71;
+    } else if (code > 47 && code < 58) {
+      res += code + 4;
+    } else if (code === 43) {
+      res += 62;
+    } else if (code === 47) {
+      res += 63;
+    } else {
+      throw new Error(`Character ${val[i]} (${code}) out of range`);
+    }
   }
   return res;
 }
