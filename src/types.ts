@@ -1,5 +1,11 @@
 import { MultiMapTypeTag } from './private-defs';
-import { FreikTypeTag, MultiMap, SimpleObject, typecheck } from './public-defs';
+import {
+  FreikTypeTag,
+  MultiMap,
+  SimpleObject,
+  typecheck,
+  TypeCheckPair,
+} from './public-defs';
 
 export function isUndefined(obj: unknown): obj is undefined {
   return obj === undefined;
@@ -303,4 +309,38 @@ export function isMultiMapOf<K, V>(
     }
   }
   return true;
+}
+
+export function isSpecificType<T>(
+  obj: unknown,
+  checkers: Iterable<TypeCheckPair>,
+  mandatory?: Iterable<string>,
+): obj is T {
+  const req = isSet(mandatory)
+    ? mandatory
+    : new Set<string>(isUndefined(mandatory) ? [] : mandatory);
+  let seen = req.size;
+  const keyCheckers: Map<string, (val: unknown) => boolean> = isMap(checkers)
+    ? (checkers as Map<string, (val: unknown) => boolean>)
+    : new Map(checkers);
+  if (!isObjectNonNull(obj)) {
+    return false;
+  }
+  for (const fieldName of Object.keys(obj)) {
+    if (obj[fieldName] === undefined || obj[fieldName] === null) {
+      delete obj[fieldName];
+      continue;
+    }
+    const fieldTypeChecker = keyCheckers.get(fieldName);
+    if (!fieldTypeChecker) {
+      return false;
+    }
+    if (!fieldTypeChecker(obj[fieldName])) {
+      return false;
+    }
+    if (seen > 0 && req.has(fieldName)) {
+      seen--;
+    }
+  }
+  return seen === 0;
 }
