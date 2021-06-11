@@ -1,3 +1,4 @@
+import { Type } from '.';
 import { MultiMapTypeTag } from './private-defs';
 import {
   FreikTypeTag,
@@ -346,4 +347,18 @@ export function isSpecificType<T>(
     }
   }
   return seen === 0;
+}
+/**
+ * Remove any fields that are assigned to 'undefined'
+ * @param {unknown} obj
+ */
+export function cleanseKeys(obj: unknown): void {
+  if (!Type.isObjectNonNull(obj)) {
+    return;
+  }
+  for (const field of Object.keys(obj)) {
+    if (Type.has(obj, field) && obj[field] === undefined) {
+      delete obj[field];
+    }
+  }
 }
