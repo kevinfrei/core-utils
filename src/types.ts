@@ -316,6 +316,9 @@ export function isSpecificType<T>(
   checkers: Iterable<TypeCheckPair>,
   mandatory?: Iterable<string>,
 ): obj is T {
+  if (!isObjectNonNull(obj)) {
+    return false;
+  }
   const req = isSet(mandatory)
     ? mandatory
     : new Set<string>(isUndefined(mandatory) ? [] : mandatory);
