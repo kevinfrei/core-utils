@@ -71,4 +71,9 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
-
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
