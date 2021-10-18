@@ -23,6 +23,5 @@
   },
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
-  "prettier.configPath": ".prettierrc",
-  "json.format.enable": false
+  "prettier.configPath": ".prettierrc"
 }

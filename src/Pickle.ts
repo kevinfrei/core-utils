@@ -1,6 +1,6 @@
 /* eslint-disable no-empty */
-import { FreikTypeTag, typecheck } from './public-defs';
-import * as Type from './types';
+import { FreikTypeTag, typecheck } from './public-defs.js';
+import * as Type from './types.js';
 
 type FlattenedCustom = {
   '@dataType': string;

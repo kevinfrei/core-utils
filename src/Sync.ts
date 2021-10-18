@@ -1,6 +1,6 @@
-import { SyncFunc, Waiter } from './public-defs';
-import { SeqNum } from './SeqNum';
-import * as Type from './types';
+import { SyncFunc, Waiter } from './public-defs.js';
+import { SeqNum } from './SeqNum.js';
+import * as Type from './types.js';
 
 export function Sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));

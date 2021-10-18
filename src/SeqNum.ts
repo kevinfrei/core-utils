@@ -3,7 +3,7 @@
 // newSeqNum = generator();
 // anotherSeqNum = generator();
 
-import { SeqNumGenerator } from './public-defs';
+import { SeqNumGenerator } from './public-defs.js';
 
 export function SeqNum(prefix?: string, resume?: string): SeqNumGenerator {
   const pref = prefix || '';

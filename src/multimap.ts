@@ -1,8 +1,8 @@
-import * as Operations from './Operations';
-import { RegisterForPickling } from './Pickle';
-import { MultiMapTypeTag } from './private-defs';
-import { FreikTypeTag, MultiMap } from './public-defs';
-import * as Type from './types';
+import * as Operations from './Operations.js';
+import { RegisterForPickling } from './Pickle.js';
+import { MultiMapTypeTag } from './private-defs.js';
+import { FreikTypeTag, MultiMap } from './public-defs.js';
+import * as Type from './types.js';
 
 export function MakeMultiMap<K, V>(
   entries?: readonly (readonly [K, Iterable<V>])[],

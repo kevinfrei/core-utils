@@ -1,12 +1,11 @@
-import { Type } from '.';
-import { MultiMapTypeTag } from './private-defs';
+import { MultiMapTypeTag } from './private-defs.js';
 import {
   FreikTypeTag,
   MultiMap,
   SimpleObject,
   typecheck,
   TypeCheckPair,
-} from './public-defs';
+} from './public-defs.js';
 
 export function isUndefined(obj: unknown): obj is undefined {
   return obj === undefined;
@@ -353,12 +352,12 @@ export function isSpecificType<T>(
  * @param {unknown} obj
  */
 export function cleanseKeys(obj: unknown, leaveNulls?: boolean): void {
-  if (!Type.isObjectNonNull(obj)) {
+  if (!isObjectNonNull(obj)) {
     return;
   }
   for (const field of Object.keys(obj)) {
     if (
-      Type.has(obj, field) &&
+      has(obj, field) &&
       (obj[field] === undefined || (!leaveNulls && obj[field] === null))
     ) {
       delete obj[field];

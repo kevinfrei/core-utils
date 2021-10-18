@@ -67,6 +67,7 @@ typings/
 
 # the build output
 /lib
+/dist
 
 # Yarn Integrity file
 .yarn-integrity

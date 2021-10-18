@@ -1,4 +1,4 @@
-import * as Type from './types';
+import * as Type from './types.js';
 
 export const deQuote = (str: string): string => str.replace(/\"/g, '~!~');
 
