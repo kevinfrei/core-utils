@@ -162,7 +162,7 @@ export function DebouncedDelay(
   const doWork = OnlyOneActiveQueue(func);
   function ping() {
     if (debounceTimer !== null) {
-      clearTimeout(debounceTimer as any);
+      clearTimeout(debounceTimer as number);
     }
     debounceTimer = setTimeout(() => {
       debounceTimer = null;
