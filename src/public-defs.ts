@@ -32,6 +32,15 @@ export type SeqNumGenerator = {
 export type Waiter = {
   wait: () => Promise<boolean>;
   leave: () => void;
+  blocked: () => boolean;
+  block: () => boolean;
+};
+
+export type ReaderWriter = {
+  read: () => Promise<void>;
+  write: () => Promise<void>;
+  leaveRead: () => void;
+  leaveWrite: () => void;
 };
 
 export type SyncFunc<T> = {

@@ -1,4 +1,4 @@
-import { SyncFunc, Waiter } from './public-defs.js';
+import { ReaderWriter, SyncFunc, Waiter } from './public-defs.js';
 import { SeqNum } from './SeqNum.js';
 import * as Type from './types.js';
 
@@ -13,16 +13,25 @@ export function Sleep(milliseconds: number): Promise<void> {
 export function MakeWaiter(delay = 10): Waiter {
   let busy = false;
   async function wait(): Promise<boolean> {
-    while (busy) {
+    while (!block()) {
       await Sleep(delay);
     }
-    busy = true;
     return true;
   }
   function leave() {
     busy = false;
   }
-  return { wait, leave };
+  function blocked() {
+    return busy;
+  }
+  function block() {
+    if (busy) {
+      return false;
+    }
+    busy = true;
+    return true;
+  }
+  return { wait, leave, blocked, block };
 }
 
 // This is just a linear queue of waiters
@@ -46,7 +55,17 @@ export function MakeWaitingQueue(delay = 10): Waiter {
   function leave() {
     active = '';
   }
-  return { wait, leave };
+  function blocked() {
+    return active !== '';
+  }
+  function block() {
+    if (blocked()) {
+      return false;
+    }
+    active = getNextID();
+    return true;
+  }
+  return { wait, leave, blocked, block };
 }
 
 // This will keep one caller "in the queue" and everyone else drops out
@@ -71,7 +90,113 @@ export function MakeSingleWaiter(delay = 10): Waiter {
   function leave() {
     busy = false;
   }
-  return { wait, leave };
+  function blocked() {
+    return busy || someoneWaiting;
+  }
+  function block() {
+    if (!blocked()) {
+      busy = true;
+      return true;
+    }
+    return false;
+  }
+  return { wait, leave, blocked, block };
+}
+
+type RWEntry = { id: string; count: number };
+export function MakeReaderWriter(delay = 1): ReaderWriter {
+  const getNextId = SeqNum();
+  const getReadId = () => 'r' + getNextId();
+  const getWriteId = () => 'w' + getNextId();
+  const rwQueue: RWEntry[] = [];
+  let activeCount = 0;
+  let activeId = '';
+  function isWriterActive() {
+    return activeCount === -1;
+  }
+  function isQueueEmpty() {
+    return rwQueue.length === 0;
+  }
+  function nextQueue() {
+    if (activeCount !== 0) {
+      throw Error('ReaderWriterLock count inconsistency');
+    }
+    if (isQueueEmpty()) {
+      activeId = '';
+    } else {
+      const val = rwQueue.shift();
+      if (val === undefined) {
+        throw Error('ReaderWriter lock queue inconsistency');
+      }
+      ({ id: activeId, count: activeCount } = val);
+    }
+  }
+  async function read(): Promise<void> {
+    // Is there a queue or an active Writer?
+    //  For a queue or an activeWriter,
+    //    Check the tail:
+    //      Writer, add to the queue
+    //      Reader, increment the tail count
+    //    then wait until we're up
+    //  For an empty queue, nothing to do
+    // add to the 'activeReaders' count and continue
+    if (isWriterActive() || !isQueueEmpty()) {
+      let myId: string;
+      if (isQueueEmpty() || rwQueue[rwQueue.length - 1].count === -1) {
+        // Writer!
+        myId = getReadId();
+        rwQueue.push({ id: myId, count: 1 });
+      } else {
+        // Reader at the end of the queue!
+        const tail = rwQueue[rwQueue.length - 1];
+        myId = tail.id;
+        tail.count++;
+      }
+      do {
+        await Sleep(delay);
+      } while (activeId !== myId);
+      // activeCount is set to all the active readers, so no incrementing is necessary
+    } else {
+      activeCount++;
+    }
+  }
+  function leaveRead() {
+    // Decrease the activeReaders count
+    // If it's zero, slide the queue
+    activeCount--;
+    if (activeCount < 0) {
+      throw Error('ReaderWriterLock read inconsistency');
+    }
+    if (activeCount === 0) {
+      nextQueue();
+    }
+  }
+  async function write(): Promise<void> {
+    // Is there a queue?
+    //  Yes: add to the queue and wait
+    //  No: Are there active readers?
+    //    Yes: add to the queue and wait
+    //    No:  don't do anything
+    // Now, set the active writer
+    if (!isQueueEmpty() || activeCount !== 0) {
+      const id = getWriteId();
+      rwQueue.push({ id, count: -1 });
+      do {
+        await Sleep(delay);
+      } while (activeId !== id);
+    } else {
+      activeCount = -1;
+    }
+  }
+  function leaveWrite() {
+    // Clear the active writer and slide the queue
+    activeCount++;
+    if (activeCount !== 0) {
+      throw Error('ReaderWriterLock write inconsistency');
+    }
+    nextQueue();
+  }
+  return { read, leaveRead, write, leaveWrite };
 }
 
 export function OnlyOneActive(

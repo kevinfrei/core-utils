@@ -1,6 +1,9 @@
 // TODO: Add a bunch of tests for the synchronization things
 
+import { MakeReaderWriter } from '..';
 import { DebouncedDelay, DebouncedEvery, Sleep } from '../Sync';
+
+jest.setTimeout(15000);
 
 test('DebouncedEvery testing', async () => {
   let timer = Date.now();
@@ -24,7 +27,7 @@ test('DebouncedEvery testing', async () => {
   everyHundred();
   await Sleep(300);
   expect(callCount).toBe(1);
-  expect(lastDelta).toBeGreaterThan(249);
+  expect(lastDelta).toBeGreaterThan(225);
   expect(lastDelta).toBeLessThan(275);
   timer = Date.now();
   everyHundred();
@@ -78,6 +81,45 @@ test('DebouncedDelay testing', async () => {
   everyHundred();
   await Sleep(300);
   expect(lastDelta).toBeGreaterThan(750);
-  expect(lastDelta).toBeLessThan(800);
+  expect(lastDelta).toBeLessThan(850);
   expect(callCount).toBe(2);
+});
+
+test('ReaderWriter testing', async () => {
+  // How should I test this?
+  const rw = MakeReaderWriter(1);
+  let val = 0;
+  let count = 0;
+  async function reader(): Promise<void> {
+    for (let i = 0; i < 500; i++) {
+      await rw.read();
+      try {
+        await Sleep(Math.floor(Math.random() * 5) + 1);
+        if (val !== 0) {
+          throw 'Oops Reader';
+        }
+        count++;
+      } finally {
+        rw.leaveRead();
+      }
+    }
+  }
+  async function writer(): Promise<void> {
+    for (let i = 0; i < 100; i++) {
+      await rw.write();
+      try {
+        if (val !== 0) {
+          throw 'Oops Writer';
+        }
+        val = 1;
+        await Sleep(Math.floor(Math.random() * 5) + 1);
+        val = 0;
+        count--;
+      } finally {
+        rw.leaveWrite();
+      }
+    }
+  }
+  await Promise.all([reader(), writer()]);
+  expect(count).toEqual(400);
 });
