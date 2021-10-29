@@ -3,7 +3,11 @@ import { SeqNum } from './SeqNum.js';
 import * as Type from './types.js';
 
 export function Sleep(milliseconds: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  if (milliseconds > 0) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  } else {
+    return Promise.resolve();
+  }
 }
 
 // Overall, I think I'd rather pass in a function to be invoked, rather than
