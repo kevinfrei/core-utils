@@ -76,3 +76,12 @@ export interface MultiMap<K, V> {
   [FreikTypeTag]: symbol;
   toJSON: () => [K, IterableIterator<V>][];
 }
+
+export interface Container<T> {
+  push: (item: T) => void;
+  pop: () => T | undefined;
+  size: () => number;
+  peek: () => T | undefined;
+  empty: () => boolean;
+  [Symbol.iterator](): IterableIterator<T>;
+}
