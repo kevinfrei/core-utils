@@ -10,13 +10,14 @@
       "name": "Jest tests",
       "runtimeArgs": [
         "--inspect-brk",
-        "${workspaceFolder}/node_modules/.bin/jest",
+        "${workspaceFolder}/node_modules/jest/bin/jest.js",
         "--runInBand",
+        "--coverage",
+        "false",
         "--config",
         "${workspaceFolder}/jestconfig.json"
       ],
       "console": "integratedTerminal",
-      "preLaunchTask": "build",
       "internalConsoleOptions": "openOnSessionStart"
     }
   ]

@@ -1,4 +1,4 @@
-import { Container } from '.';
+import type { Container } from './public-defs';
 
 export function MakeQueue<T>(...items: T[]): Container<T> {
   const q: T[] = [...items];
@@ -50,23 +50,27 @@ export function MakeStack<T>(...items: T[]): Container<T> {
   return { push, pop, size, peek, empty, [Symbol.iterator]: iterator };
 }
 
+type Elem<T> = { item: T; priority: number; innerPriority: number };
 export function MakePriorityQueue<T>(defaultPriority?: number): Container<T> {
-  type Elem = { item: T; priority: number; innerPriority: number };
   // This is just a min-heap
-  const heap: Elem[] = [];
+  const heap: Elem<T>[] = [];
   let innerPri = -0x7ffffff;
   function isGt(a: number, b: number): boolean {
     const ha = heap[a];
     const hb = heap[b];
     return (
-      ha.priority > hb.priority ||
-      (ha.priority === hb.priority && ha.innerPriority > hb.innerPriority)
+      (ha && hb && ha.priority > hb.priority) ||
+      (ha &&
+        hb &&
+        ha.priority === hb.priority &&
+        ha.innerPriority > hb.innerPriority)
     );
   }
   function isLt(a: number, b: number): boolean {
     const ha = heap[a];
     const hb = heap[b];
     return (
+      hb === undefined ||
       ha.priority < hb.priority ||
       (ha.priority === hb.priority && ha.innerPriority < hb.innerPriority)
     );
@@ -97,7 +101,7 @@ export function MakePriorityQueue<T>(defaultPriority?: number): Container<T> {
     const l = pos * 2 + 1;
     const r = l + 1;
     return (
-      (l < heap.length || isLt(pos, l)) && (r < heap.length || isLt(pos, r))
+      (l >= heap.length || isLt(pos, l)) && (r >= heap.length || isLt(pos, r))
     );
   }
   function push(item: T, priority?: number) {
@@ -110,8 +114,11 @@ export function MakePriorityQueue<T>(defaultPriority?: number): Container<T> {
     // this *could* cause problems with innerPri if it loops around at 53 bits...
     heap.push({ item, priority, innerPriority: innerPri++ });
     // Now 'up-heap'
-    // eslint-disable-next-line no-empty
-    for (let pos = heap.length; !upOrdered(pos); pos = swap(pos, upPos(pos))) {}
+    for (
+      let pos = heap.length - 1;
+      !upOrdered(pos);
+      pos = swap(pos, upPos(pos)) // eslint-disable-next-line no-empty
+    ) {}
   }
   function pop(): T | undefined {
     if (empty()) {
@@ -137,7 +144,7 @@ export function MakePriorityQueue<T>(defaultPriority?: number): Container<T> {
     return heap.length === 0;
   }
   function peek(): T | undefined {
-    if (!empty()) {
+    if (!empty() && heap[0] !== undefined) {
       return heap[0].item;
     }
   }

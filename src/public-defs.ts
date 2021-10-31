@@ -78,7 +78,7 @@ export interface MultiMap<K, V> {
 }
 
 export interface Container<T> {
-  push: (item: T) => void;
+  push: (item: T, priority?: number) => void;
   pop: () => T | undefined;
   size: () => number;
   peek: () => T | undefined;
