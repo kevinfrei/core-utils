@@ -1,4 +1,5 @@
-import { ReaderWriter, SyncFunc, Waiter } from './public-defs.js';
+import { MakeQueue } from './Containers.js';
+import { Container, ReaderWriter, SyncFunc, Waiter } from './public-defs.js';
 import { SeqNum } from './SeqNum.js';
 import * as Type from './types.js';
 
@@ -39,16 +40,16 @@ export function MakeWaiter(delay = 10): Waiter {
 // This is just a linear queue of waiters
 export function MakeWaitingQueue(delay = 10): Waiter {
   const getNextID = SeqNum();
-  const queue: string[] = [];
+  const queue: Container<string> = MakeQueue<string>();
   let active = '';
   async function wait(): Promise<boolean> {
     const myID = getNextID();
     queue.push(myID);
-    while (active !== '' && queue[0] !== myID) {
+    while (active !== '' && queue.peek() !== myID) {
       await Sleep(delay);
     }
     active = myID;
-    const theID = queue.shift();
+    const theID = queue.pop();
     if (theID !== myID) {
       throw new Error("This situation shouldn't ever occur");
     }
