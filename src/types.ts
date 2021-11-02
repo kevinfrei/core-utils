@@ -79,14 +79,7 @@ export function isBigInt(obj: unknown): obj is BigInt {
 }
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(obj: unknown): obj is Function {
-  return (
-    (obj !== null &&
-      typeof obj === 'object' &&
-      obj!.hasOwnProperty('constructor') &&
-      obj!.hasOwnProperty('call') &&
-      obj!.hasOwnProperty('apply')) ||
-    typeof obj === 'function'
-  );
+  return obj !== null && typeof obj === 'function';
 }
 
 export function isRegex(obj: unknown): obj is RegExp {
