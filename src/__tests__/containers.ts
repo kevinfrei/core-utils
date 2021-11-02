@@ -110,12 +110,14 @@ test('Priority Queue tests', () => {
   }
   max = -1;
   // Finally, mix it up
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 10000; i++) {
     const val = Math.floor(Math.random() * 100) + 1;
     pq.push(val, val);
   }
+  expect(pq.size()).toEqual(10000);
   for (const val of pq) {
     expect(val).toBeGreaterThanOrEqual(max);
     max = val;
   }
+  expect(pq.pop()).toBeUndefined();
 });

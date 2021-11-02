@@ -132,7 +132,7 @@ export function isArrayOfString(obj: unknown): obj is string[] {
 
 export function asArrayOfString(
   obj: unknown,
-  defVal: string[] | string | null,
+  defVal?: string[] | string,
 ): string[] {
   if (!isArray(obj)) {
     return isArray(defVal) ? defVal : [];
@@ -140,7 +140,7 @@ export function asArrayOfString(
   if (isArray(defVal)) {
     return isArrayOf(obj, isString) ? obj : defVal;
   } else {
-    return defVal === null
+    return defVal === null || defVal === undefined
       ? (obj.filter((val) => isString(val)) as string[])
       : obj.map((val) => asString(val, defVal));
   }
@@ -179,10 +179,18 @@ export function isSetOfString(obj: unknown): obj is Set<string> {
 export function isObjectOf<T>(
   obj: unknown,
   chk: typecheck<T>,
-): obj is { [key: string]: T } {
+): obj is { [key: string | symbol]: T } {
   if (!isObjectNonNull(obj)) return false;
   for (const k in obj) {
-    if (has(obj, k) && !chk(obj[k])) return false;
+    if (has(obj, k)) {
+      if (!chk(obj[k])) return false;
+      if (!isString(k)) return false;
+    }
+  }
+  for (const s of Object.getOwnPropertySymbols(obj)) {
+    if (!chk(obj[s as unknown as string])) {
+      return false;
+    }
   }
   return true;
 }
@@ -190,7 +198,9 @@ export function isObjectOf<T>(
 export function isObjectOfString(
   obj: unknown,
 ): obj is { [key: string]: string } {
-  return isObjectOf(obj, isString);
+  return (
+    isObjectOf(obj, isString) && Object.getOwnPropertySymbols(obj).length === 0
+  );
 }
 
 export function isPromise<T>(obj: unknown): obj is Promise<T> {
@@ -274,7 +284,7 @@ export function asSimpleObject(x: unknown): SimpleObject {
     return x;
   }
   if (isArray(x)) {
-    return x.map((val) => asSimpleObject(val));
+    return x.filter((val) => isSimpleObject(val)) as SimpleObject;
   }
   if (isObjectNonNull(x)) {
     const res: SimpleObject = {};
@@ -326,9 +336,6 @@ export function isSpecificType<T>(
   const keyCheckers: Map<string, (val: unknown) => boolean> = isMap(checkers)
     ? (checkers as Map<string, (val: unknown) => boolean>)
     : new Map(checkers);
-  if (!isObjectNonNull(obj)) {
-    return false;
-  }
   for (const fieldName of Object.keys(obj)) {
     if (obj[fieldName] === undefined || obj[fieldName] === null) {
       delete obj[fieldName];
