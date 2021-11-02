@@ -3,9 +3,13 @@ import {
   MakePriorityQueue,
   MakeQueue,
   MakeStack,
+  MultiMap,
+  Pickle,
+  SafelyUnpickle,
+  Type,
 } from '../index';
 
-test('Basic MultiMap tests', () => {
+test('Basic MultiMap tests', async () => {
   const mmap = MakeMultiMap<number, string>();
   expect(mmap).toBeDefined();
   expect(mmap.size()).toEqual(0);
@@ -18,7 +22,8 @@ test('Basic MultiMap tests', () => {
   mmap.set(0, 'zilch');
   expect(mmap.size()).toEqual(1);
   expect(item0.size).toEqual(2);
-  mmap.add(1, ['one', 'uno', 'un']);
+  mmap.add(1, ['one']);
+  mmap.add(1, ['uno', 'un']);
   expect(mmap.size()).toEqual(2);
   const item1 = mmap.get(1);
   expect(item1).toBeDefined();
@@ -34,6 +39,41 @@ test('Basic MultiMap tests', () => {
       expect(null).toBeTruthy();
     }
   }
+  let seen = 2;
+  await mmap.forEachAwaitable(async (val, key, map) => {
+    if (key === 0) seen -= 3;
+    if (key === 1) seen += 1;
+    seen += val.size;
+  });
+  expect(seen).toEqual(5);
+  seen = -1;
+  mmap.forEach(async (val, key, map) => {
+    if (key === 0) seen -= 3;
+    if (key === 1) seen += 1;
+    seen += val.size;
+  });
+  expect(seen).toEqual(2);
+  const json = Pickle(mmap);
+  const fromJson = SafelyUnpickle(
+    json,
+    (obj: unknown): obj is MultiMap<number, string> =>
+      Type.isMultiMapOf(obj, Type.isNumber, Type.isString),
+  );
+  expect(fromJson).toBeDefined();
+  if (!fromJson) throw Error('oops');
+  const json2 = Pickle(fromJson);
+  expect(json).toEqual(json2);
+  expect(fromJson.valueEqual(mmap)).toBeTruthy();
+  expect(mmap.remove(1, 'un')).toBeTruthy();
+  expect(mmap.remove(1, 'un')).toBeFalsy();
+  expect(mmap.remove(15, 'nope')).toBeFalsy();
+  const un = mmap.get(1);
+  expect(un).toBeDefined();
+  if (!un) throw Error('oopsy');
+  expect(un.size).toEqual(2);
+  expect(mmap.remove(1, 'uno')).toBeTruthy();
+  expect(mmap.remove(1, 'one')).toBeTruthy();
+  expect(mmap.remove(1, 'une')).toBeFalsy();
 });
 
 test('Queue tests', () => {

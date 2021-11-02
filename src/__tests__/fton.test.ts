@@ -10,26 +10,13 @@ import {
   Type,
   UnsafelyUnpickle,
 } from '../index';
+import { Unpickle } from '../Pickle';
 
-const TestSymbol = Symbol.for('pickler.Test');
-function MakeType() {
-  return {
-    value1: 'a',
-    value2: /a/gi,
-    [FreikTypeTag]: TestSymbol,
-    toJSON: () => 'My Test Thingy',
-  };
-}
-
-test('Vinegar', () => {
-  RegisterForPickling<unknown>(TestSymbol, (data) => MakeType());
-});
-
-test('FTON sanity', () => {
+test('[deprecated] FTON sanity', () => {
   FTON.stringify([]);
 });
 
-test('FTON set roundtrip', () => {
+test('[deprecated] FTON set roundtrip', () => {
   const set = [new Set<string>(['a', 'b'])];
   const setString = FTON.stringify(set);
   const newSet = FTON.parse(setString);
@@ -39,7 +26,7 @@ test('FTON set roundtrip', () => {
   expect(next).toEqual(setString);
 });
 
-test('FTON map roundtrip', () => {
+test('[deprecated] FTON map roundtrip', () => {
   const map = {
     a: new Map<string, string>([
       ['a', 'b'],
@@ -58,7 +45,7 @@ test('FTON map roundtrip', () => {
   expect(FTON.valEqual(newMap, map)).toBe(false);
 });
 
-test('FTON filtering', () => {
+test('[deprecated] FTON filtering', () => {
   expect(FTON.isFTON(new Date())).toBeFalsy();
   expect(FTON.isFTON(/abcd/)).toBe(false);
   expect(FTON.filter('a')).toBe('a');
@@ -66,6 +53,20 @@ test('FTON filtering', () => {
   expect(FTON.filter(otherObj)).toEqual({ a: 1, b: 2, c: null });
   const buf = { b: Buffer.from('as;lkasdfkjadl;sf') };
   expect(FTON.filter(buf)).toEqual({ b: null });
+});
+
+const TestSymbol = Symbol.for('pickler.Test');
+function MakeType() {
+  return {
+    value1: 'a',
+    value2: /a/gi,
+    [FreikTypeTag]: TestSymbol,
+    toJSON: () => 'My Test Thingy',
+  };
+}
+
+test('Vinegar', () => {
+  RegisterForPickling<unknown>(TestSymbol, (data) => MakeType());
 });
 
 test('Pickling sanity', () => {
@@ -109,4 +110,21 @@ test('MultiMap Pickling roundtrip', () => {
   const mmstr = Pickle(input);
   const newmm = UnsafelyUnpickle(mmstr);
   expect(input.valueEqual(newmm as MultiMap<string, string>)).toBeTruthy();
+});
+
+test('Other random pickling stuff', () => {
+  const sp = Pickle({ value: TestSymbol });
+  const rs = Unpickle(sp);
+  const has = Type.hasType(rs, 'value', Type.isSymbol);
+  expect(has).toBeTruthy();
+  if (!has) throw Error('oops');
+  expect(rs.value).toBe(TestSymbol);
+  const obj = {
+    regex: /a/i,
+    date: new Date(),
+    bi: BigInt('132341293874129387412'),
+  };
+  const other = Pickle(obj);
+  const ro = Unpickle(other);
+  expect(ro).toEqual(obj);
 });

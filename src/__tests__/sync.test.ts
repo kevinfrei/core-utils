@@ -1,7 +1,12 @@
 // TODO: Add a bunch of tests for the synchronization things
 
-import { MakeReaderWriter } from '..';
-import { DebouncedDelay, DebouncedEvery, Sleep } from '../Sync';
+import {
+  DebouncedDelay,
+  DebouncedEvery,
+  MakeReaderWriter,
+  MaybeWait,
+  Sleep,
+} from '../index';
 
 jest.setTimeout(15000);
 
@@ -122,4 +127,15 @@ test('ReaderWriter testing', async () => {
   }
   await Promise.all([reader(), writer()]);
   expect(count).toEqual(400);
+});
+
+test('Random sync stuff', async () => {
+  const pfunc = (): Promise<boolean> => {
+    return new Promise((resolve) => resolve(true));
+  };
+  const sfunc = (): boolean => {
+    return false;
+  };
+  expect(await MaybeWait(pfunc)).toBeTruthy();
+  expect(await MaybeWait(sfunc)).toBeFalsy();
 });

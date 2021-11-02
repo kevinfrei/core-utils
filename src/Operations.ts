@@ -10,13 +10,7 @@ export function SetEqual<T>(s1: Set<T>, s2: Set<T>): boolean {
   return true;
 }
 
-export function ArraySetEqual<T>(a1?: T[], a2?: T[]): boolean {
-  if ((a1 === undefined && a2 === undefined) || (a1 === null && a2 === null)) {
-    return true;
-  }
-  if (!a1 || !a2) {
-    return false;
-  }
+export function ArraySetEqual<T>(a1: T[], a2: T[]): boolean {
   if (a1.length !== a2.length) {
     return false;
   }

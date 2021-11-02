@@ -15,8 +15,11 @@ export function MakeMultiMap<K, V>(
   const remove = (key: K, value: V): boolean => {
     const vals = get(key);
     if (vals !== undefined) {
-      vals.delete(value);
-      return vals.size === 0 ? theMap.delete(key) : true;
+      const res = vals.delete(value);
+      if (vals.size === 0) {
+        theMap.delete(key);
+      }
+      return res;
     }
     return false;
   };
