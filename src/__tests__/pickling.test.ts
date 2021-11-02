@@ -12,6 +12,7 @@ import {
 } from '../index';
 import { Unpickle } from '../Pickle';
 
+/*
 test('[deprecated] FTON sanity', () => {
   FTON.stringify([]);
 });
@@ -54,6 +55,7 @@ test('[deprecated] FTON filtering', () => {
   const buf = { b: Buffer.from('as;lkasdfkjadl;sf') };
   expect(FTON.filter(buf)).toEqual({ b: null });
 });
+*/
 
 const TestSymbol = Symbol.for('pickler.Test');
 function MakeType() {

@@ -64,6 +64,13 @@ test('Basic MultiMap tests', async () => {
   const json2 = Pickle(fromJson);
   expect(json).toEqual(json2);
   expect(fromJson.valueEqual(mmap)).toBeTruthy();
+  fromJson.delete(0);
+  expect(fromJson.valueEqual(mmap)).toBeFalsy();
+  fromJson.set(0, 'zilch');
+  fromJson.set(0, 'zero');
+  expect(fromJson.valueEqual(mmap)).toBeTruthy();
+  fromJson.remove(1, 'uno');
+  expect(fromJson.valueEqual(mmap)).toBeFalsy();
   expect(mmap.remove(1, 'un')).toBeTruthy();
   expect(mmap.remove(1, 'un')).toBeFalsy();
   expect(mmap.remove(15, 'nope')).toBeFalsy();

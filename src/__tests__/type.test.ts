@@ -43,7 +43,7 @@ test('isDate', () => {
   expect(isDate(new Date())).toBeTruthy();
 });
 test('isSpecificType', () => {
-  const theType = { a: 1, b: () => 0, c: new Set<string>() };
+  const theType = { a: 1, b: () => 0, c: new Set<string>(['a']) };
   const fieldTypes: TypeCheckPair[] = [
     ['a', isNumber],
     ['b', isFunction],
@@ -51,32 +51,22 @@ test('isSpecificType', () => {
   ];
   const required = ['a', 'b'];
   expect(isSpecificType(theType, fieldTypes, required)).toBeTruthy();
+  expect(isSpecificType(theType, fieldTypes)).toBeTruthy();
+  expect(isSpecificType(theType, new Map(fieldTypes), required)).toBeTruthy();
   expect(
-    isSpecificType(theType, new Map(fieldTypes), new Set(required)),
+    isSpecificType({ a: 2, b: () => '' }, fieldTypes, required),
   ).toBeTruthy();
+  expect(isSpecificType({ a: 2, b: 1 }, fieldTypes, required)).toBeFalsy();
   expect(
-    isSpecificType({ a: 2, b: () => '' }, fieldTypes, new Set(required)),
-  ).toBeTruthy();
-  expect(
-    isSpecificType({ a: 2, b: 1 }, fieldTypes, new Set(required)),
+    isSpecificType({ a: 2, c: new Set(['a', 'b']) }, fieldTypes, required),
   ).toBeFalsy();
+  expect(isSetOfString(new Set<number>([1, 2]))).toBeFalsy();
+  expect(isObjectOfString('asdf')).toBeFalsy();
+  expect(isObjectOfString({ a: 'asdf', b: 1 })).toBeFalsy();
+  expect(isSpecificType({ a: 2, c: 1 }, fieldTypes, required)).toBeFalsy();
+  expect(isSpecificType(null, fieldTypes, required)).toBeFalsy();
   expect(
-    isSpecificType(
-      { a: 2, c: new Set(['a', 'b']) },
-      fieldTypes,
-      new Set(required),
-    ),
-  ).toBeFalsy();
-  expect(
-    isSpecificType({ a: 2, c: 1 }, fieldTypes, new Set(required)),
-  ).toBeFalsy();
-  expect(isSpecificType(null, fieldTypes, new Set(required))).toBeFalsy();
-  expect(
-    isSpecificType(
-      { a: 2, b: () => '', d: null },
-      fieldTypes,
-      new Set(required),
-    ),
+    isSpecificType({ a: 2, b: () => '', d: null }, fieldTypes, required),
   ).toBeTruthy();
   expect(
     isSpecificType(
@@ -109,6 +99,7 @@ test('asArrayOfString tests', () => {
   expect(asArrayOfString(() => [], ['bcd'])).toEqual(['bcd']);
   expect(asArrayOfString([1, 'a'], 'b')).toEqual(['b', 'a']);
   expect(asArrayOfString(['1', 1], ['nope'])).toEqual(['nope']);
+  expect(asArrayOfString(['1', '1'], ['nope'])).toEqual(['1', '1']);
 });
 test('Miscellaneous type checks', () => {
   expect(isObjectOfString({ a: 'b' })).toBeTruthy();
@@ -174,6 +165,7 @@ test('MultiMap type tests', () => {
   expect(isMultiMapOf(mmns, isNumber, isString)).toBeTruthy();
   expect(isMultiMapOf(mmns, isNumber, isNumber)).toBeFalsy();
   expect(isMultiMapOf(mmns, isString, isNumber)).toBeFalsy();
+  expect(isMultiMapOf({}, isNumber, isNumber)).toBeFalsy();
 });
 test('cleansing', () => {
   const foo = { a: 1, b: 0, c: undefined, d: null };

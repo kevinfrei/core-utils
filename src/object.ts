@@ -1,14 +1,5 @@
 import * as Type from './types.js';
 
-export const deQuote = (str: string): string => str.replace(/\"/g, '~!~');
-
-export function reQuote(str: string): { [key: string]: string } {
-  let res: string = str.replace(/\\/g, '\\\\');
-  res = res.replace(/\"/g, '\\"');
-  res = res.replace(/~!~/g, '"');
-  return JSON.parse(res) as { [key: string]: string };
-}
-
 export function prefixObj(
   str: string,
   obj: { [key: string]: string },

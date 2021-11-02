@@ -47,6 +47,7 @@ function SetUnpickle(val: unknown): Set<any> | undefined {
 
 function SymbolPickle(val: symbol): string {
   const theKey = Symbol.keyFor(val);
+  /* istanbul ignore next */
   if (theKey === undefined)
     throw new Error('Unable to get a key for a symbol for pickling');
   return theKey;
@@ -61,9 +62,10 @@ function RegexPickle(val: RegExp): { source: string; flags: string } {
 }
 
 function RegexUnpickle(val: unknown): RegExp | undefined {
-  return Type.hasStr(val, 'source') && Type.hasStr(val, 'flags')
-    ? new RegExp(val.source, val.flags)
-    : undefined;
+  /* istanbul ignore else */
+  if (Type.hasStr(val, 'source') && Type.hasStr(val, 'flags')) {
+    return new RegExp(val.source, val.flags);
+  }
 }
 
 function DatePickle(val: Date): string {
@@ -74,6 +76,7 @@ function DateUnpickle(val: unknown): Date | undefined {
   try {
     return Type.isString(val) ? new Date(val) : undefined;
   } catch (e) {}
+  /* istanbul ignore next */
   return undefined;
 }
 
@@ -85,6 +88,7 @@ function BigIntUnpickle(val: unknown): BigInt | undefined {
   try {
     return Type.isString(val) ? BigInt(val) : undefined;
   } catch (e) {}
+  /* istanbul ignore next */
   return undefined;
 }
 

@@ -38,6 +38,7 @@ export function FromPathSafeName(safe: string): string {
     }
     // Check to see if we're safe
     const nextUnderscore = safe.indexOf('-', i + 1);
+    /* istanbul ignore next */
     if (nextUnderscore < 0) {
       throw Error('Non-terminated encoding.');
     }
@@ -50,6 +51,7 @@ export function FromPathSafeName(safe: string): string {
       // Let's make sure that this number is formatted properly
       const numStr = safe.substring(i + 1, nextUnderscore);
       const theMatch = /^[0-9A-Z]+$/.exec(numStr);
+      /* istanbul ignore else */
       if (theMatch !== null) {
         res.push(
           String.fromCharCode(Number.parseInt(numStr.toLowerCase(), 36)),
@@ -70,7 +72,9 @@ export function FromPathSafeName(safe: string): string {
  */
 export function ToU8(val: number): string {
   const res = [];
+  /* istanbul ignore next */
   if (val > Number.MAX_SAFE_INTEGER || val < 0 || Math.floor(val) !== val) {
+    /* istanbul ignore next */
     throw new Error(`${val} out of range for U8 encoding`);
   }
   do {
@@ -87,6 +91,7 @@ export function FromU8(val: string): number {
   let res = 0;
   for (let i = val.length - 1; i >= 0; i--) {
     const code = val.charCodeAt(i) - 0x1400;
+    /* istanbul ignore next */
     if (code < 0 || code > 0x1ff) {
       throw new Error(`Character ${val[i]} (${code}) out of range`);
     }
@@ -98,6 +103,7 @@ export function FromU8(val: string): number {
 
 export function ToB64(val: number): string {
   const res = [];
+  /* istanbul ignore next */
   if (val > Number.MAX_SAFE_INTEGER || val < 0 || Math.floor(val) !== val) {
     throw new Error(`${val} out of range for B64 encoding`);
   }
@@ -138,6 +144,7 @@ export function FromB64(val: string): number {
     } else if (code === 47) {
       res += 63;
     } else {
+      /* istanbul ignore next */
       throw new Error(`Character ${val[i]} (${code}) out of range`);
     }
   }

@@ -177,7 +177,6 @@ export function isObjectOf<T>(
   for (const k in obj) {
     if (has(obj, k)) {
       if (!chk(obj[k])) return false;
-      if (!isString(k)) return false;
     }
   }
   for (const s of Object.getOwnPropertySymbols(obj)) {

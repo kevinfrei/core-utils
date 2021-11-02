@@ -1,7 +1,7 @@
 {
   "name": "@freik/core-utils",
-  "version": "0.33.1",
-  "description": "FTON and ObjUtil helpers",
+  "version": "0.34.0",
+  "description": "Core set of TS/JS helpers utilities (node & www)",
   "author": "Kevin Frei (kevinfrei@hotmail.com)",
   "license": "Unlicense",
   "bugs": {
@@ -28,7 +28,7 @@
     "postinstall": "husky install",
     "prepublishOnly": "yarn test && yarn lint && pinst --disable",
     "postpublish": "pinst --enable",
-    "prepare": "yarn build",
+    "prepare": "yarn cleanbuild",
     "format": "prettier --write \"src/**/*.ts\" \"*.md\" \"*.json\" \".vscode/*.json\"",
     "lint": "eslint --fix --ext .ts src",
     "preversion": "yarn lint",

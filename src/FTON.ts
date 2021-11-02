@@ -1,5 +1,6 @@
 import type { FTONData, FTONMap, FTONObject } from './public-defs';
 import * as Type from './types.js';
+/* istanbul ignore file */
 
 // Deprecated: Use Pickling and/or SimpleObject instead of FTONData
 export function isFTON(x: unknown): x is FTONData {

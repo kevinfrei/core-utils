@@ -33,10 +33,11 @@ export function MakeMultiMap<K, V>(
     thisArg?: any,
   ): Promise<void> => {
     for (const [k, v] of theMap) {
-      if (thisArg) {
-        await fn.apply(thisArg, [v, k, multiMap]);
-      } else {
+      /* istanbul ignore else */
+      if (!thisArg) {
         await fn(v, k, multiMap);
+      } else {
+        await fn.apply(thisArg, [v, k, multiMap]);
       }
     }
   };
