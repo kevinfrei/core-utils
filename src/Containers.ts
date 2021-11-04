@@ -5,6 +5,9 @@ export function MakeQueue<T>(...items: T[]): Container<T> {
   function push(item: T) {
     q.push(item);
   }
+  function pushMany(elems: Iterable<T>) {
+    for (const c of elems) q.push(c);
+  }
   function pop(): T | undefined {
     return q.shift();
   }
@@ -22,13 +25,24 @@ export function MakeQueue<T>(...items: T[]): Container<T> {
   function* iterator(): Generator<T> {
     while (!empty()) yield pop()!;
   }
-  return { push, pop, size, peek, empty, [Symbol.iterator]: iterator };
+  return {
+    push,
+    pushMany,
+    pop,
+    size,
+    peek,
+    empty,
+    [Symbol.iterator]: iterator,
+  };
 }
 
 export function MakeStack<T>(...items: T[]): Container<T> {
   const s: T[] = [...items];
   function push(item: T) {
     s.push(item);
+  }
+  function pushMany(elems: Iterable<T>) {
+    for (const c of elems) s.push(c);
   }
   function pop(): T | undefined {
     return s.pop();
@@ -47,7 +61,15 @@ export function MakeStack<T>(...items: T[]): Container<T> {
   function* iterator(): Generator<T> {
     while (!empty()) yield pop()!;
   }
-  return { push, pop, size, peek, empty, [Symbol.iterator]: iterator };
+  return {
+    push,
+    pushMany,
+    pop,
+    size,
+    peek,
+    empty,
+    [Symbol.iterator]: iterator,
+  };
 }
 
 type Elem<T> = { item: T; priority: number; innerPriority: number };
@@ -120,6 +142,9 @@ export function MakePriorityQueue<T>(defaultPriority?: number): Container<T> {
       pos = swap(pos, upPos(pos)) // eslint-disable-next-line no-empty
     ) {}
   }
+  function pushMany(elems: Iterable<T>, priority?: number) {
+    for (const c of elems) push(c, priority);
+  }
   function pop(): T | undefined {
     if (empty()) {
       return;
@@ -151,5 +176,13 @@ export function MakePriorityQueue<T>(defaultPriority?: number): Container<T> {
   function* iterator(): Generator<T> {
     while (!empty()) yield pop()!;
   }
-  return { push, pop, size, peek, empty, [Symbol.iterator]: iterator };
+  return {
+    push,
+    pushMany,
+    pop,
+    size,
+    peek,
+    empty,
+    [Symbol.iterator]: iterator,
+  };
 }

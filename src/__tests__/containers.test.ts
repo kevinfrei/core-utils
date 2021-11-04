@@ -64,13 +64,21 @@ test('Basic MultiMap tests', async () => {
   const json2 = Pickle(fromJson);
   expect(json).toEqual(json2);
   expect(fromJson.valueEqual(mmap)).toBeTruthy();
+  expect(mmap.valueEqual(fromJson)).toBeTruthy();
   fromJson.delete(0);
   expect(fromJson.valueEqual(mmap)).toBeFalsy();
+  expect(mmap.valueEqual(fromJson)).toBeFalsy();
+  fromJson.set(5, 'cinq');
+  expect(fromJson.valueEqual(mmap)).toBeFalsy();
+  expect(mmap.valueEqual(fromJson)).toBeFalsy();
+  fromJson.delete(5);
   fromJson.set(0, 'zilch');
   fromJson.set(0, 'zero');
   expect(fromJson.valueEqual(mmap)).toBeTruthy();
+  expect(mmap.valueEqual(fromJson)).toBeTruthy();
   fromJson.remove(1, 'uno');
   expect(fromJson.valueEqual(mmap)).toBeFalsy();
+  expect(mmap.valueEqual(fromJson)).toBeFalsy();
   expect(mmap.remove(1, 'un')).toBeTruthy();
   expect(mmap.remove(1, 'un')).toBeFalsy();
   expect(mmap.remove(15, 'nope')).toBeFalsy();
@@ -96,6 +104,7 @@ test('Queue tests', () => {
   for (let i = 0; i < 10; i++) {
     q.push(i);
   }
+  q.pushMany([10, 11, 12, 13]);
   let j = 0;
   for (const v of q) {
     expect(v).toEqual(j++);
@@ -120,7 +129,8 @@ test('Stack tests', () => {
   for (let i = 0; i < 10; i++) {
     s.push(i);
   }
-  let j = 9;
+  s.pushMany([10, 11, 12, 13]);
+  let j = 13;
   for (const v of s) {
     expect(v).toEqual(j--);
   }
@@ -161,10 +171,16 @@ test('Priority Queue tests', () => {
     const val = Math.floor(Math.random() * 100) + 1;
     pq.push(val, val);
   }
-  expect(pq.size()).toEqual(10000);
+  pq.pushMany([-1, -1, -1]);
+  expect(pq.size()).toEqual(10003);
   for (const val of pq) {
     expect(val).toBeGreaterThanOrEqual(max);
     max = val;
   }
   expect(pq.pop()).toBeUndefined();
+  const dpq = MakePriorityQueue<string>();
+  dpq.push('world', 2);
+  dpq.push('hello');
+  expect(dpq.pop()).toEqual('hello');
+  expect(dpq.pop()).toEqual('world');
 });

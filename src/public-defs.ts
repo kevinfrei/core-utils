@@ -79,6 +79,7 @@ export interface MultiMap<K, V> {
 
 export interface Container<T> {
   push: (item: T, priority?: number) => void;
+  pushMany: (items: Iterable<T>, priority?: number) => void;
   pop: () => T | undefined;
   size: () => number;
   peek: () => T | undefined;
