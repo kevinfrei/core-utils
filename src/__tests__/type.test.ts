@@ -5,16 +5,19 @@ import {
   asNumber,
   asNumberOrString,
   asSimpleObject,
+  asString,
   cleanseKeys,
   is2TupleOf,
   is3TupleOf,
   isArray,
   isDate,
   isFunction,
+  isMapOf,
   isMapOfStrings,
   isMultiMapOf,
   isNull,
   isNumber,
+  isObject,
   isObjectOf,
   isObjectOfString,
   isRegex,
@@ -22,6 +25,8 @@ import {
   isSimpleObject,
   isSpecificType,
   isString,
+  toArrayOfString,
+  toString,
 } from '../types';
 
 test('Object.isString empty', () => {
@@ -76,12 +81,24 @@ test('isSpecificType', () => {
     ),
   ).toBeFalsy();
 });
-test('A few extra items', () => {
+test('The simple is/as tests', () => {
   expect(asNumber({}, 1)).toEqual(1);
   expect(asNumber(1 / 0, 1)).toEqual(Number.POSITIVE_INFINITY);
   expect(asNumberOrString('a', 0)).toEqual('a');
   expect(asNumberOrString({}, 'b')).toEqual('b');
   expect(asNumberOrString(null, 3)).toEqual(3);
+  expect(asString(1, 'b')).toEqual('b');
+  expect(toString(1, 'b')).toEqual('1');
+  expect(toString('s')).toEqual('s');
+  expect(toString(undefined)).toEqual('');
+  const myThing = { toString: () => 'myThing' };
+  expect(toString(myThing)).toEqual('myThing');
+  expect(toString({ a: 1 })).toEqual('');
+  expect(asString(myThing)).toEqual('');
+  expect(isObject({})).toBeTruthy();
+  expect(isObject(1)).toBeFalsy();
+  expect(isObject(null)).toBeTruthy();
+  expect(isObject(undefined)).toBeFalsy();
   expect(isNull(null)).toBeTruthy();
   expect(isNull(undefined)).toBeFalsy();
   expect(isNull('')).toBeFalsy();
@@ -92,14 +109,22 @@ test('A few extra items', () => {
   val.tester = 'foo';
   expect(isFunction(val)).toBeTruthy();
 });
-test('asArrayOfString tests', () => {
-  const strs = asArrayOfString([0, 'a']);
-  expect(strs).toEqual(['a']);
+test('as/toArrayOfString tests', () => {
+  expect(asArrayOfString([0, 'a'])).toEqual(['a']);
   expect(asArrayOfString({ a: 1 })).toEqual([]);
   expect(asArrayOfString(() => [], ['bcd'])).toEqual(['bcd']);
   expect(asArrayOfString([1, 'a'], 'b')).toEqual(['b', 'a']);
+  expect(asArrayOfString([{}, 'a'], 'b')).toEqual(['b', 'a']);
   expect(asArrayOfString(['1', 1], ['nope'])).toEqual(['nope']);
   expect(asArrayOfString(['1', '1'], ['nope'])).toEqual(['1', '1']);
+  expect(toArrayOfString([1, 2, 'a'])).toEqual(['1', '2', 'a']);
+  expect(toArrayOfString({}, ['hello'])).toEqual(['hello']);
+  expect(toArrayOfString({})).toEqual([]);
+  expect(toArrayOfString([{}, {}], 'a')).toEqual(['a', 'a']);
+  expect(toArrayOfString([{}, 'A'])).toEqual(['A']);
+  expect(toArrayOfString([{}, 'A'], 'B')).toEqual(['B', 'A']);
+  expect(toArrayOfString([{}, 'A'], ['hola'])).toEqual(['hola']);
+  expect(toArrayOfString(['B', 'A'], ['hola'])).toEqual(['B', 'A']);
 });
 test('Miscellaneous type checks', () => {
   expect(isObjectOfString({ a: 'b' })).toBeTruthy();
@@ -131,6 +156,7 @@ test('Miscellaneous type checks', () => {
       ]),
     ),
   ).toBeFalsy();
+  expect(isMapOf(1, isString, isNull)).toBeFalsy();
   expect(is2TupleOf([1, 'a'], isNumber, isString)).toBeTruthy();
   expect(is2TupleOf([1, 2], isNumber, isString)).toBeFalsy();
   expect(is3TupleOf([1, 2, 'a'], isNumber, isNumber, isString)).toBeTruthy();

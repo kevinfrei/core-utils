@@ -1,3 +1,10 @@
+/**
+ * A set of type checking helpers mostly for TypeScript, but
+ * super helper for normal JavaScript if you don't hate yourself, too.
+ *
+ * @module Type
+ *
+ */
 import { MultiMapTypeTag } from './private-defs.js';
 import {
   FreikTypeTag,
@@ -7,93 +14,233 @@ import {
   TypeCheckPair,
 } from './public-defs.js';
 
+/**
+ * Type check for undefined
+ *
+ * @param obj {unknown}
+ * @returns {obj_is<undefined>} True if undefined, False otherwises
+ */
 export function isUndefined(obj: unknown): obj is undefined {
   return obj === undefined;
 }
 
+/**
+ * Type check for null
+ *
+ * @param obj {unknown}
+ * @returns {obj_is<null>} True if null, False otherwise
+ */
 export function isNull(obj: unknown): obj is null {
   return obj === null;
 }
 
+/**
+ * Type check for a non-null object
+ *
+ * @param obj {unknown}
+ * @returns {obj_is<Object>} True if is an object & it's "non-null", false otherwise
+ */
 export function isObjectNonNull(
   obj: unknown,
 ): obj is { [key: string]: unknown } {
   return typeof obj === 'object' && !!obj;
 }
 
+/**
+ * Type check for object (or null)
+ *
+ * @param {unknown} obj
+ * @returns {obj_is<Object|null>} True if obj is null, or an object (of any type)
+ */
 export function isObject(
   obj: unknown,
 ): obj is { [key: string]: unknown } | null {
   return typeof obj === 'object';
 }
 
+/**
+ * Type check for array
+ *
+ * @param obj {unknown}
+ * @returns {obj_is<unknown[]>} True if obj is an array (of any type)
+ */
 export function isArray(obj: unknown): obj is unknown[] {
   return Array.isArray(obj);
 }
 
+/**
+ * Type check for 2 element tuples
+ *
+ * @param obj {unknown}
+ * @returns {obj_is<Tuple<unknown, unknown>>} True of obj is a 2 element tuple (of any type)
+ */
 export function is2Tuple(obj: unknown): obj is [unknown, unknown] {
   return Array.isArray(obj) && obj.length === 2;
 }
 
+/**
+ * Type check for 3 element tuples
+ *
+ * @param obj {unknown}
+ * @returns {obj_is<Tuple<unknown, unknown, unknown>>} True of obj is a 2 element tuple (of any type)
+ */
 export function is3Tuple(obj: unknown): obj is [unknown, unknown, unknown] {
   return Array.isArray(obj) && obj.length === 3;
 }
 
+/**
+ * Type check for a string
+ *
+ * @param obj {unknown}
+ * @returns {obj_is<string>} True if obj is a string
+ */
 export function isString(obj: unknown): obj is string {
   return typeof obj === 'string';
 }
-
-export function asString(obj: unknown, notStr: string): string {
+/**
+ * Type filtering for strings. Will NOT coerce the thing to a string..
+ *
+ * @param  {unknown} obj
+ * @param  {string} [notStr = ''] - the value to return if obj is not a string
+ * @returns {string} either obj or notStr (whichever is a string)
+ */
+export function asString(obj: unknown, notStr = ''): string {
   return isString(obj) ? obj : notStr;
 }
 
+/**
+ * Type coercion to a string. Will try to *lightly* coerce the thing to a string if possible.
+ *
+ * @param  {unknown} obj
+ * @param  {string} [notStr = ''] - the value to return if obj is not a string
+ * @returns {string} either obj, obj.toString(), or notStr
+ */
+export function toString(obj: unknown, notStr = ''): string {
+  if (isString(obj)) {
+    return obj;
+  }
+  if (isNumber(obj) || isDate(obj) || isBoolean(obj) || isBigInt(obj)) {
+    try {
+      const val = '' + (obj as any as string);
+      if (isString(val)) {
+        return val;
+      }
+    } catch (e) {}
+  }
+  if (hasType(obj, 'toString', isFunction)) {
+    try {
+      const res: unknown = obj.toString();
+      // A bit of a hack...
+      if (isString(res) && res !== '[object Object]') {
+        return res;
+      }
+    } catch (e) {}
+  }
+  return notStr;
+}
+
+/**
+ * Type check for number (and not NaN)
+ *
+ * @param  {unknown} obj
+ * @returns {obj_is<number>} obj is a number and NOT a NaN
+ */
 export function isNumber(obj: unknown): obj is number {
   return typeof obj === 'number' && !isNaN(obj - 0);
 }
-
+/**
+ * If obj is a number (and not a NaN!) return that value, otherwise, return notNum
+ * @param  {unknown} obj
+ * @param  {number} notNum
+ * @returns {number} obj, if it's a number, otherwise returns nonNum
+ */
 export function asNumber(obj: unknown, notNum: number): number {
   return isNumber(obj) ? obj : notNum;
 }
-
+/**
+ * Type check for number (and not NaN) or a string
+ *
+ * @param  {unknown} obj
+ * @returns {obj_is<number|string>} True if obj is a number and NOT a NaN, or a string
+ */
 export function isNumberOrString(obj: unknown): obj is number | string {
   return isString(obj) || isNumber(obj);
 }
-
+/**
+ * If obj is a number (and not NaN) or a string, return that values, otherwise return notNumOrStr
+ * @param  {unknown} obj
+ * @param  {number|string} notNumOrStr
+ * @returns {number|string} obj, if it's a number and NOT a NaN, or a string, otherwise notNumOrStr
+ */
 export function asNumberOrString(
   obj: unknown,
   notNumOrStr: number | string,
 ): number | string {
   return isNumberOrString(obj) ? obj : notNumOrStr;
 }
-
+/**
+ * Type check for boolean
+ * @param  {unknown} obj
+ * @returns {obj_is<boolean>}
+ */
 export function isBoolean(obj: unknown): obj is boolean {
   return typeof obj === 'boolean';
 }
-
+/**
+ * Type check for Date
+ * @param  {unknown} obj
+ * @returns {obj_is<Date>}
+ */
 export function isDate(obj: unknown): obj is Date {
-  return isObjectNonNull(obj) && obj instanceof Date;
+  return obj instanceof Date;
 }
-
+/**
+ * Type check for BigInt
+ * @param  {unknown} obj
+ * @returns {obj_is<BigInt>}
+ */
 export function isBigInt(obj: unknown): obj is BigInt {
   return typeof obj === 'bigint';
 }
+/**
+ * Type check for Function
+ * @param  {unknown} obj
+ * @returns {obj_is<Function>}
+ */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(obj: unknown): obj is Function {
-  return obj !== null && typeof obj === 'function';
+  return typeof obj === 'function';
 }
-
+/**
+ * Type check for RegExp
+ * @param  {unknown} obj
+ * @returns {obj_is<RegExp>}
+ */
 export function isRegex(obj: unknown): obj is RegExp {
-  return obj !== null && typeof obj === 'object' && obj instanceof RegExp;
+  return obj instanceof RegExp;
 }
-
+/**
+ * Type check for Map
+ * @param  {unknown} obj
+ * @returns {obj_is<Map<unknown,unknown>>}
+ */
 export function isMap(obj: unknown): obj is Map<unknown, unknown> {
-  return isObjectNonNull(obj) && obj instanceof Map;
+  return obj instanceof Map;
 }
-
+/**
+ * Type check for Set
+ * @param  {unknown} obj
+ * @returns {obj_is<Set<unknown>>}
+ */
 export function isSet(obj: unknown): obj is Set<unknown> {
-  return isObjectNonNull(obj) && obj instanceof Set;
+  return obj instanceof Set;
 }
-
+/**
+ * Type check for T[] (Array<T>)
+ * @param  {unknown} obj
+ * @param  {typecheck<T>} chk - TypeCheck function for Type T
+ * @returns {obj_is<T[]>}
+ */
 export function isArrayOf<T>(obj: unknown, chk: typecheck<T>): obj is T[] {
   if (!isArray(obj)) return false;
   for (const t of obj) {
@@ -101,7 +248,13 @@ export function isArrayOf<T>(obj: unknown, chk: typecheck<T>): obj is T[] {
   }
   return true;
 }
-
+/**
+ * Type check for Tuple of [T, U]
+ * @param  {unknown} obj
+ * @param  {typecheck<T>} t - TypeCheck function for Type T
+ * @param  {typecheck<U>} u - TypeCheck function for Type U
+ * @returns {obj_is<Tuple<T, U>>}
+ */
 export function is2TupleOf<T, U>(
   obj: unknown,
   t: typecheck<T>,
@@ -109,7 +262,14 @@ export function is2TupleOf<T, U>(
 ): obj is [T, U] {
   return is2Tuple(obj) && t(obj[0]) && u(obj[1]);
 }
-
+/**
+ * Type check for Tuple of [T, U, V]
+ * @param  {unknown} obj
+ * @param  {typecheck<T>} t - TypeCheck function for Type T
+ * @param  {typecheck<U>} u - TypeCheck function for Type U
+ * @param  {typecheck<V>} v - TypeCheck function for Type U
+ * @returns {obj_is<Tuple<T, U, V>>}
+ */
 export function is3TupleOf<T, U, V>(
   obj: unknown,
   t: typecheck<T>,
@@ -118,11 +278,23 @@ export function is3TupleOf<T, U, V>(
 ): obj is [T, U, V] {
   return is3Tuple(obj) && t(obj[0]) && u(obj[1]) && v(obj[2]);
 }
-
+/**
+ * Type check for string[]
+ * @param  {unknown} obj
+ * @returns {obj_is<string[]>}
+ */
 export function isArrayOfString(obj: unknown): obj is string[] {
   return isArrayOf(obj, isString);
 }
-
+/**
+ * Filter obj to an array of strings. If defVal is an array of strings, even if
+ * a single element of obj is not a string, defVal will be used instead. If
+ * defVal is a string, it will be used to replace any values in obj that are not
+ * strings. If defVal isn't provided, only strings will be left in obj.
+ * @param  {unknown} obj
+ * @param  {string[]|string} defVal?
+ * @returns {string[]}
+ */
 export function asArrayOfString(
   obj: unknown,
   defVal?: string[] | string,
@@ -138,7 +310,45 @@ export function asArrayOfString(
       : obj.map((val) => asString(val, defVal));
   }
 }
-
+/**
+ * Coerce obj to an array of strings. If defVal is an array of strings, even if
+ * a single element of obj is not a string, defVal will be used instead. If
+ * defVal is a string, it will be used to replace any values in obj that cannot
+ * be coerced to strings. If defVal isn't provided, only strings, or items that
+ * can be coerced to strings, will be left in obj.
+ * @param  {unknown} obj
+ * @param  {string[]|string} defVal?
+ * @returns {string[]}
+ */
+export function toArrayOfString(
+  obj: unknown,
+  defVal?: string[] | string,
+): string[] {
+  if (!isArray(obj)) {
+    // Return either defVal or an empty string
+    return isArray(defVal) ? defVal : [];
+  }
+  const defStr = '$$HIGHLY@@UNLIKELY!!';
+  const mapped = obj.map((val) => toString(val, defStr));
+  if (isArray(defVal)) {
+    // if we have *any* elements that can't be coerced to a string, use defVal
+    if (mapped.indexOf(defStr) >= 0) {
+      return defVal;
+    } else {
+      return mapped;
+    }
+  }
+  return isNull(defVal) || isUndefined(defVal)
+    ? mapped.filter((val) => val !== defStr)
+    : mapped.map((val) => (val === defStr ? defVal : val));
+}
+/**
+ * Type check for Map<K, V>
+ * @param  {unknown} obj
+ * @param  {typecheck<K>} key - A K type checking function (obj:unknown) => obj is K
+ * @param  {typecheck<V>} val - A V type checking function (obj:unknown) => obj is V
+ * @returns {obj_is<Map<K, V>>}
+ */
 export function isMapOf<K, V>(
   obj: unknown,
   key: typecheck<K>,
@@ -152,11 +362,20 @@ export function isMapOf<K, V>(
   }
   return true;
 }
-
+/**
+ * Type check for Map<string, string>
+ * @param  {unknown} obj
+ * @returns {obj_is<Map<string, string>>}
+ */
 export function isMapOfStrings(obj: unknown): obj is Map<string, string> {
   return isMapOf(obj, isString, isString);
 }
-
+/**
+ * Type check for Set<T>
+ * @param  {unknown} obj
+ * @param  {typecheck<T>} chk - A T type checking function (obj:unknow) => obj is T
+ * @returns {obj_is<Set<T>>}
+ */
 export function isSetOf<T>(obj: unknown, chk: typecheck<T>): obj is Set<T> {
   if (!isSet(obj)) return false;
   for (const t of obj) {
@@ -164,11 +383,20 @@ export function isSetOf<T>(obj: unknown, chk: typecheck<T>): obj is Set<T> {
   }
   return true;
 }
-
+/**
+ * Type check for Set<string>
+ * @param  {unknown} obj
+ * @returns {obj_is<Set<string>>}
+ */
 export function isSetOfString(obj: unknown): obj is Set<string> {
   return isSetOf(obj, isString);
 }
-
+/**
+ * Type check of { [key: string | symbol]: T} types
+ * @param  {unknown} obj
+ * @param  {typecheck<T>} chk - a T type-checking function (obj: unknown) => obj is T
+ * @returns {obj_is<{any:T}>}
+ */
 export function isObjectOf<T>(
   obj: unknown,
   chk: typecheck<T>,
@@ -181,74 +409,108 @@ export function isObjectOf<T>(
   }
   for (const s of Object.getOwnPropertySymbols(obj)) {
     if (!chk(obj[s as unknown as string])) {
+      // Argh, TypeScript, why?!?
       return false;
     }
   }
   return true;
 }
-
+/**
+ * Type checking function for {[key: string | symbol]: string} types
+ * @param  {unknown} obj
+ * @returns {obj_is<{any:string}>}
+ */
 export function isObjectOfString(
   obj: unknown,
-): obj is { [key: string]: string } {
+): obj is { [key: string | symbol]: string } {
   return (
     isObjectOf(obj, isString) && Object.getOwnPropertySymbols(obj).length === 0
   );
 }
-
+/**
+ * Type check function for a Promise<T>, though T is (and can't be...) validated.
+ * This is a simple check for a "then-able" object type.
+ * @param  {unknown} obj
+ * @returns {obj_is<Promise<T>>}
+ */
 export function isPromise<T>(obj: unknown): obj is Promise<T> {
   return has(obj, 'then') && isFunction(obj.then);
 }
-
-export function isSymbol(x: unknown): x is symbol {
-  return typeof x === 'symbol';
+/**
+ * Type check for a Javascript symbol type
+ * @param  {unknown} obj
+ * @returns {obj_is<symbol>}
+ */
+export function isSymbol(obj: unknown): obj is symbol {
+  return typeof obj === 'symbol';
 }
-
+/**
+ * Type check for a particular key in obj.
+ * After a conditional, you can use obj[key] or obj.key safely.
+ * @param  {unknown} obj
+ * @param  {K} key
+ * @returns {obj_is<{key: unknown}>}
+ */
 export function has<K extends string>(
-  x: unknown,
+  obj: unknown,
   key: K,
   // eslint-disable-next-line no-shadow
-): x is { [key in K]: unknown } {
-  return isObjectNonNull(x) && key in x;
+): obj is { [key in K]: unknown } {
+  return isObjectNonNull(obj) && key in obj;
 }
-
+/**
+ * Type check for a key of type T in obj.
+ * After a conditional, you can use obj[key] or obj.key with the type T for
+ * key safely.
+ * @param  {unknown} obj
+ * @param  {K} key
+ * @param  {typecheck<T>} checker - A Type checking function for T
+ * @returns {obj_is<{key: T}>}
+ */
 export function hasType<T, K extends string>(
-  x: unknown,
+  obj: unknown,
   key: K,
-  chcker: typecheck<T>,
+  checker: typecheck<T>,
   // eslint-disable-next-line no-shadow
-): x is { [key in K]: T } {
-  return has(x, key) && chcker(x[key]);
+): obj is { [key in K]: T } {
+  return has(obj, key) && checker(obj[key]);
 }
-
+/**
+ * Type check for a string typed key in obj.
+ * After a conditional, you can use obj[key] or obj.key as a string safely.
+ * @param  {unknown} obj
+ * @param  {K} key
+ * @returns {obj_is<{key: string}>}
+ */
 export function hasStr<K extends string>(
-  x: unknown,
+  obj: unknown,
   key: K,
   // eslint-disable-next-line no-shadow
-): x is { [key in K]: string } {
-  return hasType(x, key, isString);
+): obj is { [key in K]: string } {
+  return hasType(obj, key, isString);
 }
 
 export function hasSymbol<S extends symbol>(
-  x: unknown,
+  obj: unknown,
   sym: S,
   // eslint-disable-next-line no-shadow
-): x is { [sym in S]: unknown } {
-  return isObjectNonNull(x) && sym in x;
+): obj is { [sym in S]: unknown } {
+  return isObjectNonNull(obj) && sym in obj;
 }
 
 export function hasSymbolType<T, S extends symbol>(
-  x: unknown,
+  obj: unknown,
   sym: S,
   checker: typecheck<T>,
   // eslint-disable-next-line no-shadow
-): x is { [sym in S]: T } {
-  return hasSymbol(x, sym) && checker(x[sym]);
+): obj is { [sym in S]: T } {
+  return hasSymbol(obj, sym) && checker(obj[sym]);
 }
 
 export function isIterable<T>(
-  x: unknown,
-): x is { [Symbol.iterator]: () => IterableIterator<T> } {
-  return hasSymbolType(x, Symbol.iterator, isFunction);
+  obj: unknown,
+): obj is { [Symbol.iterator]: () => IterableIterator<T> } {
+  return hasSymbolType(obj, Symbol.iterator, isFunction);
 }
 
 export function isSimpleObject(x: unknown): x is SimpleObject {
@@ -347,12 +609,16 @@ export function isSpecificType<T>(
   return seen === 0;
 }
 /**
- * Remove any fields that are assigned to 'undefined' or null
- * @param {unknown} obj
+ * Remove any fields/properties that are assigned to 'undefined' or null
+ *
+ * @param {unknown} obj - <bold>Mutates</bold> the object you wish to 'cleanse'
+ * @param {boolean} [leaveNulls=true] should a null property be left alone
+ *
+ * @return {unknown} The 'cleansed' object (useful for chaining)
  */
-export function cleanseKeys(obj: unknown, leaveNulls?: boolean): void {
+export function cleanseKeys(obj: unknown, leaveNulls?: boolean): unknown {
   if (!isObjectNonNull(obj)) {
-    return;
+    return obj;
   }
   for (const field of Object.keys(obj)) {
     if (
@@ -362,4 +628,5 @@ export function cleanseKeys(obj: unknown, leaveNulls?: boolean): void {
       delete obj[field];
     }
   }
+  return obj;
 }

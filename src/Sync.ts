@@ -3,6 +3,9 @@ import { Container, ReaderWriter, SyncFunc, Waiter } from './public-defs.js';
 import { SeqNum } from './SeqNum.js';
 import * as Type from './types.js';
 
+type MaybePromise<T> = T | Promise<T>;
+type MaybeAsyncFunc<T> = () => MaybePromise<T>;
+
 export function Sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) =>
     setTimeout(resolve, Math.max(0, milliseconds)),
@@ -203,7 +206,7 @@ export function MakeReaderWriter(delay = 1): ReaderWriter {
 }
 
 export function OnlyOneActive(
-  func: () => void | Promise<void>,
+  func: MaybeAsyncFunc<void>,
   delay = 10,
 ): SyncFunc<void> {
   const waiter = MakeWaiter(delay);
@@ -223,7 +226,7 @@ export function OnlyOneActive(
 }
 
 export function OnlyOneActiveQueue(
-  func: () => void | Promise<void>,
+  func: MaybeAsyncFunc<void>,
   delay = 10,
 ): SyncFunc<void> {
   const waiter = MakeWaitingQueue(delay);
@@ -243,7 +246,7 @@ export function OnlyOneActiveQueue(
 }
 
 export function OnlyOneWaiting(
-  func: () => void | Promise<void>,
+  func: MaybeAsyncFunc<void>,
   delay = 10,
 ): SyncFunc<boolean> {
   const waiter = MakeSingleWaiter(delay);
@@ -266,7 +269,7 @@ export function OnlyOneWaiting(
 }
 
 // If the result is a promise, await it, otherwise don't
-export async function MaybeWait<T>(func: () => Promise<T> | T): Promise<T> {
+export async function MaybeWait<T>(func: MaybeAsyncFunc<T>): Promise<T> {
   const res = func();
   if (Type.isPromise(res)) {
     return await res;
@@ -279,11 +282,11 @@ export async function MaybeWait<T>(func: () => Promise<T> | T): Promise<T> {
  * This invokes func no *sooner* than `timeout` milliseconds in the future, but
  * will restarts the timer every time the function is invoked, so if you call it
  * every timeout-1 milliseconds, it will never invoke the function
- * @param  {()=>void|Promise<void>} func
+ * @param  {MaybeAsyncFunc<void>} func
  * @param  {number} timeout
  */
 export function DebouncedDelay(
-  func: () => Promise<void> | void,
+  func: MaybeAsyncFunc<void>,
   timeout: number,
 ): () => void {
   let debounceTimer: number | NodeJS.Timer | null = null;
@@ -306,11 +309,11 @@ export function DebouncedDelay(
  * invocations, flushing the buffer every X ms.
  *
  * WARNING: func must be re-entrant-safe!
- * @param  {()=>void} func
+ * @param  {MaybeAsyncFunc<void>} func
  * @param  {number} timeout
  */
 export function DebouncedEvery(
-  func: () => Promise<void> | void,
+  func: MaybeAsyncFunc<void>,
   timeout: number,
 ): () => void {
   let debounceTimer: number | NodeJS.Timer | null = null;
@@ -320,9 +323,7 @@ export function DebouncedEvery(
     }
     debounceTimer = setTimeout(() => {
       debounceTimer = null;
-      MaybeWait(func).catch(() => {
-        /* */
-      });
+      MaybeWait(func).catch(() => {});
     }, timeout);
   }
   return ping;
