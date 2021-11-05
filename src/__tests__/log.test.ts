@@ -10,6 +10,7 @@ test('sanity', () => {
 test('New Logging API', () => {
   const log = MakeLogger('id', true);
   expect(log.isEnabled()).toBeTruthy();
+  log('You should *only* see this line');
   log.disable();
   log('test');
   expect(log.isEnabled()).toBeFalsy();

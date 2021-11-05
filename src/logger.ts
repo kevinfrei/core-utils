@@ -3,6 +3,7 @@ const enabled: Set<unknown> = new Set();
 
 let defaultToShow = true;
 
+// deprecated
 export type LogType = {
   (id: unknown, ...args: unknown[]): void;
   disable: (id: unknown) => void;
@@ -14,6 +15,8 @@ export type LogType = {
   bind: (id: unknown, isEnabled?: boolean) => (...args: unknown[]) => void;
 };
 
+// deprecated
+/* istanbul ignore next */
 function Log(id: unknown, ...args: unknown[]): void {
   if (
     (defaultToShow && !disabled.has(id)) ||
@@ -24,28 +27,35 @@ function Log(id: unknown, ...args: unknown[]): void {
   }
 }
 
+/* istanbul ignore next */
 Log.disable = (id: unknown) => {
   disabled.add(id);
   enabled.delete(id);
 };
 
+/* istanbul ignore next */
 Log.enable = (id: unknown) => {
   enabled.add(id);
   disabled.delete(id);
 };
 
+/* istanbul ignore next */
 Log.defaultToOff = () => {
   defaultToShow = false;
 };
 
+/* istanbul ignore next */
 Log.defaultToOn = () => {
   defaultToShow = true;
 };
 
+/* istanbul ignore next */
 Log.isEnabled = (id: unknown): boolean => enabled.has(id);
 
+/* istanbul ignore next */
 Log.isDisabled = (id: unknown): boolean => disabled.has(id);
 
+/* istanbul ignore next */
 Log.bind = (
   id: unknown,
   isEnabled?: boolean,
