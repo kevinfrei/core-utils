@@ -156,6 +156,7 @@ function replacer(
   if (pickler) {
     const [sym, toFlat] = pickler;
     const keyFor = Symbol.keyFor(sym);
+    /* istanbul ignore if */
     if (!keyFor) {
       return value;
     }

@@ -58,6 +58,7 @@ test('[deprecated] FTON filtering', () => {
 */
 
 const TestSymbol = Symbol.for('pickler.Test');
+const Test2Symbol = Symbol.for('pickler.Test2');
 function MakeType() {
   return {
     value1: 'a',
@@ -66,9 +67,21 @@ function MakeType() {
     toJSON: () => 'My Test Thingy',
   };
 }
+function MakeType2() {
+  return {
+    value1: 'a',
+    value2: /a/gi,
+    [FreikTypeTag]: Test2Symbol,
+  };
+}
 
-test('Vinegar', () => {
+beforeAll(() => {
   RegisterForPickling<unknown>(TestSymbol, (data) => MakeType());
+  RegisterForPickling(
+    Test2Symbol,
+    (data) => MakeType2(),
+    (data) => 'My Test2 Thingy',
+  );
 });
 
 test('Pickling sanity', () => {
@@ -129,4 +142,13 @@ test('Other random pickling stuff', () => {
   const other = Pickle(obj);
   const ro = Unpickle(other);
   expect(ro).toEqual(obj);
+});
+
+test('Custom pickling tests', () => {
+  const t1 = MakeType();
+  const t2 = MakeType2();
+  const str = Pickle({ a: t1, b: t2 });
+  const val = Unpickle(str);
+  const str2 = Pickle(val);
+  expect(str).toEqual(str2);
 });
