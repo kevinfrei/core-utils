@@ -1,20 +1,5 @@
 export const FreikTypeTag = Symbol.for('freik.typetag');
 
-export type FTONData =
-  | undefined
-  | string
-  | number
-  | boolean
-  | null
-  | FTONObject
-  | FTONArray
-  | FTONMap
-  | FTONSet;
-export type FTONSet = Set<FTONData>;
-export type FTONMap = Map<string, FTONData>;
-export type FTONObject = { [key: string]: FTONData };
-export type FTONArray = FTONData[];
-
 export type SimpleObject =
   | undefined
   | string

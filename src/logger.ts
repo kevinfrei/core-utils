@@ -3,7 +3,9 @@ const enabled: Set<unknown> = new Set();
 
 let defaultToShow = true;
 
-// deprecated
+/**
+ * @deprecated Use {@linkcode MakeLogger} instead
+ */
 export type LogType = {
   (id: unknown, ...args: unknown[]): void;
   disable: (id: unknown) => void;
@@ -15,7 +17,9 @@ export type LogType = {
   bind: (id: unknown, isEnabled?: boolean) => (...args: unknown[]) => void;
 };
 
-// deprecated
+/**
+ * @deprecated Use {@linkcode MakeLogger} instead
+ */
 /* istanbul ignore next */
 function Log(id: unknown, ...args: unknown[]): void {
   if (
@@ -68,6 +72,9 @@ Log.bind = (
   return (...args: unknown[]) => Log(id, ...args);
 };
 
+/**
+ * @deprecated Use {@linkcode MakeLogger} instead
+ */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const Logger: LogType = Log;
 
@@ -158,5 +165,7 @@ function bindLogger(which: 'std' | 'err'): LogCreator {
   return LogMaker;
 }
 
+/** @function */
 export const MakeLogger: LogCreator = bindLogger('std');
+/** @function */
 export const MakeError: LogCreator = bindLogger('err');

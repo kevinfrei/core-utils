@@ -316,9 +316,8 @@ export function asArrayOfString(
  * defVal is a string, it will be used to replace any values in obj that cannot
  * be coerced to strings. If defVal isn't provided, only strings, or items that
  * can be coerced to strings, will be left in obj.
- * @param  {unknown} obj
- * @param  {string[]|string} defVal?
- * @returns {string[]}
+ * @param obj - The value being coerced to `string[]`
+ * @param defVal? - The default value used for coercion
  */
 export function toArrayOfString(
   obj: unknown,
