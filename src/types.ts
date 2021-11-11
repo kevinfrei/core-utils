@@ -14,32 +14,17 @@ import {
   TypeCheckPair,
 } from './public-defs.js';
 
-/**
- * Type check for undefined
- *
- * @param obj {unknown}
- * @returns {obj_is<undefined>} True if undefined, False otherwises
- */
+/** Type check for undefined */
 export function isUndefined(obj: unknown): obj is undefined {
   return obj === undefined;
 }
 
-/**
- * Type check for null
- *
- * @param obj {unknown}
- * @returns {obj_is<null>} True if null, False otherwise
- */
+/** Type check for null */
 export function isNull(obj: unknown): obj is null {
   return obj === null;
 }
 
-/**
- * Type check for a non-null object
- *
- * @param obj {unknown}
- * @returns {obj_is<Object>} True if is an object & it's "non-null", false otherwise
- */
+/** Type check for a non-null object */
 export function isObjectNonNull(
   obj: unknown,
 ): obj is { [key: string]: unknown } {
