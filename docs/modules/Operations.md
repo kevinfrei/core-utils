@@ -1,4 +1,4 @@
-[@freik/core-utils](../README.md) / [Exports](../modules.md) / Operations
+[@freik/core-utils](../README.md) / Operations
 
 # Namespace: Operations
 
@@ -6,14 +6,41 @@
 
 ### Functions
 
+- [ArrayEqual](Operations.md#arrayequal)
 - [ArrayIntersection](Operations.md#arrayintersection)
 - [ArraySetEqual](Operations.md#arraysetequal)
+- [MapEqual](Operations.md#mapequal)
+- [ObjEqual](Operations.md#objequal)
+- [ObjToMap](Operations.md#objtomap)
 - [SetDifference](Operations.md#setdifference)
 - [SetEqual](Operations.md#setequal)
 - [SetIntersection](Operations.md#setintersection)
+- [SetValEqual](Operations.md#setvalequal)
 - [StringCaseInsensitiveEqual](Operations.md#stringcaseinsensitiveequal)
+- [ValEqual](Operations.md#valequal)
 
 ## Functions
+
+### ArrayEqual
+
+▸ **ArrayEqual**(`x`, `y`): `boolean`
+
+#### Parameters
+
+| Name | Type        |
+| :--- | :---------- |
+| `x`  | `unknown`[] |
+| `y`  | `unknown`[] |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[Operations.ts:76](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L76)
+
+---
 
 ### ArrayIntersection
 
@@ -38,7 +65,7 @@
 
 #### Defined in
 
-[Operations.ts:40](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/Operations.ts#L40)
+[Operations.ts:56](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L56)
 
 ---
 
@@ -65,7 +92,69 @@
 
 #### Defined in
 
-[Operations.ts:13](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/Operations.ts#L13)
+[Operations.ts:29](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L29)
+
+---
+
+### MapEqual
+
+▸ **MapEqual**(`x`, `y`): `boolean`
+
+#### Parameters
+
+| Name | Type                         |
+| :--- | :--------------------------- |
+| `x`  | `Map`<`unknown`, `unknown`\> |
+| `y`  | `Map`<`unknown`, `unknown`\> |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[Operations.ts:84](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L84)
+
+---
+
+### ObjEqual
+
+▸ **ObjEqual**(`a`, `b`): `boolean`
+
+#### Parameters
+
+| Name | Type     |
+| :--- | :------- |
+| `a`  | `Object` |
+| `b`  | `Object` |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[Operations.ts:112](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L112)
+
+---
+
+### ObjToMap
+
+▸ **ObjToMap**(`o`): `Map`<`string`, `string`\>
+
+#### Parameters
+
+| Name | Type     |
+| :--- | :------- |
+| `o`  | `Object` |
+
+#### Returns
+
+`Map`<`string`, `string`\>
+
+#### Defined in
+
+[Operations.ts:3](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L3)
 
 ---
 
@@ -92,7 +181,7 @@
 
 #### Defined in
 
-[Operations.ts:51](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/Operations.ts#L51)
+[Operations.ts:67](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L67)
 
 ---
 
@@ -119,7 +208,7 @@
 
 #### Defined in
 
-[Operations.ts:1](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/Operations.ts#L1)
+[Operations.ts:17](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L17)
 
 ---
 
@@ -146,7 +235,28 @@
 
 #### Defined in
 
-[Operations.ts:30](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/Operations.ts#L30)
+[Operations.ts:46](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L46)
+
+---
+
+### SetValEqual
+
+▸ **SetValEqual**(`x`, `y`): `boolean`
+
+#### Parameters
+
+| Name | Type              |
+| :--- | :---------------- |
+| `x`  | `Set`<`unknown`\> |
+| `y`  | `Set`<`unknown`\> |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[Operations.ts:96](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L96)
 
 ---
 
@@ -167,4 +277,25 @@
 
 #### Defined in
 
-[Operations.ts:20](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/Operations.ts#L20)
+[Operations.ts:36](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L36)
+
+---
+
+### ValEqual
+
+▸ **ValEqual**(`x`, `y`): `boolean`
+
+#### Parameters
+
+| Name | Type      |
+| :--- | :-------- |
+| `x`  | `unknown` |
+| `y`  | `unknown` |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[Operations.ts:132](https://github.com/kevinfrei/core-utils/blob/650e237/src/Operations.ts#L132)

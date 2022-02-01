@@ -38,3 +38,31 @@ test('Set/Array operations', () => {
   expect(s2ms1.size).toEqual(2);
   expect(Operations.SetIntersection(s1ms2, s2ms1).size).toEqual(0);
 });
+
+/*test('ObjUtil.has', () => {
+  expect(ObjUtil.has('a', { a: 1 })).toBeTruthy();
+  expect(ObjUtil.has('b', { a: 1 })).toBeFalsy();
+  expect(ObjUtil.hasStr('a', { a: '1' })).toBeTruthy();
+  expect(ObjUtil.hasStr('a', { a: 1 })).toBeFalsy();
+  expect(ObjUtil.hasStr('b', { a: 1 })).toBeFalsy();
+});
+*/
+// This is not doing anything I can quite follow
+/*
+test('ObjUtil quoting', () => {
+  const expr = { greeting: '"Hi," said ~Hank!~' };
+  const requoted = ObjUtil.reQuote(JSON.stringify(expr));
+  expect(requoted.indexOf('"')).toEqual(-1);
+  expect(ObjUtil.reQuote(dequoted)).toEqual(JSON.stringify(expr));
+});
+*/
+
+test('Object to Map', () => {
+  const obj1 = { a: 'b', c: 'd', e: 1 };
+  const map1 = new Map<string, string>([
+    ['a', 'b'],
+    ['c', 'd'],
+    ['e', '1'],
+  ]);
+  expect(Operations.ObjToMap(obj1)).toEqual(map1);
+});

@@ -2,7 +2,7 @@ import {
   FreikTypeTag,
   MakeMultiMap,
   MultiMap,
-  ObjUtil,
+  Operations,
   Pickle,
   RegisterForPickling,
   Type,
@@ -60,14 +60,13 @@ test('Pickling map roundtrip', () => {
   };
   const mapString = Pickle(map);
   const newMap = UnsafelyUnpickle(mapString);
-  expect(ObjUtil.has('a', newMap)).toBe(true);
   expect(Type.has(newMap, 'a')).toBe(true);
   expect((newMap as any).a).toBeInstanceOf(Map);
   const next = Pickle(newMap);
   expect(next).toEqual(mapString);
-  expect(ObjUtil.valEqual(newMap, map)).toBe(true);
+  expect(Operations.ValEqual(newMap, map)).toBe(true);
   map.a.set('e', 'f');
-  expect(ObjUtil.valEqual(newMap, map)).toBe(false);
+  expect(Operations.ValEqual(newMap, map)).toBe(false);
 });
 
 test('MultiMap Pickling roundtrip', () => {

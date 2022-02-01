@@ -1,37 +1,18 @@
 # @freik/core-utils
 
 This is a small collection of random crap I've used over the past few years to
-get various stuff going well on Node and/or React and/or TypeScript. I'm moving them into a
-public repo, as I'm trying to build something in it's own repo, instead of in
-my same private repo I've been using for years.
-
-## ObjUtil: A bunch of helpers for goofing around, and for Flow interactions
-
-```typescript
-function deQuote(str: string) => string;
-function reQuote(str: string) => {[key:string]: string};
-```
-
-Honestly, use at your own risk. They don't invert each other :/
-
-```typescript
-function prefixObj(str: string, obj: { [key: string]: string }): Array<string>;
-```
-
-This is easiest explained by providing results:
-
-`ObjUtil.prefixObj("test", {a: "b", c: null, d: "e"})`
-
-returns
-
-`["testa", "b", "testc", "testd", "e"]`
-
-The null is weird. Sorry...
+get various stuff going well on Node and/or React and/or TypeScript. I'm moving
+them into a public repo, as I'm trying to build something in it's own repo,
+instead of in my same private repo I've been using for years.
+[Documentation](docs/README.md) is generated from source code, so it's only as
+good as my comments, unfortunately.
 
 ## Type: A bunch of typechecking helpers
 
 These mostly just do what they say. They're intended to be used off of the
 `Type` import, so they don't pollute the global namespace too egregiously.
+
+[Type module documentation](docs/modules/Type.md)
 
 ```typescript
 import { Type, typecheck } from '@freik/core-utils';
@@ -174,7 +155,7 @@ function SeqNum(prefix: ?string, resumeId: ?string) => (() => string);
 in action:
 
 ```typescript
-const { SeqNum } = require('js-freik-utils');
+const { SeqNum } = require('@freik/core-utils');
 
 const getId = SeqNum('id');
 const plainId = SeqNum();
@@ -206,35 +187,3 @@ function StringCaseInsensitiveEqual(a: string, b: string): boolean;
 They seem mostly self-explanatory. They return true of the set of stuff in each
 collect are identical. Note that `ArraySetEqual` doesn't care about order of the
 arrays passed in (that's why it's called ArraySet and not just ArrayEqual!)
-
-## FTON: Flow Type Object Notation
-
-### Deprecated
-
-> Use the Pickling stuff instead. It's "externally" extensible, and mostly
-> forces you to be typesafe, which is generally a good idea for serialization.
-
-This is a set of functions to allow me to use Flow stuff, while also using JSON
-for strong-ish typing of serialization and deserialization.
-
-```typescript
-// These typew are all exported from the main module, not the FTON module
-export type FTONData = string
-  | number
-  | boolean
-  | null
-  | FTONObject
-  | FTONArray;
-export type FTONObject = { [key: string]: FTONData };
-export type FTONArray = Array<FTONData>;
-
-function typecheck(x: mixed) => FTONData; // Throws on error
-function parse(input: string) => FTONData; // Throws on error
-function stringify(input: FTONData) => string;
-```
-
-`FTON.parse` and `FTON.stringify` are meant to be drop-in replacements for
-`JSON.parse` and `JSON.stringify`. In addition, `FTON.typecheck` can be used to
-get your mixed types out quickly. They're annoying, and the inline code to do
-full typechecking can be pretty overwhelming. The `FTONData` type makes it a
-little cleaner & easier to deal with.

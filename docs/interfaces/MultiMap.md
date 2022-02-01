@@ -1,4 +1,4 @@
-[@freik/core-utils](../README.md) / [Exports](../modules.md) / MultiMap
+[@freik/core-utils](../README.md) / MultiMap
 
 # Interface: MultiMap<K, V\>
 
@@ -40,7 +40,7 @@
 
 #### Defined in
 
-[public-defs.ts:61](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L61)
+[public-defs.ts:61](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L61)
 
 ## Methods
 
@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[public-defs.ts:60](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L60)
+[public-defs.ts:60](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L60)
 
 ---
 
@@ -75,7 +75,7 @@
 
 #### Defined in
 
-[public-defs.ts:58](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L58)
+[public-defs.ts:58](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L58)
 
 ---
 
@@ -89,7 +89,7 @@
 
 #### Defined in
 
-[public-defs.ts:42](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L42)
+[public-defs.ts:42](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L42)
 
 ---
 
@@ -109,7 +109,7 @@
 
 #### Defined in
 
-[public-defs.ts:44](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L44)
+[public-defs.ts:44](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L44)
 
 ---
 
@@ -130,7 +130,7 @@
 
 #### Defined in
 
-[public-defs.ts:47](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L47)
+[public-defs.ts:47](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L47)
 
 ---
 
@@ -151,7 +151,7 @@
 
 #### Defined in
 
-[public-defs.ts:51](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L51)
+[public-defs.ts:51](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L51)
 
 ---
 
@@ -171,7 +171,7 @@
 
 #### Defined in
 
-[public-defs.ts:55](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L55)
+[public-defs.ts:55](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L55)
 
 ---
 
@@ -191,7 +191,7 @@
 
 #### Defined in
 
-[public-defs.ts:56](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L56)
+[public-defs.ts:56](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L56)
 
 ---
 
@@ -205,7 +205,7 @@
 
 #### Defined in
 
-[public-defs.ts:46](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L46)
+[public-defs.ts:46](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L46)
 
 ---
 
@@ -226,7 +226,7 @@
 
 #### Defined in
 
-[public-defs.ts:45](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L45)
+[public-defs.ts:45](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L45)
 
 ---
 
@@ -247,7 +247,7 @@
 
 #### Defined in
 
-[public-defs.ts:57](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L57)
+[public-defs.ts:57](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L57)
 
 ---
 
@@ -261,7 +261,7 @@
 
 #### Defined in
 
-[public-defs.ts:43](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L43)
+[public-defs.ts:43](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L43)
 
 ---
 
@@ -275,7 +275,7 @@
 
 #### Defined in
 
-[public-defs.ts:62](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L62)
+[public-defs.ts:62](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L62)
 
 ---
 
@@ -295,4 +295,4 @@
 
 #### Defined in
 
-[public-defs.ts:59](https://github.com/kevinfrei/core-utils/blob/0188bb5/src/public-defs.ts#L59)
+[public-defs.ts:59](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L59)

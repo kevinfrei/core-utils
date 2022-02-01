@@ -2,7 +2,6 @@ export * from './Containers.js';
 export * as Helpers from './Helpers.js';
 export * from './logger.js';
 export * from './multimap.js';
-export * as ObjUtil from './object.js';
 export * as Operations from './Operations.js';
 export * from './Pickle.js';
 export * from './public-defs.js';
