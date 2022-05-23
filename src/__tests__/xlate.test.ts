@@ -85,7 +85,7 @@ test('Some U8 roundtripping with simple checks', () => {
 
 test('Some B64 roundtripping with simple checks', () => {
   const v1 = [22, 23, 24, 25, 26, 27, 28, 29];
-  const v2 = [50, 51, 52, 53, 54, 61, 62, 63, 64, 65];
+  const v2 = [43, 47, 48, 49, 50, 51, 52, 53, 54, 61, 62, 63, 64, 65];
   const v3 = [0, 255, 1234, 16384, 16384 * 8192, 4294967294, 4294967295];
   for (const value of [
     ...v1,

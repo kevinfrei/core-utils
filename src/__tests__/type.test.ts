@@ -7,23 +7,34 @@ import {
   asSimpleObject,
   asString,
   cleanseKeys,
+  hasSymbolTypeFn,
   is2TupleOf,
+  is2TypeOfFn,
   is3TupleOf,
+  is3TupleOfFn,
   isArray,
+  isArrayOf,
+  isArrayOfFn,
   isDate,
   isFunction,
   isMapOf,
+  isMapOfFn,
   isMapOfStrings,
   isMultiMapOf,
+  isMultiMapOfFn,
   isNull,
   isNumber,
+  isNumberOrString,
   isObject,
   isObjectOf,
+  isObjectOfFn,
   isObjectOfString,
   isRegex,
+  isSetOfFn,
   isSetOfString,
   isSimpleObject,
   isSpecificType,
+  isSpecificTypeFn,
   isString,
   toArrayOfString,
   toString,
@@ -55,9 +66,13 @@ test('isSpecificType', () => {
     ['c', isSetOfString],
   ];
   const required = ['a', 'b'];
+  const arrOf = [theType, theType];
+  expect(isArrayOf(required, isString)).toBeTruthy();
+  expect(isArrayOfFn(isString)(required)).toBeTruthy();
   expect(isSpecificType(theType, fieldTypes, required)).toBeTruthy();
   expect(isSpecificType(theType, fieldTypes)).toBeTruthy();
   expect(isSpecificType(theType, new Map(fieldTypes), required)).toBeTruthy();
+  expect(isArrayOf(arrOf, isSpecificTypeFn(fieldTypes, required))).toBeTruthy();
   expect(
     isSpecificType({ a: 2, b: () => '' }, fieldTypes, required),
   ).toBeTruthy();
@@ -132,35 +147,52 @@ test('Miscellaneous type checks', () => {
   expect(isObjectOfString({ [Symbol.iterator]: 'a' })).toBeFalsy();
   expect(isObjectOf({ [Symbol.iterator]: 1 }, isString)).toBeFalsy();
   expect(isObjectOf({ [Symbol.iterator]: 'b' }, isString)).toBeTruthy();
-  expect(
-    isMapOfStrings(
-      new Map([
-        ['a', 'b'],
-        ['c', 'd'],
-      ]),
-    ),
-  ).toBeTruthy();
-  expect(
-    isMapOfStrings(
-      new Map<string, string | number>([
-        ['a', 'b'],
-        ['c', 1],
-      ]),
-    ),
-  ).toBeFalsy();
-  expect(
-    isMapOfStrings(
-      new Map<string | number, string>([
-        [1, 'b'],
-        ['c', 'd'],
-      ]),
-    ),
-  ).toBeFalsy();
+  const mapOfStr = new Map([
+    ['a', 'b'],
+    ['c', 'd'],
+  ]);
+  const mapOfStrNum = new Map<string, string | number>([
+    ['a', 'b'],
+    ['c', 1],
+  ]);
+  const mapOfNumStr = new Map<string | number, string>([
+    [1, 'b'],
+    ['c', 'd'],
+  ]);
+  expect(isMapOfStrings(mapOfStr)).toBeTruthy();
+  expect(isMapOfStrings(mapOfNumStr)).toBeFalsy();
+  expect(isMapOfStrings(mapOfStrNum)).toBeFalsy();
+  expect(isMapOfFn(isString, isNumberOrString)(mapOfStrNum)).toBeTruthy();
+  expect(isMapOfFn(isString, isNumberOrString)(mapOfNumStr)).toBeFalsy();
   expect(isMapOf(1, isString, isNull)).toBeFalsy();
   expect(is2TupleOf([1, 'a'], isNumber, isString)).toBeTruthy();
+  expect(is2TypeOfFn(isNumber, isString)([1, 'a'])).toBeTruthy();
   expect(is2TupleOf([1, 2], isNumber, isString)).toBeFalsy();
   expect(is3TupleOf([1, 2, 'a'], isNumber, isNumber, isString)).toBeTruthy();
   expect(is3TupleOf([1, 2, 'a'], isNumber, isString, isString)).toBeFalsy();
+  expect(is3TupleOfFn(isNumber, isString, isString)([1, 2, 'a'])).toBeFalsy();
+  expect(
+    is3TupleOf(
+      [1, new Set([2, 3, '4']), 5],
+      isNumber,
+      isSetOfFn(isNumberOrString),
+      isNumber,
+    ),
+  ).toBeTruthy();
+  expect(
+    isObjectOfFn(isArrayOfFn(isNumberOrString))({
+      a: [1],
+      b: [2, '3', 4],
+      c: ['five'],
+    }),
+  ).toBeTruthy();
+  const obj = { [Symbol.iterator]: [1, 'two'] };
+  expect(
+    isArrayOf(
+      [obj],
+      hasSymbolTypeFn(Symbol.iterator, isArrayOfFn(isNumberOrString)),
+    ),
+  ).toBeTruthy();
 });
 
 test('is/asSimpleObject tests', () => {
@@ -190,6 +222,7 @@ test('MultiMap type tests', () => {
   ]);
   expect(isMultiMapOf(mmns, isNumber, isString)).toBeTruthy();
   expect(isMultiMapOf(mmns, isNumber, isNumber)).toBeFalsy();
+  expect(isMultiMapOfFn(isNumber, isNumber)(mmns)).toBeFalsy();
   expect(isMultiMapOf(mmns, isString, isNumber)).toBeFalsy();
   expect(isMultiMapOf({}, isNumber, isNumber)).toBeFalsy();
 });

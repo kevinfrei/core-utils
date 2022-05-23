@@ -117,7 +117,7 @@
 
 #### Defined in
 
-[logger.ts:108](https://github.com/kevinfrei/core-utils/blob/650e237/src/logger.ts#L108)
+[logger.ts:108](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L108)
 
 ---
 
@@ -156,7 +156,7 @@
 
 #### Defined in
 
-[logger.ts:9](https://github.com/kevinfrei/core-utils/blob/650e237/src/logger.ts#L9)
+[logger.ts:9](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L9)
 
 ---
 
@@ -175,7 +175,7 @@
 
 #### Defined in
 
-[public-defs.ts:24](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L24)
+[public-defs.ts:24](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L24)
 
 ---
 
@@ -199,17 +199,17 @@
 
 #### Defined in
 
-[public-defs.ts:12](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L12)
+[public-defs.ts:12](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L12)
 
 ---
 
 ### SimpleObject
 
-Ƭ **SimpleObject**: `undefined` \| `string` \| `number` \| `boolean` \| `null` \| { [key: string]: [`SimpleObject`](README.md#simpleobject); } \| [`SimpleObject`](README.md#simpleobject)[]
+Ƭ **SimpleObject**: `undefined` \| `string` \| `number` \| `boolean` \| `null` \| { `[key: string]`: [`SimpleObject`](README.md#simpleobject); } \| [`SimpleObject`](README.md#simpleobject)[]
 
 #### Defined in
 
-[public-defs.ts:3](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L3)
+[public-defs.ts:3](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L3)
 
 ---
 
@@ -239,7 +239,7 @@
 
 #### Defined in
 
-[public-defs.ts:31](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L31)
+[public-defs.ts:31](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L31)
 
 ---
 
@@ -249,7 +249,7 @@
 
 #### Defined in
 
-[public-defs.ts:39](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L39)
+[public-defs.ts:39](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L39)
 
 ---
 
@@ -268,7 +268,7 @@
 
 #### Defined in
 
-[public-defs.ts:17](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L17)
+[public-defs.ts:17](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L17)
 
 ---
 
@@ -298,53 +298,53 @@ val is T
 
 #### Defined in
 
-[public-defs.ts:37](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L37)
+[public-defs.ts:37](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L37)
 
 ## Variables
 
 ### FreikTypeTag
 
-• **FreikTypeTag**: typeof [`FreikTypeTag`](README.md#freiktypetag)
+• `Const` **FreikTypeTag**: typeof [`FreikTypeTag`](README.md#freiktypetag)
 
 #### Defined in
 
-[public-defs.ts:1](https://github.com/kevinfrei/core-utils/blob/650e237/src/public-defs.ts#L1)
+[public-defs.ts:1](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L1)
 
 ---
 
 ### Logger
 
-• **Logger**: [`LogType`](README.md#logtype) = `Log`
+• `Const` **Logger**: [`LogType`](README.md#logtype) = `Log`
 
 **`deprecated`** Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[logger.ts:79](https://github.com/kevinfrei/core-utils/blob/650e237/src/logger.ts#L79)
+[logger.ts:79](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L79)
 
 ---
 
 ### MakeError
 
-• **MakeError**: [`LogCreator`](README.md#logcreator)
+• `Const` **MakeError**: [`LogCreator`](README.md#logcreator)
 
 **`function`**
 
 #### Defined in
 
-[logger.ts:171](https://github.com/kevinfrei/core-utils/blob/650e237/src/logger.ts#L171)
+[logger.ts:171](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L171)
 
 ---
 
 ### MakeLogger
 
-• **MakeLogger**: [`LogCreator`](README.md#logcreator)
+• `Const` **MakeLogger**: [`LogCreator`](README.md#logcreator)
 
 **`function`**
 
 #### Defined in
 
-[logger.ts:169](https://github.com/kevinfrei/core-utils/blob/650e237/src/logger.ts#L169)
+[logger.ts:169](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L169)
 
 ## Functions
 
@@ -379,7 +379,7 @@ every timeout-1 milliseconds, it will never invoke the function
 
 #### Defined in
 
-[Sync.ts:288](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L288)
+[Sync.ts:288](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L288)
 
 ---
 
@@ -418,7 +418,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:315](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L315)
+[Sync.ts:315](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L315)
 
 ---
 
@@ -438,7 +438,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:131](https://github.com/kevinfrei/core-utils/blob/650e237/src/translation.ts#L131)
+[translation.ts:131](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L131)
 
 ---
 
@@ -458,7 +458,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:27](https://github.com/kevinfrei/core-utils/blob/650e237/src/translation.ts#L27)
+[translation.ts:27](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L27)
 
 ---
 
@@ -478,7 +478,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:90](https://github.com/kevinfrei/core-utils/blob/650e237/src/translation.ts#L90)
+[translation.ts:90](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L90)
 
 ---
 
@@ -505,7 +505,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[multimap.ts:7](https://github.com/kevinfrei/core-utils/blob/650e237/src/multimap.ts#L7)
+[multimap.ts:7](https://github.com/kevinfrei/core-utils/blob/a30894b/src/multimap.ts#L7)
 
 ---
 
@@ -531,7 +531,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Containers.ts:76](https://github.com/kevinfrei/core-utils/blob/650e237/src/Containers.ts#L76)
+[Containers.ts:76](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Containers.ts#L76)
 
 ---
 
@@ -557,7 +557,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Containers.ts:3](https://github.com/kevinfrei/core-utils/blob/650e237/src/Containers.ts#L3)
+[Containers.ts:3](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Containers.ts#L3)
 
 ---
 
@@ -577,13 +577,13 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:113](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L113)
+[Sync.ts:113](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L113)
 
 ---
 
 ### MakeSeqNum
 
-▸ `Const` **MakeSeqNum**(`prefix?`, `resume?`): [`SeqNumGenerator`](README.md#seqnumgenerator)
+▸ **MakeSeqNum**(`prefix?`, `resume?`): [`SeqNumGenerator`](README.md#seqnumgenerator)
 
 #### Parameters
 
@@ -598,7 +598,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[SeqNum.ts:30](https://github.com/kevinfrei/core-utils/blob/650e237/src/SeqNum.ts#L30)
+[SeqNum.ts:30](https://github.com/kevinfrei/core-utils/blob/a30894b/src/SeqNum.ts#L30)
 
 ---
 
@@ -618,7 +618,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:78](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L78)
+[Sync.ts:78](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L78)
 
 ---
 
@@ -644,7 +644,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Containers.ts:39](https://github.com/kevinfrei/core-utils/blob/650e237/src/Containers.ts#L39)
+[Containers.ts:39](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Containers.ts#L39)
 
 ---
 
@@ -664,7 +664,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:19](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L19)
+[Sync.ts:19](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L19)
 
 ---
 
@@ -684,7 +684,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:44](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L44)
+[Sync.ts:44](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L44)
 
 ---
 
@@ -710,7 +710,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:272](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L272)
+[Sync.ts:272](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L272)
 
 ---
 
@@ -731,7 +731,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:208](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L208)
+[Sync.ts:208](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L208)
 
 ---
 
@@ -752,7 +752,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:228](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L228)
+[Sync.ts:228](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L228)
 
 ---
 
@@ -773,7 +773,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:248](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L248)
+[Sync.ts:248](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L248)
 
 ---
 
@@ -793,7 +793,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Pickle.ts:184](https://github.com/kevinfrei/core-utils/blob/650e237/src/Pickle.ts#L184)
+[Pickle.ts:184](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L184)
 
 ---
 
@@ -821,7 +821,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Pickle.ts:205](https://github.com/kevinfrei/core-utils/blob/650e237/src/Pickle.ts#L205)
+[Pickle.ts:205](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L205)
 
 ---
 
@@ -848,7 +848,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Pickle.ts:196](https://github.com/kevinfrei/core-utils/blob/650e237/src/Pickle.ts#L196)
+[Pickle.ts:196](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L196)
 
 ---
 
@@ -869,7 +869,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/650e237/src/SeqNum.ts#L8)
+[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/a30894b/src/SeqNum.ts#L8)
 
 ---
 
@@ -889,7 +889,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:9](https://github.com/kevinfrei/core-utils/blob/650e237/src/Sync.ts#L9)
+[Sync.ts:9](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L9)
 
 ---
 
@@ -909,7 +909,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:104](https://github.com/kevinfrei/core-utils/blob/650e237/src/translation.ts#L104)
+[translation.ts:104](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L104)
 
 ---
 
@@ -929,7 +929,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:1](https://github.com/kevinfrei/core-utils/blob/650e237/src/translation.ts#L1)
+[translation.ts:1](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L1)
 
 ---
 
@@ -951,7 +951,7 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[translation.ts:73](https://github.com/kevinfrei/core-utils/blob/650e237/src/translation.ts#L73)
+[translation.ts:73](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L73)
 
 ---
 
@@ -971,7 +971,7 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[Pickle.ts:188](https://github.com/kevinfrei/core-utils/blob/650e237/src/Pickle.ts#L188)
+[Pickle.ts:188](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L188)
 
 ---
 
@@ -997,4 +997,4 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[Pickle.ts:192](https://github.com/kevinfrei/core-utils/blob/650e237/src/Pickle.ts#L192)
+[Pickle.ts:192](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L192)

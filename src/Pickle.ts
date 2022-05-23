@@ -3,7 +3,9 @@ import { FreikTypeTag, typecheck } from './public-defs.js';
 import * as Type from './types.js';
 
 type FlattenedCustom = {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   '@dataType': string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   '@dataValue': unknown;
 };
 
@@ -12,6 +14,7 @@ function isFlattened(obj: unknown): obj is FlattenedCustom {
 }
 
 function MakeFlat(name: string, data: unknown): FlattenedCustom {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   return { '@dataType': name, '@dataValue': data };
 }
 
@@ -80,11 +83,11 @@ function DateUnpickle(val: unknown): Date | undefined {
   return undefined;
 }
 
-function BigIntPickle(val: BigInt): string {
+function BigIntPickle(val: bigint): string {
   return val.toString();
 }
 
-function BigIntUnpickle(val: unknown): BigInt | undefined {
+function BigIntUnpickle(val: unknown): bigint | undefined {
   try {
     return Type.isString(val) ? BigInt(val) : undefined;
   } catch (e) {}

@@ -184,7 +184,7 @@ export function isDate(obj: unknown): obj is Date {
  * @param  {unknown} obj
  * @returns {obj_is<BigInt>}
  */
-export function isBigInt(obj: unknown): obj is BigInt {
+export function isBigInt(obj: unknown): obj is bigint {
   return typeof obj === 'bigint';
 }
 /**
@@ -234,6 +234,14 @@ export function isArrayOf<T>(obj: unknown, chk: typecheck<T>): obj is T[] {
   return true;
 }
 /**
+ * Generate a type check function for T[] (Array<T>)
+ * @param {typecheck<T>} chk - TypeCheck function for Type T
+ * @returns {typecheck<T[]>}
+ */
+export function isArrayOfFn<T>(chk: typecheck<T>): typecheck<T[]> {
+  return (obj: unknown): obj is T[] => isArrayOf(obj, chk);
+}
+/**
  * Type check for Tuple of [T, U]
  * @param  {unknown} obj
  * @param  {typecheck<T>} t - TypeCheck function for Type T
@@ -247,12 +255,26 @@ export function is2TupleOf<T, U>(
 ): obj is [T, U] {
   return is2Tuple(obj) && t(obj[0]) && u(obj[1]);
 }
+
+/**
+ * Generate a type check function for Tuple of [T, U]
+ * @param  {typecheck<T>} t - TypeCheck function for Type T
+ * @param  {typecheck<U>} u - TypeCheck function for Type U
+ * @returns {typecheck<[T, U]>}
+ */
+export function is2TypeOfFn<T, U>(
+  t: typecheck<T>,
+  u: typecheck<U>,
+): typecheck<[T, U]> {
+  return (obj: unknown): obj is [T, U] => is2TupleOf(obj, t, u);
+}
+
 /**
  * Type check for Tuple of [T, U, V]
  * @param  {unknown} obj
  * @param  {typecheck<T>} t - TypeCheck function for Type T
  * @param  {typecheck<U>} u - TypeCheck function for Type U
- * @param  {typecheck<V>} v - TypeCheck function for Type U
+ * @param  {typecheck<V>} v - TypeCheck function for Type V
  * @returns {obj_is<Tuple<T, U, V>>}
  */
 export function is3TupleOf<T, U, V>(
@@ -262,6 +284,20 @@ export function is3TupleOf<T, U, V>(
   v: typecheck<V>,
 ): obj is [T, U, V] {
   return is3Tuple(obj) && t(obj[0]) && u(obj[1]) && v(obj[2]);
+}
+/**
+ * Generate a type check function for Tuple of [T, U, V]
+ * @param  {typecheck<T>} t - TypeCheck function for Type T
+ * @param  {typecheck<U>} u - TypeCheck function for Type U
+ * @param  {typecheck<V>} v - TypeCheck function for Type V
+ * @returns {typecheck<[T, U, V]>}
+ */
+export function is3TupleOfFn<T, U, V>(
+  t: typecheck<T>,
+  u: typecheck<U>,
+  v: typecheck<V>,
+): typecheck<[T, U, V]> {
+  return (obj: unknown): obj is [T, U, V] => is3TupleOf(obj, t, u, v);
 }
 /**
  * Type check for string[]
@@ -347,6 +383,18 @@ export function isMapOf<K, V>(
   return true;
 }
 /**
+ * Generate a type check function for Map<K, V>
+ * @param  {typecheck<K>} key - A K type checking function (obj:unknown) => obj is K
+ * @param  {typecheck<V>} val - A V type checking function (obj:unknown) => obj is V
+ * @returns {typecheck<Map<K, V>>}
+ */
+export function isMapOfFn<K, V>(
+  key: typecheck<K>,
+  val: typecheck<V>,
+): typecheck<Map<K, V>> {
+  return (obj: unknown): obj is Map<K, V> => isMapOf(obj, key, val);
+}
+/**
  * Type check for Map<string, string>
  * @param  {unknown} obj
  * @returns {obj_is<Map<string, string>>}
@@ -366,6 +414,14 @@ export function isSetOf<T>(obj: unknown, chk: typecheck<T>): obj is Set<T> {
     if (!chk(t)) return false;
   }
   return true;
+}
+/**
+ * Generate a type check function for Set<T>
+ * @param  {typecheck<T>} chk - A T type checking function (obj:unknow) => obj is T
+ * @returns {typecheck<Set<T>>}
+ */
+export function isSetOfFn<T>(chk: typecheck<T>): typecheck<Set<T>> {
+  return (obj: unknown): obj is Set<T> => isSetOf(obj, chk);
 }
 /**
  * Type check for Set<string>
@@ -398,6 +454,18 @@ export function isObjectOf<T>(
     }
   }
   return true;
+}
+/**
+ * Type check of { [key: string | symbol]: T} types
+ * @param  {unknown} obj
+ * @param  {typecheck<T>} chk - a T type-checking function (obj: unknown) => obj is T
+ * @returns {obj_is<{any:T}>}
+ */
+export function isObjectOfFn<T>(
+  chk: typecheck<T>,
+): typecheck<{ [key: string | symbol]: T }> {
+  return (obj: unknown): obj is { [key: string | symbol]: T } =>
+    isObjectOf(obj, chk);
 }
 /**
  * Type checking function for {[key: string | symbol]: string} types
@@ -491,6 +559,16 @@ export function hasSymbolType<T, S extends symbol>(
   return hasSymbol(obj, sym) && checker(obj[sym]);
 }
 
+export function hasSymbolTypeFn<T, S extends symbol>(
+  sym: S,
+  checker: typecheck<T>,
+  // eslint-disable-next-line no-shadow
+): typecheck<{ [sym in S]: T }> {
+  // eslint-disable-next-line no-shadow
+  return (obj: unknown): obj is { [sym in S]: T } =>
+    hasSymbolType(obj, sym, checker);
+}
+
 export function isIterable<T>(
   obj: unknown,
 ): obj is { [Symbol.iterator]: () => IterableIterator<T> } {
@@ -559,6 +637,13 @@ export function isMultiMapOf<K, V>(
   return true;
 }
 
+export function isMultiMapOfFn<K, V>(
+  key: typecheck<K>,
+  val: typecheck<V>,
+): typecheck<MultiMap<K, V>> {
+  return (obj: unknown): obj is MultiMap<K, V> => isMultiMapOf(obj, key, val);
+}
+
 export function isSpecificType<T>(
   obj: unknown,
   checkers: Iterable<TypeCheckPair>,
@@ -592,6 +677,15 @@ export function isSpecificType<T>(
   }
   return seen === 0;
 }
+
+export function isSpecificTypeFn<T>(
+  checkers: Iterable<TypeCheckPair>,
+  mandatory?: Iterable<string>,
+): typecheck<T> {
+  return (obj: unknown): obj is T =>
+    isSpecificType<T>(obj, checkers, mandatory);
+}
+
 /**
  * Remove any fields/properties that are assigned to 'undefined' or null
  *
