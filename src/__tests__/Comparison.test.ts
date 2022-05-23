@@ -30,6 +30,7 @@ test('Set/Array operations', () => {
   expect(s1is2.size).toEqual(2);
   expect(s1is2).toEqual(a1ia2);
   expect(Operations.ArraySetEqual([...a1ia2], [...a2ia1])).toBeTruthy();
+  expect(Operations.SetValEqual(new Set(a1ia2), new Set(a2ia1))).toBeTruthy();
   expect(Operations.ArraySetEqual(a1, a2)).toBeFalsy();
   expect(Operations.ArraySetEqual(a1, a3)).toBeFalsy();
   const s1ms2 = Operations.SetDifference(s1, s2);
@@ -37,6 +38,8 @@ test('Set/Array operations', () => {
   const s2ms1 = Operations.SetDifference(s2, s1);
   expect(s2ms1.size).toEqual(2);
   expect(Operations.SetIntersection(s1ms2, s2ms1).size).toEqual(0);
+  expect(Operations.ArrayEqual(a1, a2)).toBeFalsy();
+  expect(Operations.ArrayEqual(['a', 'b', 'd', 'e'], a2)).toBeTruthy();
 });
 
 /*test('ObjUtil.has', () => {
@@ -65,4 +68,28 @@ test('Object to Map', () => {
     ['e', '1'],
   ]);
   expect(Operations.ObjToMap(obj1)).toEqual(map1);
+});
+
+test('A few extras', () => {
+  const obj1 = { a: 1, b: 2 };
+  const obj2 = { a: 1 };
+  const arr1 = [1, 2];
+  const arr2 = [2, 3];
+  const arr3 = [4];
+  expect(Operations.ObjEqual(obj1, obj2)).toBeFalsy();
+  expect(Operations.ValEqual(arr1, arr2)).toBeFalsy();
+  expect(Operations.ValEqual(arr1, obj2)).toBeFalsy();
+  expect(Operations.ValEqual(new Set(arr1), new Set(arr1))).toBeTruthy();
+  expect(Operations.ValEqual(new Set(arr1), arr1)).toBeFalsy();
+  expect(Operations.SetValEqual(new Set(arr1), new Set(arr2))).toBeFalsy();
+  const m1 = Operations.ObjToMap(obj1);
+  const m2 = new Map([
+    ['a', '1'],
+    ['b', '2'],
+  ]);
+  expect(Operations.ValEqual(m1, m2)).toBeTruthy();
+  expect(Operations.ValEqual(m1, obj1)).toBeFalsy();
+  expect(Operations.ValEqual(obj1, { ...obj1 })).toBeTruthy();
+  expect(Operations.ValEqual(obj1, null)).toBeFalsy();
+  expect(Operations.MapEqual(m1, m1)).toBeTruthy();
 });
