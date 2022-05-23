@@ -1,6 +1,6 @@
 {
   "name": "@freik/core-utils",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Core set of TS/JS helper utilities (node & www)",
   "author": "Kevin Frei (kevinfrei@hotmail.com)",
   "license": "Unlicense",

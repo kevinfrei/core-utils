@@ -14,6 +14,33 @@ import {
   TypeCheckPair,
 } from './public-defs.js';
 
+/**
+ * Check if an object is one of two types
+ * @param obj {unknown} The object to check
+ * @param chk1 {typecheck<T>} One type to check
+ * @param chk2 {typecheck<U>} Another type to check
+ * @returns {obj_is<T|U>}
+ */
+export function isOneOf<T, U>(
+  obj: unknown,
+  chk1: typecheck<T>,
+  chk2: typecheck<U>,
+): obj is T | U {
+  return chk1(obj) || chk2(obj);
+}
+/**
+ * Generate a typecheck function to check if an object is one of two types
+ * @param chk1 {typecheck<T>} One type to check
+ * @param chk2 {typecheck<U>} Another type to check
+ * @returns {typecheck<T|U>}
+ */
+export function isOneOfFn<T, U>(
+  chk1: typecheck<T>,
+  chk2: typecheck<U>,
+): typecheck<T | U> {
+  return (obj: unknown): obj is T | U => isOneOf(obj, chk1, chk2);
+}
+
 /** Type check for undefined */
 export function isUndefined(obj: unknown): obj is undefined {
   return obj === undefined;
@@ -148,9 +175,11 @@ export function asNumber(obj: unknown, notNum: number): number {
  * @param  {unknown} obj
  * @returns {obj_is<number|string>} True if obj is a number and NOT a NaN, or a string
  */
-export function isNumberOrString(obj: unknown): obj is number | string {
-  return isString(obj) || isNumber(obj);
-}
+export const isNumberOrString: typecheck<number | string> = isOneOfFn(
+  isString,
+  isNumber,
+);
+
 /**
  * If obj is a number (and not NaN) or a string, return that values, otherwise return notNumOrStr
  * @param  {unknown} obj
@@ -480,7 +509,7 @@ export function isObjectOfString(
   );
 }
 /**
- * Type check function for a Promise<T>, though T is (and can't be...) validated.
+ * Type check function for a Promise<T>, though T is not (and can't be...) validated.
  * This is a simple check for a "then-able" object type.
  * @param  {unknown} obj
  * @returns {obj_is<Promise<T>>}
