@@ -14,6 +14,12 @@ import {
   TypeCheckPair,
 } from './public-defs.js';
 
+export function enumKeys<O extends object, K extends keyof O = keyof O>(
+  obj: O,
+): K[] {
+  return Object.keys(obj).filter((k) => Number.isNaN(+k)) as K[];
+}
+
 /**
  * Check if an object is one of two types
  * @param obj {unknown} The object to check
@@ -28,6 +34,7 @@ export function isOneOf<T, U>(
 ): obj is T | U {
   return chk1(obj) || chk2(obj);
 }
+
 /**
  * Generate a typecheck function to check if an object is one of two types
  * @param chk1 {typecheck<T>} One type to check

@@ -7,6 +7,7 @@ import {
   asSimpleObject,
   asString,
   cleanseKeys,
+  enumKeys,
   hasSymbolTypeFn,
   is2TupleOf,
   is2TypeOfFn,
@@ -234,4 +235,35 @@ test('cleansing', () => {
   cleanseKeys(foo, true);
   expect(Object.keys(foo).length).toEqual(3);
   cleanseKeys(null);
+});
+enum StringEnum {
+  North,
+  South,
+  East,
+  West,
+}
+enum NumEnum {
+  One = 1,
+  Two,
+  Three,
+}
+test('basic enum stupidity', () => {
+  const val = StringEnum.East;
+  expect(val).toEqual(StringEnum.East);
+  expect(val in StringEnum).toBeTruthy();
+  let count = 0;
+  let strResult = '';
+  for (const k of enumKeys(StringEnum)) {
+    count++;
+    strResult += k;
+  }
+  expect(count).toEqual(4);
+  expect(strResult).toEqual('NorthSouthEastWest');
+  let numResult = 0;
+  for (const k of enumKeys(NumEnum)) {
+    count++;
+    numResult += NumEnum[k];
+  }
+  expect(count).toEqual(7);
+  expect(numResult).toEqual(6);
 });
