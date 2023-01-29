@@ -15,7 +15,7 @@
 - [Container](interfaces/Container.md)
 - [MultiMap](interfaces/MultiMap.md)
 
-### Type aliases
+### Type Aliases
 
 - [LogCreator](README.md#logcreator)
 - [LogType](README.md#logtype)
@@ -30,9 +30,6 @@
 ### Variables
 
 - [FreikTypeTag](README.md#freiktypetag)
-- [Logger](README.md#logger)
-- [MakeError](README.md#makeerror)
-- [MakeLogger](README.md#makelogger)
 
 ### Functions
 
@@ -41,6 +38,9 @@
 - [FromB64](README.md#fromb64)
 - [FromPathSafeName](README.md#frompathsafename)
 - [FromU8](README.md#fromu8)
+- [Logger](README.md#logger)
+- [MakeError](README.md#makeerror)
+- [MakeLogger](README.md#makelogger)
 - [MakeMultiMap](README.md#makemultimap)
 - [MakePriorityQueue](README.md#makepriorityqueue)
 - [MakeQueue](README.md#makequeue)
@@ -59,13 +59,14 @@
 - [SafelyUnpickle](README.md#safelyunpickle)
 - [SeqNum](README.md#seqnum)
 - [Sleep](README.md#sleep)
+- [StringUnion](README.md#stringunion)
 - [ToB64](README.md#tob64)
 - [ToPathSafeName](README.md#topathsafename)
 - [ToU8](README.md#tou8)
 - [Unpickle](README.md#unpickle)
 - [UnsafelyUnpickle](README.md#unsafelyunpickle)
 
-## Type aliases
+## Type Aliases
 
 ### LogCreator
 
@@ -117,7 +118,7 @@
 
 #### Defined in
 
-[logger.ts:108](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L108)
+[logger.ts:108](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L108)
 
 ---
 
@@ -129,7 +130,9 @@
 
 ▸ (`id`, ...`args`): `void`
 
-**`deprecated`** Use [`MakeLogger`](README.md#makelogger) instead
+**`Deprecated`**
+
+Use [`MakeLogger`](README.md#makelogger) instead
 
 ##### Parameters
 
@@ -156,7 +159,7 @@
 
 #### Defined in
 
-[logger.ts:9](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L9)
+[logger.ts:9](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L9)
 
 ---
 
@@ -175,7 +178,7 @@
 
 #### Defined in
 
-[public-defs.ts:24](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L24)
+[public-defs.ts:24](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L24)
 
 ---
 
@@ -199,7 +202,7 @@
 
 #### Defined in
 
-[public-defs.ts:12](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L12)
+[public-defs.ts:12](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L12)
 
 ---
 
@@ -209,7 +212,7 @@
 
 #### Defined in
 
-[public-defs.ts:3](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L3)
+[public-defs.ts:3](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L3)
 
 ---
 
@@ -239,7 +242,7 @@
 
 #### Defined in
 
-[public-defs.ts:31](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L31)
+[public-defs.ts:31](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L31)
 
 ---
 
@@ -249,7 +252,7 @@
 
 #### Defined in
 
-[public-defs.ts:39](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L39)
+[public-defs.ts:39](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L39)
 
 ---
 
@@ -268,7 +271,7 @@
 
 #### Defined in
 
-[public-defs.ts:17](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L17)
+[public-defs.ts:17](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L17)
 
 ---
 
@@ -298,7 +301,7 @@ val is T
 
 #### Defined in
 
-[public-defs.ts:37](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L37)
+[public-defs.ts:37](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L37)
 
 ## Variables
 
@@ -308,43 +311,7 @@ val is T
 
 #### Defined in
 
-[public-defs.ts:1](https://github.com/kevinfrei/core-utils/blob/a30894b/src/public-defs.ts#L1)
-
----
-
-### Logger
-
-• `Const` **Logger**: [`LogType`](README.md#logtype) = `Log`
-
-**`deprecated`** Use [`MakeLogger`](README.md#makelogger) instead
-
-#### Defined in
-
-[logger.ts:79](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L79)
-
----
-
-### MakeError
-
-• `Const` **MakeError**: [`LogCreator`](README.md#logcreator)
-
-**`function`**
-
-#### Defined in
-
-[logger.ts:171](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L171)
-
----
-
-### MakeLogger
-
-• `Const` **MakeLogger**: [`LogCreator`](README.md#logcreator)
-
-**`function`**
-
-#### Defined in
-
-[logger.ts:169](https://github.com/kevinfrei/core-utils/blob/a30894b/src/logger.ts#L169)
+[public-defs.ts:1](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L1)
 
 ## Functions
 
@@ -369,17 +336,13 @@ every timeout-1 milliseconds, it will never invoke the function
 
 ▸ (): `void`
 
-This invokes func no _sooner_ than `timeout` milliseconds in the future, but
-will restarts the timer every time the function is invoked, so if you call it
-every timeout-1 milliseconds, it will never invoke the function
-
 ##### Returns
 
 `void`
 
 #### Defined in
 
-[Sync.ts:288](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L288)
+[Sync.ts:288](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L288)
 
 ---
 
@@ -406,19 +369,13 @@ WARNING: func must be re-entrant-safe!
 
 ▸ (): `void`
 
-This invokes func every `timeout` milliseconds in the future, so if you call
-it before the timer has completed, it does nothing. Logically, it "buffers"
-invocations, flushing the buffer every X ms.
-
-WARNING: func must be re-entrant-safe!
-
 ##### Returns
 
 `void`
 
 #### Defined in
 
-[Sync.ts:315](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L315)
+[Sync.ts:315](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L315)
 
 ---
 
@@ -438,7 +395,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:131](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L131)
+[translation.ts:131](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L131)
 
 ---
 
@@ -458,7 +415,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:27](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L27)
+[translation.ts:27](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L27)
 
 ---
 
@@ -478,7 +435,116 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:90](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L90)
+[translation.ts:90](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L90)
+
+---
+
+### Logger
+
+▸ **Logger**(`id`, ...`args`): `void`
+
+**`Deprecated`**
+
+Use [`MakeLogger`](README.md#makelogger) instead
+
+#### Parameters
+
+| Name      | Type        |
+| :-------- | :---------- |
+| `id`      | `unknown`   |
+| `...args` | `unknown`[] |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[logger.ts:10](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L10)
+
+---
+
+### MakeError
+
+▸ **MakeError**(`id?`, `enabledByDefault?`): (...`args`: `unknown`[]) => `void`
+
+**`Function`**
+
+#### Parameters
+
+| Name                | Type      |
+| :------------------ | :-------- |
+| `id?`               | `string`  |
+| `enabledByDefault?` | `boolean` |
+
+#### Returns
+
+`fn`
+
+▸ (...`args`): `void`
+
+##### Parameters
+
+| Name      | Type        |
+| :-------- | :---------- |
+| `...args` | `unknown`[] |
+
+##### Returns
+
+`void`
+
+| Name        | Type                       |
+| :---------- | :------------------------- |
+| `disable`   | () => `void`               |
+| `enable`    | () => `void`               |
+| `getId`     | () => `string` \| `symbol` |
+| `isEnabled` | () => `boolean`            |
+
+#### Defined in
+
+[logger.ts:109](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L109)
+
+---
+
+### MakeLogger
+
+▸ **MakeLogger**(`id?`, `enabledByDefault?`): (...`args`: `unknown`[]) => `void`
+
+**`Function`**
+
+#### Parameters
+
+| Name                | Type      |
+| :------------------ | :-------- |
+| `id?`               | `string`  |
+| `enabledByDefault?` | `boolean` |
+
+#### Returns
+
+`fn`
+
+▸ (...`args`): `void`
+
+##### Parameters
+
+| Name      | Type        |
+| :-------- | :---------- |
+| `...args` | `unknown`[] |
+
+##### Returns
+
+`void`
+
+| Name        | Type                       |
+| :---------- | :------------------------- |
+| `disable`   | () => `void`               |
+| `enable`    | () => `void`               |
+| `getId`     | () => `string` \| `symbol` |
+| `isEnabled` | () => `boolean`            |
+
+#### Defined in
+
+[logger.ts:109](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L109)
 
 ---
 
@@ -505,7 +571,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[multimap.ts:7](https://github.com/kevinfrei/core-utils/blob/a30894b/src/multimap.ts#L7)
+[multimap.ts:7](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/multimap.ts#L7)
 
 ---
 
@@ -531,7 +597,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Containers.ts:76](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Containers.ts#L76)
+[Containers.ts:76](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Containers.ts#L76)
 
 ---
 
@@ -557,7 +623,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Containers.ts:3](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Containers.ts#L3)
+[Containers.ts:3](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Containers.ts#L3)
 
 ---
 
@@ -577,7 +643,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:113](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L113)
+[Sync.ts:113](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L113)
 
 ---
 
@@ -598,7 +664,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[SeqNum.ts:30](https://github.com/kevinfrei/core-utils/blob/a30894b/src/SeqNum.ts#L30)
+[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/SeqNum.ts#L8)
 
 ---
 
@@ -618,7 +684,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:78](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L78)
+[Sync.ts:78](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L78)
 
 ---
 
@@ -644,7 +710,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Containers.ts:39](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Containers.ts#L39)
+[Containers.ts:39](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Containers.ts#L39)
 
 ---
 
@@ -664,7 +730,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:19](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L19)
+[Sync.ts:19](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L19)
 
 ---
 
@@ -684,7 +750,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:44](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L44)
+[Sync.ts:44](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L44)
 
 ---
 
@@ -710,7 +776,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:272](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L272)
+[Sync.ts:272](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L272)
 
 ---
 
@@ -731,7 +797,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:208](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L208)
+[Sync.ts:208](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L208)
 
 ---
 
@@ -752,7 +818,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:228](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L228)
+[Sync.ts:228](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L228)
 
 ---
 
@@ -773,7 +839,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:248](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L248)
+[Sync.ts:248](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L248)
 
 ---
 
@@ -793,7 +859,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Pickle.ts:184](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L184)
+[Pickle.ts:187](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L187)
 
 ---
 
@@ -821,7 +887,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Pickle.ts:205](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L205)
+[Pickle.ts:208](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L208)
 
 ---
 
@@ -848,7 +914,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Pickle.ts:196](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L196)
+[Pickle.ts:199](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L199)
 
 ---
 
@@ -869,7 +935,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/a30894b/src/SeqNum.ts#L8)
+[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/SeqNum.ts#L8)
 
 ---
 
@@ -889,7 +955,33 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:9](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Sync.ts#L9)
+[Sync.ts:9](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L9)
+
+---
+
+### StringUnion
+
+▸ **StringUnion**<`UnionType`\>(...`values`): `Readonly`<{ `check`: (`value`: `string`) => `UnionType` ; `guard`: (`value`: `string`) => value is UnionType ; `values`: `UnionType`[] } & { `type`: `UnionType` }\>
+
+#### Type parameters
+
+| Name        | Type             |
+| :---------- | :--------------- |
+| `UnionType` | extends `string` |
+
+#### Parameters
+
+| Name        | Type          |
+| :---------- | :------------ |
+| `...values` | `UnionType`[] |
+
+#### Returns
+
+`Readonly`<{ `check`: (`value`: `string`) => `UnionType` ; `guard`: (`value`: `string`) => value is UnionType ; `values`: `UnionType`[] } & { `type`: `UnionType` }\>
+
+#### Defined in
+
+[public-defs.ts:83](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L83)
 
 ---
 
@@ -909,7 +1001,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:104](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L104)
+[translation.ts:104](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L104)
 
 ---
 
@@ -929,7 +1021,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:1](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L1)
+[translation.ts:1](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L1)
 
 ---
 
@@ -951,7 +1043,7 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[translation.ts:73](https://github.com/kevinfrei/core-utils/blob/a30894b/src/translation.ts#L73)
+[translation.ts:73](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L73)
 
 ---
 
@@ -971,7 +1063,7 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[Pickle.ts:188](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L188)
+[Pickle.ts:191](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L191)
 
 ---
 
@@ -997,4 +1089,4 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[Pickle.ts:192](https://github.com/kevinfrei/core-utils/blob/a30894b/src/Pickle.ts#L192)
+[Pickle.ts:195](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L195)

@@ -15,6 +15,7 @@ super helper for normal JavaScript if you don't hate yourself, too.
 - [asSimpleObject](Type.md#assimpleobject)
 - [asString](Type.md#asstring)
 - [cleanseKeys](Type.md#cleansekeys)
+- [enumKeys](Type.md#enumkeys)
 - [has](Type.md#has)
 - [hasStr](Type.md#hasstr)
 - [hasSymbol](Type.md#hassymbol)
@@ -93,7 +94,7 @@ strings. If defVal isn't provided, only strings will be left in obj.
 
 #### Defined in
 
-[types.ts:348](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L348)
+[types.ts:355](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L355)
 
 ---
 
@@ -118,7 +119,7 @@ obj, if it's a number, otherwise returns nonNum
 
 #### Defined in
 
-[types.ts:169](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L169)
+[types.ts:176](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L176)
 
 ---
 
@@ -143,7 +144,7 @@ obj, if it's a number and NOT a NaN, or a string, otherwise notNumOrStr
 
 #### Defined in
 
-[types.ts:189](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L189)
+[types.ts:196](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L196)
 
 ---
 
@@ -163,7 +164,7 @@ obj, if it's a number and NOT a NaN, or a string, otherwise notNumOrStr
 
 #### Defined in
 
-[types.ts:621](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L621)
+[types.ts:628](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L628)
 
 ---
 
@@ -175,10 +176,10 @@ Type filtering for strings. Will NOT coerce the thing to a string..
 
 #### Parameters
 
-| Name     | Type      | Default value |
-| :------- | :-------- | :------------ |
-| `obj`    | `unknown` | `undefined`   |
-| `notStr` | `string`  | `''`          |
+| Name      | Type      | Default value |
+| :-------- | :-------- | :------------ |
+| `obj`     | `unknown` | `undefined`   |
+| `notStr?` | `string`  | `''`          |
 
 #### Returns
 
@@ -188,7 +189,7 @@ either obj or notStr (whichever is a string)
 
 #### Defined in
 
-[types.ts:119](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L119)
+[types.ts:126](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L126)
 
 ---
 
@@ -203,7 +204,7 @@ Remove any fields/properties that are assigned to 'undefined' or null
 | Name          | Type      | Description                                           |
 | :------------ | :-------- | :---------------------------------------------------- |
 | `obj`         | `unknown` | <bold>Mutates</bold> the object you wish to 'cleanse' |
-| `leaveNulls?` | `boolean` | -                                                     |
+| `leaveNulls?` | `boolean` | should a null property be left alone                  |
 
 #### Returns
 
@@ -213,7 +214,34 @@ The 'cleansed' object (useful for chaining)
 
 #### Defined in
 
-[types.ts:726](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L726)
+[types.ts:733](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L733)
+
+---
+
+### enumKeys
+
+▸ **enumKeys**<`O`, `K`\>(`obj`): `K`[]
+
+#### Type parameters
+
+| Name | Type                                                 |
+| :--- | :--------------------------------------------------- |
+| `O`  | extends `object`                                     |
+| `K`  | extends `string` \| `number` \| `symbol` = keyof `O` |
+
+#### Parameters
+
+| Name  | Type |
+| :---- | :--- |
+| `obj` | `O`  |
+
+#### Returns
+
+`K`[]
+
+#### Defined in
+
+[types.ts:17](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L17)
 
 ---
 
@@ -241,11 +269,9 @@ After a conditional, you can use obj[key] or obj.key safely.
 
 obj is { [key in string]: unknown }
 
-> }
-
 #### Defined in
 
-[types.ts:535](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L535)
+[types.ts:542](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L542)
 
 ---
 
@@ -273,11 +299,9 @@ After a conditional, you can use obj[key] or obj.key as a string safely.
 
 obj is { [key in string]: string }
 
-> }
-
 #### Defined in
 
-[types.ts:566](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L566)
+[types.ts:573](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L573)
 
 ---
 
@@ -304,7 +328,7 @@ obj is { [sym in symbol]: unknown }
 
 #### Defined in
 
-[types.ts:574](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L574)
+[types.ts:581](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L581)
 
 ---
 
@@ -333,7 +357,7 @@ obj is { [sym in symbol]: T }
 
 #### Defined in
 
-[types.ts:582](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L582)
+[types.ts:589](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L589)
 
 ---
 
@@ -361,7 +385,7 @@ obj is { [sym in symbol]: T }
 
 #### Defined in
 
-[types.ts:591](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L591)
+[types.ts:598](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L598)
 
 ---
 
@@ -392,11 +416,9 @@ key safely.
 
 obj is { [key in string]: T }
 
-> }
-
 #### Defined in
 
-[types.ts:551](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L551)
+[types.ts:558](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L558)
 
 ---
 
@@ -408,9 +430,9 @@ Type check for 2 element tuples
 
 #### Parameters
 
-| Name  | Type      |
-| :---- | :-------- |
-| `obj` | `unknown` |
+| Name  | Type      | Description |
+| :---- | :-------- | :---------- |
+| `obj` | `unknown` | {unknown}   |
 
 #### Returns
 
@@ -420,7 +442,7 @@ True of obj is a 2 element tuple (of any type)
 
 #### Defined in
 
-[types.ts:89](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L89)
+[types.ts:96](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L96)
 
 ---
 
@@ -451,7 +473,7 @@ obj is [T, U]
 
 #### Defined in
 
-[types.ts:280](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L280)
+[types.ts:287](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L287)
 
 ---
 
@@ -481,7 +503,7 @@ Generate a type check function for Tuple of [T, U]
 
 #### Defined in
 
-[types.ts:294](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L294)
+[types.ts:301](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L301)
 
 ---
 
@@ -493,9 +515,9 @@ Type check for 3 element tuples
 
 #### Parameters
 
-| Name  | Type      |
-| :---- | :-------- |
-| `obj` | `unknown` |
+| Name  | Type      | Description |
+| :---- | :-------- | :---------- |
+| `obj` | `unknown` | {unknown}   |
 
 #### Returns
 
@@ -505,7 +527,7 @@ True of obj is a 2 element tuple (of any type)
 
 #### Defined in
 
-[types.ts:99](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L99)
+[types.ts:106](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L106)
 
 ---
 
@@ -538,7 +560,7 @@ obj is [T, U, V]
 
 #### Defined in
 
-[types.ts:309](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L309)
+[types.ts:316](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L316)
 
 ---
 
@@ -570,7 +592,7 @@ Generate a type check function for Tuple of [T, U, V]
 
 #### Defined in
 
-[types.ts:324](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L324)
+[types.ts:331](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L331)
 
 ---
 
@@ -582,9 +604,9 @@ Type check for array
 
 #### Parameters
 
-| Name  | Type      |
-| :---- | :-------- |
-| `obj` | `unknown` |
+| Name  | Type      | Description |
+| :---- | :-------- | :---------- |
+| `obj` | `unknown` | {unknown}   |
 
 #### Returns
 
@@ -594,7 +616,7 @@ True if obj is an array (of any type)
 
 #### Defined in
 
-[types.ts:79](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L79)
+[types.ts:86](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L86)
 
 ---
 
@@ -623,7 +645,7 @@ obj is T[]
 
 #### Defined in
 
-[types.ts:258](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L258)
+[types.ts:265](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L265)
 
 ---
 
@@ -651,7 +673,7 @@ Generate a type check function for T[] (Array<T>)
 
 #### Defined in
 
-[types.ts:270](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L270)
+[types.ts:277](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L277)
 
 ---
 
@@ -673,7 +695,7 @@ obj is string[]
 
 #### Defined in
 
-[types.ts:336](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L336)
+[types.ts:343](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L343)
 
 ---
 
@@ -695,7 +717,7 @@ obj is bigint
 
 #### Defined in
 
-[types.ts:216](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L216)
+[types.ts:223](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L223)
 
 ---
 
@@ -717,7 +739,7 @@ obj is boolean
 
 #### Defined in
 
-[types.ts:200](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L200)
+[types.ts:207](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L207)
 
 ---
 
@@ -744,7 +766,7 @@ obj is T
 
 #### Defined in
 
-[types.ts:646](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L646)
+[types.ts:653](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L653)
 
 ---
 
@@ -766,7 +788,7 @@ obj is Date
 
 #### Defined in
 
-[types.ts:208](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L208)
+[types.ts:215](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L215)
 
 ---
 
@@ -788,7 +810,7 @@ obj is Function
 
 #### Defined in
 
-[types.ts:225](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L225)
+[types.ts:232](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L232)
 
 ---
 
@@ -814,7 +836,7 @@ obj is Object
 
 #### Defined in
 
-[types.ts:601](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L601)
+[types.ts:608](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L608)
 
 ---
 
@@ -836,7 +858,7 @@ obj is Map<unknown, unknown\>
 
 #### Defined in
 
-[types.ts:241](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L241)
+[types.ts:248](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L248)
 
 ---
 
@@ -867,7 +889,7 @@ obj is Map<K, V\>
 
 #### Defined in
 
-[types.ts:401](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L401)
+[types.ts:408](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L408)
 
 ---
 
@@ -897,7 +919,7 @@ Generate a type check function for Map<K, V>
 
 #### Defined in
 
-[types.ts:420](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L420)
+[types.ts:427](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L427)
 
 ---
 
@@ -919,7 +941,7 @@ obj is Map<string, string\>
 
 #### Defined in
 
-[types.ts:431](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L431)
+[types.ts:438](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L438)
 
 ---
 
@@ -939,7 +961,7 @@ obj is MultiMap<unknown, unknown\>
 
 #### Defined in
 
-[types.ts:650](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L650)
+[types.ts:657](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L657)
 
 ---
 
@@ -968,7 +990,7 @@ obj is MultiMap<K, V\>
 
 #### Defined in
 
-[types.ts:654](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L654)
+[types.ts:661](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L661)
 
 ---
 
@@ -996,7 +1018,7 @@ obj is MultiMap<K, V\>
 
 #### Defined in
 
-[types.ts:669](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L669)
+[types.ts:676](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L676)
 
 ---
 
@@ -1018,7 +1040,7 @@ obj is null
 
 #### Defined in
 
-[types.ts:50](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L50)
+[types.ts:57](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L57)
 
 ---
 
@@ -1042,7 +1064,7 @@ obj is a number and NOT a NaN
 
 #### Defined in
 
-[types.ts:160](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L160)
+[types.ts:167](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L167)
 
 ---
 
@@ -1066,7 +1088,7 @@ True if obj is a number and NOT a NaN, or a string
 
 #### Defined in
 
-[types.ts:178](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L178)
+[public-defs.ts:37](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L37)
 
 ---
 
@@ -1090,7 +1112,7 @@ True if obj is null, or an object (of any type)
 
 #### Defined in
 
-[types.ts:67](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L67)
+[types.ts:74](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L74)
 
 ---
 
@@ -1112,7 +1134,7 @@ obj is Object
 
 #### Defined in
 
-[types.ts:55](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L55)
+[types.ts:62](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L62)
 
 ---
 
@@ -1139,11 +1161,9 @@ Type check of { [key: string | symbol]: T} types
 
 obj is Object
 
-> }
-
 #### Defined in
 
-[types.ts:469](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L469)
+[types.ts:476](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L476)
 
 ---
 
@@ -1169,11 +1189,9 @@ Type check of { [key: string | symbol]: T} types
 
 [`typecheck`](../README.md#typecheck)<{ `[key: string | symbol]`: `T`; }\>
 
-> }
-
 #### Defined in
 
-[types.ts:493](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L493)
+[types.ts:500](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L500)
 
 ---
 
@@ -1193,11 +1211,9 @@ Type checking function for {[key: string | symbol]: string} types
 
 obj is Object
 
-> }
-
 #### Defined in
 
-[types.ts:504](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L504)
+[types.ts:511](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L511)
 
 ---
 
@@ -1216,11 +1232,11 @@ Check if an object is one of two types
 
 #### Parameters
 
-| Name   | Type                                        | Description           |
-| :----- | :------------------------------------------ | :-------------------- |
-| `obj`  | `unknown`                                   | The object to check   |
-| `chk1` | [`typecheck`](../README.md#typecheck)<`T`\> | One type to check     |
-| `chk2` | [`typecheck`](../README.md#typecheck)<`U`\> | Another type to check |
+| Name   | Type                                        | Description                          |
+| :----- | :------------------------------------------ | :----------------------------------- |
+| `obj`  | `unknown`                                   | {unknown} The object to check        |
+| `chk1` | [`typecheck`](../README.md#typecheck)<`T`\> | {typecheck<T>} One type to check     |
+| `chk2` | [`typecheck`](../README.md#typecheck)<`U`\> | {typecheck<U>} Another type to check |
 
 #### Returns
 
@@ -1228,7 +1244,7 @@ obj is T \| U
 
 #### Defined in
 
-[types.ts:24](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L24)
+[types.ts:30](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L30)
 
 ---
 
@@ -1247,10 +1263,10 @@ Generate a typecheck function to check if an object is one of two types
 
 #### Parameters
 
-| Name   | Type                                        | Description           |
-| :----- | :------------------------------------------ | :-------------------- |
-| `chk1` | [`typecheck`](../README.md#typecheck)<`T`\> | One type to check     |
-| `chk2` | [`typecheck`](../README.md#typecheck)<`U`\> | Another type to check |
+| Name   | Type                                        | Description                          |
+| :----- | :------------------------------------------ | :----------------------------------- |
+| `chk1` | [`typecheck`](../README.md#typecheck)<`T`\> | {typecheck<T>} One type to check     |
+| `chk2` | [`typecheck`](../README.md#typecheck)<`U`\> | {typecheck<U>} Another type to check |
 
 #### Returns
 
@@ -1258,7 +1274,7 @@ Generate a typecheck function to check if an object is one of two types
 
 #### Defined in
 
-[types.ts:37](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L37)
+[types.ts:44](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L44)
 
 ---
 
@@ -1287,7 +1303,7 @@ obj is Promise<T\>
 
 #### Defined in
 
-[types.ts:517](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L517)
+[types.ts:524](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L524)
 
 ---
 
@@ -1309,7 +1325,7 @@ obj is RegExp
 
 #### Defined in
 
-[types.ts:233](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L233)
+[types.ts:240](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L240)
 
 ---
 
@@ -1331,7 +1347,7 @@ obj is Set<unknown\>
 
 #### Defined in
 
-[types.ts:249](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L249)
+[types.ts:256](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L256)
 
 ---
 
@@ -1360,7 +1376,7 @@ obj is Set<T\>
 
 #### Defined in
 
-[types.ts:440](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L440)
+[types.ts:447](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L447)
 
 ---
 
@@ -1388,7 +1404,7 @@ Generate a type check function for Set<T>
 
 #### Defined in
 
-[types.ts:452](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L452)
+[types.ts:459](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L459)
 
 ---
 
@@ -1410,7 +1426,7 @@ obj is Set<string\>
 
 #### Defined in
 
-[types.ts:460](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L460)
+[types.ts:467](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L467)
 
 ---
 
@@ -1430,7 +1446,7 @@ x is SimpleObject
 
 #### Defined in
 
-[types.ts:607](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L607)
+[types.ts:614](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L614)
 
 ---
 
@@ -1458,7 +1474,7 @@ obj is T
 
 #### Defined in
 
-[types.ts:676](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L676)
+[types.ts:683](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L683)
 
 ---
 
@@ -1485,7 +1501,7 @@ obj is T
 
 #### Defined in
 
-[types.ts:710](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L710)
+[types.ts:717](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L717)
 
 ---
 
@@ -1497,9 +1513,9 @@ Type check for a string
 
 #### Parameters
 
-| Name  | Type      |
-| :---- | :-------- |
-| `obj` | `unknown` |
+| Name  | Type      | Description |
+| :---- | :-------- | :---------- |
+| `obj` | `unknown` | {unknown}   |
 
 #### Returns
 
@@ -1509,7 +1525,7 @@ True if obj is a string
 
 #### Defined in
 
-[types.ts:109](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L109)
+[types.ts:116](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L116)
 
 ---
 
@@ -1531,7 +1547,7 @@ obj is symbol
 
 #### Defined in
 
-[types.ts:525](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L525)
+[types.ts:532](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L532)
 
 ---
 
@@ -1553,7 +1569,7 @@ obj is undefined
 
 #### Defined in
 
-[types.ts:45](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L45)
+[types.ts:52](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L52)
 
 ---
 
@@ -1580,7 +1596,7 @@ can be coerced to strings, will be left in obj.
 
 #### Defined in
 
-[types.ts:372](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L372)
+[types.ts:379](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L379)
 
 ---
 
@@ -1592,10 +1608,10 @@ Type coercion to a string. Will try to _lightly_ coerce the thing to a string if
 
 #### Parameters
 
-| Name     | Type      | Default value |
-| :------- | :-------- | :------------ |
-| `obj`    | `unknown` | `undefined`   |
-| `notStr` | `string`  | `''`          |
+| Name      | Type      | Default value |
+| :-------- | :-------- | :------------ |
+| `obj`     | `unknown` | `undefined`   |
+| `notStr?` | `string`  | `''`          |
 
 #### Returns
 
@@ -1605,4 +1621,4 @@ either obj, obj.toString(), or notStr
 
 #### Defined in
 
-[types.ts:130](https://github.com/kevinfrei/core-utils/blob/529cb80/src/types.ts#L130)
+[types.ts:137](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/types.ts#L137)
