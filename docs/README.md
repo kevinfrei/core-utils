@@ -18,7 +18,6 @@
 ### Type Aliases
 
 - [LogCreator](README.md#logcreator)
-- [LogType](README.md#logtype)
 - [ReaderWriter](README.md#readerwriter)
 - [SeqNumGenerator](README.md#seqnumgenerator)
 - [SimpleObject](README.md#simpleobject)
@@ -38,7 +37,6 @@
 - [FromB64](README.md#fromb64)
 - [FromPathSafeName](README.md#frompathsafename)
 - [FromU8](README.md#fromu8)
-- [Logger](README.md#logger)
 - [MakeError](README.md#makeerror)
 - [MakeLogger](README.md#makelogger)
 - [MakeMultiMap](README.md#makemultimap)
@@ -76,6 +74,8 @@
 
 ▸ (`id?`, `enabledByDefault?`): (...`args`: `unknown`[]) => `void`
 
+Function Object for logging
+
 ##### Parameters
 
 | Name                | Type      |
@@ -87,7 +87,7 @@
 
 `fn`
 
-▸ (...`args`): `void`
+▸ (`...args`): `void`
 
 ##### Parameters
 
@@ -118,48 +118,7 @@
 
 #### Defined in
 
-[logger.ts:108](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L108)
-
----
-
-### LogType
-
-Ƭ **LogType**: `Object`
-
-#### Call signature
-
-▸ (`id`, ...`args`): `void`
-
-**`Deprecated`**
-
-Use [`MakeLogger`](README.md#makelogger) instead
-
-##### Parameters
-
-| Name      | Type        |
-| :-------- | :---------- |
-| `id`      | `unknown`   |
-| `...args` | `unknown`[] |
-
-##### Returns
-
-`void`
-
-#### Type declaration
-
-| Name           | Type                                                                             |
-| :------------- | :------------------------------------------------------------------------------- |
-| `bind`         | (`id`: `unknown`, `isEnabled?`: `boolean`) => (...`args`: `unknown`[]) => `void` |
-| `defaultToOff` | () => `void`                                                                     |
-| `defaultToOn`  | () => `void`                                                                     |
-| `disable`      | (`id`: `unknown`) => `void`                                                      |
-| `enable`       | (`id`: `unknown`) => `void`                                                      |
-| `isDisabled`   | (`id`: `unknown`) => `boolean`                                                   |
-| `isEnabled`    | (`id`: `unknown`) => `boolean`                                                   |
-
-#### Defined in
-
-[logger.ts:9](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L9)
+[logger.ts:32](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/logger.ts#L32)
 
 ---
 
@@ -178,7 +137,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[public-defs.ts:24](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L24)
+[public-defs.ts:24](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L24)
 
 ---
 
@@ -202,7 +161,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[public-defs.ts:12](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L12)
+[public-defs.ts:12](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L12)
 
 ---
 
@@ -212,7 +171,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[public-defs.ts:3](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L3)
+[public-defs.ts:3](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L3)
 
 ---
 
@@ -242,7 +201,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[public-defs.ts:31](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L31)
+[public-defs.ts:31](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L31)
 
 ---
 
@@ -252,7 +211,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[public-defs.ts:39](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L39)
+[public-defs.ts:39](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L39)
 
 ---
 
@@ -271,7 +230,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[public-defs.ts:17](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L17)
+[public-defs.ts:17](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L17)
 
 ---
 
@@ -301,7 +260,7 @@ val is T
 
 #### Defined in
 
-[public-defs.ts:37](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L37)
+[public-defs.ts:37](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L37)
 
 ## Variables
 
@@ -311,7 +270,7 @@ val is T
 
 #### Defined in
 
-[public-defs.ts:1](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L1)
+[public-defs.ts:1](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L1)
 
 ## Functions
 
@@ -342,7 +301,7 @@ every timeout-1 milliseconds, it will never invoke the function
 
 #### Defined in
 
-[Sync.ts:288](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L288)
+[Sync.ts:288](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L288)
 
 ---
 
@@ -375,7 +334,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[Sync.ts:315](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L315)
+[Sync.ts:315](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L315)
 
 ---
 
@@ -395,7 +354,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:131](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L131)
+[translation.ts:131](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/translation.ts#L131)
 
 ---
 
@@ -415,7 +374,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:27](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L27)
+[translation.ts:27](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/translation.ts#L27)
 
 ---
 
@@ -435,32 +394,7 @@ WARNING: func must be re-entrant-safe!
 
 #### Defined in
 
-[translation.ts:90](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L90)
-
----
-
-### Logger
-
-▸ **Logger**(`id`, ...`args`): `void`
-
-**`Deprecated`**
-
-Use [`MakeLogger`](README.md#makelogger) instead
-
-#### Parameters
-
-| Name      | Type        |
-| :-------- | :---------- |
-| `id`      | `unknown`   |
-| `...args` | `unknown`[] |
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-[logger.ts:10](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L10)
+[translation.ts:90](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/translation.ts#L90)
 
 ---
 
@@ -481,7 +415,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 `fn`
 
-▸ (...`args`): `void`
+▸ (`...args`): `void`
 
 ##### Parameters
 
@@ -502,7 +436,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[logger.ts:109](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L109)
+[logger.ts:33](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/logger.ts#L33)
 
 ---
 
@@ -523,7 +457,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 `fn`
 
-▸ (...`args`): `void`
+▸ (`...args`): `void`
 
 ##### Parameters
 
@@ -544,7 +478,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[logger.ts:109](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/logger.ts#L109)
+[logger.ts:33](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/logger.ts#L33)
 
 ---
 
@@ -571,7 +505,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[multimap.ts:7](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/multimap.ts#L7)
+[multimap.ts:7](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/multimap.ts#L7)
 
 ---
 
@@ -597,13 +531,13 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Containers.ts:76](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Containers.ts#L76)
+[Containers.ts:76](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Containers.ts#L76)
 
 ---
 
 ### MakeQueue
 
-▸ **MakeQueue**<`T`\>(...`items`): [`Container`](interfaces/Container.md)<`T`\>
+▸ **MakeQueue**<`T`\>(`...items`): [`Container`](interfaces/Container.md)<`T`\>
 
 #### Type parameters
 
@@ -623,7 +557,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Containers.ts:3](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Containers.ts#L3)
+[Containers.ts:3](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Containers.ts#L3)
 
 ---
 
@@ -643,7 +577,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:113](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L113)
+[Sync.ts:113](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L113)
 
 ---
 
@@ -664,7 +598,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/SeqNum.ts#L8)
+[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/SeqNum.ts#L8)
 
 ---
 
@@ -684,13 +618,13 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:78](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L78)
+[Sync.ts:78](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L78)
 
 ---
 
 ### MakeStack
 
-▸ **MakeStack**<`T`\>(...`items`): [`Container`](interfaces/Container.md)<`T`\>
+▸ **MakeStack**<`T`\>(`...items`): [`Container`](interfaces/Container.md)<`T`\>
 
 #### Type parameters
 
@@ -710,7 +644,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Containers.ts:39](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Containers.ts#L39)
+[Containers.ts:39](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Containers.ts#L39)
 
 ---
 
@@ -730,7 +664,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:19](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L19)
+[Sync.ts:19](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L19)
 
 ---
 
@@ -750,7 +684,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:44](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L44)
+[Sync.ts:44](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L44)
 
 ---
 
@@ -776,7 +710,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:272](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L272)
+[Sync.ts:272](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L272)
 
 ---
 
@@ -797,7 +731,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:208](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L208)
+[Sync.ts:208](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L208)
 
 ---
 
@@ -818,7 +752,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:228](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L228)
+[Sync.ts:228](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L228)
 
 ---
 
@@ -839,7 +773,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:248](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L248)
+[Sync.ts:248](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L248)
 
 ---
 
@@ -859,7 +793,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Pickle.ts:187](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L187)
+[Pickle.ts:187](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Pickle.ts#L187)
 
 ---
 
@@ -887,7 +821,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Pickle.ts:208](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L208)
+[Pickle.ts:208](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Pickle.ts#L208)
 
 ---
 
@@ -914,7 +848,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Pickle.ts:199](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L199)
+[Pickle.ts:199](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Pickle.ts#L199)
 
 ---
 
@@ -935,7 +869,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/SeqNum.ts#L8)
+[SeqNum.ts:8](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/SeqNum.ts#L8)
 
 ---
 
@@ -955,13 +889,13 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[Sync.ts:9](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Sync.ts#L9)
+[Sync.ts:9](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Sync.ts#L9)
 
 ---
 
 ### StringUnion
 
-▸ **StringUnion**<`UnionType`\>(...`values`): `Readonly`<{ `check`: (`value`: `string`) => `UnionType` ; `guard`: (`value`: `string`) => value is UnionType ; `values`: `UnionType`[] } & { `type`: `UnionType` }\>
+▸ **StringUnion**<`UnionType`\>(`...values`): `Readonly`<{ `check`: (`value`: `string`) => `UnionType` ; `guard`: (`value`: `string`) => value is UnionType ; `values`: `UnionType`[] } & { `type`: `UnionType` }\>
 
 #### Type parameters
 
@@ -981,7 +915,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[public-defs.ts:83](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L83)
+[public-defs.ts:83](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L83)
 
 ---
 
@@ -1001,7 +935,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[translation.ts:104](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L104)
+[translation.ts:104](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/translation.ts#L104)
 
 ---
 
@@ -1021,7 +955,7 @@ Use [`MakeLogger`](README.md#makelogger) instead
 
 #### Defined in
 
-[translation.ts:1](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L1)
+[translation.ts:1](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/translation.ts#L1)
 
 ---
 
@@ -1043,7 +977,7 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[translation.ts:73](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/translation.ts#L73)
+[translation.ts:73](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/translation.ts#L73)
 
 ---
 
@@ -1063,7 +997,7 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[Pickle.ts:191](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L191)
+[Pickle.ts:191](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Pickle.ts#L191)
 
 ---
 
@@ -1089,4 +1023,4 @@ A string encoding of the value in 4 (or fewer) characters
 
 #### Defined in
 
-[Pickle.ts:195](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/Pickle.ts#L195)
+[Pickle.ts:195](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/Pickle.ts#L195)

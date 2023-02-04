@@ -39,7 +39,7 @@
 
 #### Defined in
 
-[public-defs.ts:71](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L71)
+[public-defs.ts:71](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L71)
 
 ---
 
@@ -57,7 +57,7 @@
 
 #### Defined in
 
-[public-defs.ts:70](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L70)
+[public-defs.ts:70](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L70)
 
 ---
 
@@ -75,7 +75,7 @@
 
 #### Defined in
 
-[public-defs.ts:68](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L68)
+[public-defs.ts:68](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L68)
 
 ---
 
@@ -100,7 +100,7 @@
 
 #### Defined in
 
-[public-defs.ts:66](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L66)
+[public-defs.ts:66](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L66)
 
 ---
 
@@ -125,7 +125,7 @@
 
 #### Defined in
 
-[public-defs.ts:67](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L67)
+[public-defs.ts:67](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L67)
 
 ---
 
@@ -143,7 +143,7 @@
 
 #### Defined in
 
-[public-defs.ts:69](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L69)
+[public-defs.ts:69](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L69)
 
 ## Methods
 
@@ -157,4 +157,4 @@
 
 #### Defined in
 
-[public-defs.ts:72](https://github.com/kevinfrei/core-utils/blob/e2846bd/src/public-defs.ts#L72)
+[public-defs.ts:72](https://github.com/kevinfrei/core-utils/blob/6a6367a/src/public-defs.ts#L72)

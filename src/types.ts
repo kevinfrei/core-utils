@@ -546,6 +546,13 @@ export function has<K extends string>(
 ): obj is { [key in K]: unknown } {
   return isObjectNonNull(obj) && key in obj;
 }
+export function hasFn<K extends string>(
+  key: K,
+  // eslint-disable-next-line no-shadow
+): typecheck<{ [key in K]: unknown }> {
+  // eslint-disable-next-line no-shadow
+  return (obj: unknown): obj is { [key in K]: unknown } => has(obj, key);
+}
 /**
  * Type check for a key of type T in obj.
  * After a conditional, you can use obj[key] or obj.key with the type T for
@@ -563,6 +570,14 @@ export function hasType<T, K extends string>(
 ): obj is { [key in K]: T } {
   return has(obj, key) && checker(obj[key]);
 }
+export function hasTypeFn<T, K extends string>(
+  key: K,
+  checker: typecheck<T>,
+  // eslint-disable-next-line no-shadow
+): typecheck<{ [key in K]: T }> {
+  // eslint-disable-next-line no-shadow
+  return (obj: unknown): obj is { [key in K]: T } => hasType(obj, key, checker);
+}
 /**
  * Type check for a string typed key in obj.
  * After a conditional, you can use obj[key] or obj.key as a string safely.
@@ -577,6 +592,13 @@ export function hasStr<K extends string>(
 ): obj is { [key in K]: string } {
   return hasType(obj, key, isString);
 }
+export function hasStrFn<K extends string>(
+  key: K,
+  // eslint-disable-next-line no-shadow
+): typecheck<{ [key in K]: string }> {
+  // eslint-disable-next-line no-shadow
+  return (obj: object): obj is { [key in K]: string } => hasStr(obj, key);
+}
 
 export function hasSymbol<S extends symbol>(
   obj: unknown,
@@ -584,6 +606,13 @@ export function hasSymbol<S extends symbol>(
   // eslint-disable-next-line no-shadow
 ): obj is { [sym in S]: unknown } {
   return isObjectNonNull(obj) && sym in obj;
+}
+export function hasSymbolFn<S extends symbol>(
+  sym: S,
+  // eslint-disable-next-line no-shadow
+): typecheck<{ [sym in S]: unknown }> {
+  // eslint-disable-next-line no-shadow
+  return (obj: unknown): obj is { [sym in S]: unknown } => hasSymbol(obj, sym);
 }
 
 export function hasSymbolType<T, S extends symbol>(
@@ -594,7 +623,6 @@ export function hasSymbolType<T, S extends symbol>(
 ): obj is { [sym in S]: T } {
   return hasSymbol(obj, sym) && checker(obj[sym]);
 }
-
 export function hasSymbolTypeFn<T, S extends symbol>(
   sym: S,
   checker: typecheck<T>,
