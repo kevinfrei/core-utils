@@ -6,7 +6,7 @@ type TrieNode<T> = {
   values: Set<T>;
 };
 type TrieMap<T> = Map<string, TrieNode<T>>;
-export type TrieTree<T> = [TrieMap<T>, TrieMap<T>];
+type TrieTree<T> = [TrieMap<T>, TrieMap<T>];
 
 const splitter = /[- .;:]/;
 

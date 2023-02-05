@@ -5,6 +5,7 @@ export * from './multimap.js';
 export * as Operations from './Operations.js';
 export * from './Pickle.js';
 export * from './public-defs.js';
+export * from './Search.js';
 export * from './SeqNum.js';
 export * from './Sync.js';
 export * from './translation.js';
