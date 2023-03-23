@@ -289,7 +289,7 @@ export function DebouncedDelay(
   func: MaybeAsyncFunc<void>,
   timeout: number,
 ): () => void {
-  let debounceTimer: number | NodeJS.Timer | null = null;
+  let debounceTimer: number | null = null;
   const doWork = OnlyOneActiveQueue(func);
   function ping() {
     if (debounceTimer !== null) {
@@ -316,7 +316,7 @@ export function DebouncedEvery(
   func: MaybeAsyncFunc<void>,
   timeout: number,
 ): () => void {
-  let debounceTimer: number | NodeJS.Timer | null = null;
+  let debounceTimer: number | null = null;
   function ping() {
     if (debounceTimer !== null) {
       return;
