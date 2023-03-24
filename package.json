@@ -39,7 +39,7 @@
     "doc": "typedoc ./src/index.ts --readme none --tsconfig tsconfig.esm.json"
   },
   "devDependencies": {
-    "@freik/build-tools": "^3.4.7",
+    "@freik/build-tools": "^3.4.8",
     "@types/jest": "^29.5.0",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",

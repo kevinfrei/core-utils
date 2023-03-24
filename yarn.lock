@@ -2231,9 +2231,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@freik/build-tools@npm:^3.4.7":
-  version: 3.4.7
-  resolution: "@freik/build-tools@npm:3.4.7"
+"@freik/build-tools@npm:^3.4.8":
+  version: 3.4.8
+  resolution: "@freik/build-tools@npm:3.4.8"
   dependencies:
     "@babel/cli": ~7.21.0
     "@babel/core": ~7.21.3
@@ -2272,7 +2272,7 @@ __metadata:
     prettier: ~2
     react: ~17
     react-scripts: ~5
-    typescript: ~4
+    typescript: ~4 || ~5
   peerDependenciesMeta:
     react:
       optional: true
@@ -2281,7 +2281,7 @@ __metadata:
   bin:
     er: lib/tools.js
     ftool: lib/tools.js
-  checksum: 99522d3f717bb1667584a74651e7a7c461d2af202653ad64f09b3ea93246b8c577ddb80ad9aeb788c3cc087898b6bbb9a4697a16a20b06a059119f358f6a21c8
+  checksum: cafb47bf9ff5122b3cc6fa1cf7e4a77b5da6d0fba164f9c4cccd0ef56accaf99dc944e6f0f7884fa533bb0abb98a6ced7835db7c197eab400a52b5745622fa15
   languageName: node
   linkType: hard
 
@@ -2289,7 +2289,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@freik/core-utils@workspace:."
   dependencies:
-    "@freik/build-tools": ^3.4.7
+    "@freik/build-tools": ^3.4.8
     "@types/jest": ^29.5.0
     "@typescript-eslint/eslint-plugin": ^5.56.0
     "@typescript-eslint/parser": ^5.56.0
