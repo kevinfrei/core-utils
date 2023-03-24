@@ -1,6 +1,6 @@
 {
   "name": "@freik/core-utils",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Core set of TS/JS helper utilities (node & www)",
   "author": "Kevin Frei (kevinfrei@hotmail.com)",
   "license": "Unlicense",
@@ -8,9 +8,7 @@
     "url": "https://github.com/kevinfrei/core-utils/issues"
   },
   "homepage": "https://github.com/kevinfrei/core-utils#readme",
-  "keywords": [
-    "js-utils"
-  ],
+  "keywords": ["js-utils"],
   "repository": "github:kevinfrei/core-utils",
   "module": "./lib/esm/index.js",
   "main": "./lib/cjs/index.js",
@@ -36,7 +34,7 @@
     "doc": "typedoc ./src/index.ts --readme none --tsconfig tsconfig.esm.json"
   },
   "devDependencies": {
-    "@freik/build-tools": "^3.4.9",
+    "@freik/build-tools": "^3.4.10",
     "@types/jest": "^29.5.0",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
@@ -52,9 +50,7 @@
     "typedoc-plugin-markdown": "^3.14.0",
     "typescript": "^5.0.2"
   },
-  "files": [
-    "lib/**/*"
-  ],
+  "files": ["lib/**/*"],
   "engines": {
     "node": "^14.13.1 || >= 16.0.0"
   },
