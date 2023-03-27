@@ -1,5 +1,5 @@
 import { MakeMultiMap } from '../multimap';
-import { TypeCheckPair } from '../public-defs';
+import { SpecificCheckPair } from '../public-defs';
 import {
   asArrayOfString,
   asNumber,
@@ -8,7 +8,11 @@ import {
   asString,
   cleanseKeys,
   enumKeys,
+  hasFn,
+  hasStrFn,
+  hasSymbolFn,
   hasSymbolTypeFn,
+  hasTypeFn,
   is2TupleOf,
   is2TypeOfFn,
   is3TupleOf,
@@ -29,7 +33,11 @@ import {
   isObject,
   isObjectOf,
   isObjectOfFn,
+  isObjectOfFullType,
+  isObjectOfFullTypeFn,
   isObjectOfString,
+  isObjectOfType,
+  isObjectOfTypeFn,
   isRegex,
   isSetOfFn,
   isSetOfString,
@@ -41,13 +49,9 @@ import {
   toString,
 } from '../types';
 
-test('Object.isString empty', () => {
+test('isString', () => {
   expect(isString('')).toBe(true);
-});
-test('Object.isString something', () => {
   expect(isString('s')).toBe(true);
-});
-test('Object.isString notStr', () => {
   expect(isString(0)).toBe(false);
 });
 test('isRegex', () => {
@@ -59,9 +63,9 @@ test('isDate', () => {
   expect(isDate(Date())).toBeFalsy();
   expect(isDate(new Date())).toBeTruthy();
 });
-test('isSpecificType', () => {
+test('isSpecificType & stragglers', () => {
   const theType = { a: 1, b: () => 0, c: new Set<string>(['a']) };
-  const fieldTypes: TypeCheckPair[] = [
+  const fieldTypes: SpecificCheckPair<typeof theType>[] = [
     ['a', isNumber],
     ['b', isFunction],
     ['c', isSetOfString],
@@ -95,6 +99,47 @@ test('isSpecificType', () => {
       fieldTypes,
       new Set(required),
     ),
+  ).toBeFalsy();
+  expect(hasStrFn('a')({ a: 'a' })).toBeTruthy();
+  expect(hasStrFn('b')({ a: 'a' })).toBeFalsy();
+  expect(hasTypeFn('a', isString)({ a: 'b' })).toBeTruthy();
+  expect(hasFn('a')({ b: 1 })).toBeFalsy();
+});
+test('isObjectOfType', () => {
+  const theType = { a: 1, b: () => 0, c: new Set<string>(['a']) };
+  const theOptionalType = { a: 2, b: () => 1 };
+  const required = { a: isNumber, b: isFunction };
+  const optional = { c: isSetOfString };
+  const allOf = { ...required, ...optional };
+  const arrOf = [theType, theType];
+  const isType = isObjectOfFullTypeFn<Partial<typeof theType>>(required);
+  expect(isObjectOfType(theType, required, optional)).toBeTruthy();
+  expect(isObjectOfType(theType, optional, required)).toBeTruthy();
+  expect(isObjectOfFullType(theType, allOf)).toBeTruthy();
+  expect(isType(theOptionalType)).toBeTruthy();
+  expect(isObjectOfFullType(theOptionalType, allOf)).toBeFalsy();
+  expect(isObjectOfFullType(theOptionalType, allOf)).toBeFalsy();
+  expect(isArrayOf(arrOf, isObjectOfTypeFn(required, optional))).toBeTruthy();
+  expect(
+    isObjectOfType({ a: 2, b: () => '' }, required, optional),
+  ).toBeTruthy();
+  expect(isObjectOfType({ a: 2, b: 1 }, required, optional)).toBeFalsy();
+  expect(
+    isObjectOfType({ a: 2, c: new Set(['a', 'b']) }, required, optional),
+  ).toBeFalsy();
+  expect(
+    isObjectOfType(
+      { a: 2, b: () => 0, c: new Set([1, 2]) },
+      required,
+      optional,
+    ),
+  ).toBeFalsy();
+  expect(isObjectOfType(null, required, optional)).toBeFalsy();
+  expect(
+    isObjectOfType({ a: 2, b: () => '', d: null }, required, optional),
+  ).toBeTruthy();
+  expect(
+    isObjectOfType({ a: 2, b: () => '', d: '' }, required, optional),
   ).toBeFalsy();
 });
 test('The simple is/as tests', () => {
@@ -194,6 +239,7 @@ test('Miscellaneous type checks', () => {
       hasSymbolTypeFn(Symbol.iterator, isArrayOfFn(isNumberOrString)),
     ),
   ).toBeTruthy();
+  expect(isArrayOf([obj], hasSymbolFn(Symbol.iterator))).toBeTruthy();
 });
 
 test('is/asSimpleObject tests', () => {

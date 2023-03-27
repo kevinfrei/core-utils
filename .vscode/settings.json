@@ -19,7 +19,6 @@
     ".eslintcache": true,
     ".husky": true
   },
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },

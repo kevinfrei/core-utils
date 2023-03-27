@@ -35,9 +35,10 @@ export type SyncFunc<T> = {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type typecheck<T> = (val: any) => val is T;
-
-export type TypeCheckPair = [string, (val: unknown) => boolean];
-
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type boolcheck = (val: unknown) => boolean;
+export type TypeCheckPair = [string, boolcheck];
+export type SpecificCheckPair<T> = [keyof T, boolcheck];
 export interface MultiMap<K, V> {
   clear: () => void;
   size: () => number;

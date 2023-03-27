@@ -10,8 +10,9 @@ import {
   FreikTypeTag,
   MultiMap,
   SimpleObject,
+  SpecificCheckPair,
+  boolcheck,
   typecheck,
-  TypeCheckPair,
 } from './public-defs.js';
 
 export function enumKeys<O extends object, K extends keyof O = keyof O>(
@@ -710,7 +711,7 @@ export function isMultiMapOfFn<K, V>(
 
 export function isSpecificType<T>(
   obj: unknown,
-  checkers: Iterable<TypeCheckPair>,
+  checkers: Iterable<SpecificCheckPair<T>>,
   mandatory?: Iterable<string>,
 ): obj is T {
   if (!isObjectNonNull(obj)) {
@@ -720,15 +721,15 @@ export function isSpecificType<T>(
     ? mandatory
     : new Set<string>(isUndefined(mandatory) ? [] : mandatory);
   let seen = req.size;
-  const keyCheckers: Map<string, (val: unknown) => boolean> = isMap(checkers)
-    ? (checkers as Map<string, (val: unknown) => boolean>)
+  const keyCheckers: Map<keyof T, boolcheck> = isMap(checkers)
+    ? (checkers as Map<keyof T, boolcheck>)
     : new Map(checkers);
   for (const fieldName of Object.keys(obj)) {
     if (obj[fieldName] === undefined || obj[fieldName] === null) {
       delete obj[fieldName];
       continue;
     }
-    const fieldTypeChecker = keyCheckers.get(fieldName);
+    const fieldTypeChecker = keyCheckers.get(fieldName as keyof T);
     if (!fieldTypeChecker) {
       return false;
     }
@@ -743,11 +744,82 @@ export function isSpecificType<T>(
 }
 
 export function isSpecificTypeFn<T>(
-  checkers: Iterable<TypeCheckPair>,
+  checkers: Iterable<SpecificCheckPair<T>>,
   mandatory?: Iterable<string>,
 ): typecheck<T> {
   return (obj: unknown): obj is T =>
     isSpecificType<T>(obj, checkers, mandatory);
+}
+
+// Type metaprogramming is very useful, if I can get this right.
+// This should force you to validate every single field of the type you claim to be checking
+// Property in keyof T is a "mapped type" that gives you all the keys from T
+// R extending from Partial<{...}> means that it should be a distinct subset of T
+// So you have to provide *all* keys for the type in the 'required' section, or else
+export function isObjectOfType<
+  T,
+  R extends Partial<{ [Property in keyof T]: boolcheck }>,
+>(
+  obj: unknown,
+  requiredFields: R,
+  optionalFields: { [Property in keyof Exclude<keyof T, keyof R>]: boolcheck },
+): obj is T {
+  if (!isObjectNonNull(obj)) {
+    return false;
+  }
+  let required = Object.keys(requiredFields).length;
+  const keys = Object.keys(obj);
+  let len = keys.length;
+  for (const fieldName of keys) {
+    const theVal = obj[fieldName];
+    if (isUndefined(theVal) || obj[fieldName] === null) {
+      delete obj[fieldName];
+      len--;
+      continue;
+    }
+    if (hasType(optionalFields, fieldName, isFunction)) {
+      const checker: boolcheck =
+        optionalFields[fieldName as keyof typeof optionalFields];
+      if (!checker(theVal)) {
+        return false;
+      }
+      len--;
+    } else {
+      const fieldTypeChecker = requiredFields[fieldName as keyof T];
+      if (!fieldTypeChecker) {
+        return false;
+      }
+      if (!fieldTypeChecker(theVal)) {
+        return false;
+      }
+      required--;
+      len--;
+    }
+  }
+  return required === 0 && len === 0;
+}
+
+export function isObjectOfFullType<T>(
+  obj: unknown,
+  requiredFields: { [Property in keyof T]: boolcheck },
+): obj is T {
+  return isObjectOfType(obj, requiredFields, {});
+}
+
+export function isObjectOfTypeFn<
+  T,
+  R extends Partial<{ [Property in keyof T]: boolcheck }>,
+>(
+  requiredFields: R,
+  optionalFields: { [Property in keyof Exclude<keyof T, keyof R>]: boolcheck },
+): typecheck<T> {
+  return (obj): obj is T => isObjectOfType(obj, requiredFields, optionalFields);
+}
+
+export function isObjectOfFullTypeFn<T>(requiredFields: {
+  [Property in keyof T]: boolcheck;
+}): typecheck<T> {
+  return (obj): obj is T => isObjectOfType(obj, requiredFields, {});
 }
 
 /**

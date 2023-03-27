@@ -289,10 +289,11 @@ export function DebouncedDelay(
   func: MaybeAsyncFunc<void>,
   timeout: number,
 ): () => void {
-  let debounceTimer: number | null = null;
+  let debounceTimer: any = null;
   const doWork = OnlyOneActiveQueue(func);
   function ping() {
     if (debounceTimer !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       clearTimeout(debounceTimer);
     }
     debounceTimer = setTimeout(() => {
@@ -316,7 +317,7 @@ export function DebouncedEvery(
   func: MaybeAsyncFunc<void>,
   timeout: number,
 ): () => void {
-  let debounceTimer: number | null = null;
+  let debounceTimer: any = null;
   function ping() {
     if (debounceTimer !== null) {
       return;
