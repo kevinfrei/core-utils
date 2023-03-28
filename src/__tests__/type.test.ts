@@ -36,6 +36,8 @@ import {
   isObjectOfString,
   isObjectOfType,
   isObjectOfTypeFn,
+  isPartialOf,
+  isPartialOfFn,
   isRegex,
   isSetOfFn,
   isSetOfString,
@@ -118,6 +120,12 @@ test('isObjectOfType', () => {
   // expect(isObjectOfType<T>(theType, optional, required)).toBeTruthy();
   expect(isObjectOfType<T>(theType, allOf)).toBeTruthy();
   expect(isType(theOptionalType)).toBeTruthy();
+  expect(isPartialOf<typeof theType>(theOptionalType, allOf)).toBeTruthy();
+  expect(isPartialOfFn<typeof theType>(allOf)(allOf)).toBeFalsy();
+  expect(isPartialOf<typeof theType>(null, allOf)).toBeFalsy();
+  expect(
+    isPartialOf<typeof theType>({ ...theOptionalType, bar: null }, allOf),
+  ).toBeTruthy();
   expect(isObjectOfType<T>(theOptionalType, allOf)).toBeFalsy();
   expect(
     isArrayOf(arrOf, isObjectOfTypeFn<T>(required, optional)),

@@ -837,6 +837,39 @@ export function isObjectOfTypeFn<T extends object>(
   return (obj): obj is T => isObjectOfType(obj, requiredFields, optionalFields);
 }
 
+export function isPartialOf<T extends object>(
+  obj: unknown,
+  fields: Record<keyof T, boolcheck>,
+): obj is Partial<T> {
+  if (!isObjectNonNull(obj)) {
+    return false;
+  }
+  const keys = Object.keys(obj);
+  let len = keys.length;
+  for (const fieldName of keys) {
+    const theVal = obj[fieldName];
+    if (isUndefined(theVal) || obj[fieldName] === null) {
+      delete obj[fieldName];
+      len--;
+      continue;
+    }
+    if (hasType(fields, fieldName, isFunction)) {
+      const checker: boolcheck = fields[fieldName as keyof T];
+      if (!checker(theVal)) {
+        return false;
+      }
+      len--;
+    }
+  }
+  return len === 0;
+}
+
+export function isPartialOfFn<T extends object>(
+  fields: Record<keyof T, boolcheck>,
+): typecheck<T> {
+  return (obj): obj is T => isPartialOf<T>(obj, fields);
+}
+
 /**
  * Remove any fields/properties that are assigned to 'undefined' or null
  *
