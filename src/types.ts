@@ -1,10 +1,3 @@
-/**
- * A set of type checking helpers mostly for TypeScript, but
- * super helper for normal JavaScript if you don't hate yourself, too.
- *
- * @module Type
- *
- */
 import { MultiMapTypeTag } from './private-defs.js';
 import {
   FreikTypeTag,
@@ -14,6 +7,14 @@ import {
   boolcheck,
   typecheck,
 } from './public-defs.js';
+
+/**
+ * A set of type checking helpers mostly for TypeScript, but
+ * super helper for normal JavaScript if you don't hate yourself, too.
+ *
+ * @module Type
+ *
+ */
 
 export function enumKeys<O extends object, K extends keyof O = keyof O>(
   obj: O,
@@ -715,6 +716,7 @@ export function isMultiMapOfFn<K, V>(
   return (obj: unknown): obj is MultiMap<K, V> => isMultiMapOf(obj, key, val);
 }
 
+// deprecated
 export function isSpecificType<T>(
   obj: unknown,
   checkers: Iterable<SpecificCheckPair<T>>,
@@ -749,6 +751,7 @@ export function isSpecificType<T>(
   return seen === 0;
 }
 
+// deprecated
 export function isSpecificTypeFn<T>(
   checkers: Iterable<SpecificCheckPair<T>>,
   mandatory?: Iterable<string>,
@@ -763,21 +766,32 @@ export function isSpecificTypeFn<T>(
 // R extending from Partial<{...}> means that it should be a distinct subset of T
 // So you have to provide *all* keys for the type in the 'required' section, or else
 
-type NoOverlap<T, U> = {
-  [K in keyof T]: K extends keyof U ? never : T[K];
-} & U;
-type GenRec<T> = Record<keyof T, unknown>;
+// Swiped shamelessly from type-fest
+export type OptionalKeysOf<BaseType extends object> = Exclude<
+  {
+    [Key in keyof BaseType]: BaseType extends Record<Key, BaseType[Key]>
+      ? never
+      : Key;
+  }[keyof BaseType],
+  undefined
+>;
 
-export function isObjectOfType<T>(
+export type RequiredKeysOf<BaseType extends object> = Exclude<
+  {
+    [Key in keyof BaseType]: BaseType extends Record<Key, BaseType[Key]>
+      ? Key
+      : never;
+  }[keyof BaseType],
+  undefined
+>;
+
+export function isObjectOfType<T extends object>(
   obj: unknown,
-  requiredFields: Record<string | symbol | number, boolcheck>,
-  optionalFields: Record<string | symbol | number, boolcheck>,
-): obj is T extends NoOverlap<
-  GenRec<typeof requiredFields>,
-  GenRec<typeof optionalFields>
->
-  ? T
-  : never {
+  requiredFields: Record<RequiredKeysOf<T>, boolcheck>,
+  optionalFields:
+    | Record<OptionalKeysOf<T>, boolcheck>
+    | Record<string, never> = {},
+): obj is T {
   if (!isObjectNonNull(obj)) {
     return false;
   }
@@ -799,7 +813,8 @@ export function isObjectOfType<T>(
       }
       len--;
     } else {
-      const fieldTypeChecker = requiredFields[fieldName as keyof T];
+      const fieldTypeChecker =
+        requiredFields[fieldName as keyof typeof requiredFields];
       if (!fieldTypeChecker) {
         return false;
       }
@@ -813,38 +828,13 @@ export function isObjectOfType<T>(
   return required === 0 && len === 0;
 }
 
-export function isObjectOfTypeFn<T>(
-  requiredFields: Record<string | symbol | number, boolcheck>,
-  optionalFields: Record<string | symbol | number, boolcheck>,
-): typecheck<
-  T extends NoOverlap<
-    GenRec<typeof requiredFields>,
-    GenRec<typeof optionalFields>
-  >
-    ? T
-    : never
-> {
-  return (
-    obj,
-  ): obj is T extends NoOverlap<
-    GenRec<typeof requiredFields>,
-    GenRec<typeof optionalFields>
-  >
-    ? T
-    : never => isObjectOfType(obj, requiredFields, optionalFields);
-}
-
-export function isObjectOfFullType<T>(
-  obj: unknown,
-  requiredFields: Required<Record<keyof T, boolcheck>>,
-): obj is T {
-  return isObjectOfType(obj, requiredFields, {});
-}
-
-export function isObjectOfFullTypeFn<T>(
-  requiredFields: Required<Record<keyof T, boolcheck>>,
+export function isObjectOfTypeFn<T extends object>(
+  requiredFields: Record<RequiredKeysOf<T>, boolcheck>,
+  optionalFields:
+    | Record<OptionalKeysOf<T>, boolcheck>
+    | Record<string, never> = {},
 ): typecheck<T> {
-  return (obj): obj is T => isObjectOfType(obj, requiredFields, {});
+  return (obj): obj is T => isObjectOfType(obj, requiredFields, optionalFields);
 }
 
 /**

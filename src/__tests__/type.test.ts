@@ -33,8 +33,6 @@ import {
   isObject,
   isObjectOf,
   isObjectOfFn,
-  isObjectOfFullType,
-  isObjectOfFullTypeFn,
   isObjectOfString,
   isObjectOfType,
   isObjectOfTypeFn,
@@ -114,12 +112,13 @@ test('isObjectOfType', () => {
   const optional = { c: isSetOfString };
   const allOf = { ...required, ...optional };
   const arrOf = [theType, theType];
-  const isType = isObjectOfFullTypeFn<OptT>(required);
+  const isType = isObjectOfTypeFn<OptT>(required);
   expect(isObjectOfType<T>(theType, required, optional)).toBeTruthy();
-  expect(isObjectOfType<T>(theType, optional, required)).toBeTruthy();
-  expect(isObjectOfFullType<T>(theType, allOf)).toBeTruthy();
+  // This shouldn't work at compile time :D
+  // expect(isObjectOfType<T>(theType, optional, required)).toBeTruthy();
+  expect(isObjectOfType<T>(theType, allOf)).toBeTruthy();
   expect(isType(theOptionalType)).toBeTruthy();
-  expect(isObjectOfFullType<T>(theOptionalType, allOf)).toBeFalsy();
+  expect(isObjectOfType<T>(theOptionalType, allOf)).toBeFalsy();
   expect(
     isArrayOf(arrOf, isObjectOfTypeFn<T>(required, optional)),
   ).toBeTruthy();
