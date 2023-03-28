@@ -866,7 +866,7 @@ export function isPartialOf<T extends object>(
 
 export function isPartialOfFn<T extends object>(
   fields: Record<keyof T, boolcheck>,
-): typecheck<T> {
+): typecheck<Partial<T>> {
   return (obj): obj is T => isPartialOf<T>(obj, fields);
 }
 
