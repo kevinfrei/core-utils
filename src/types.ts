@@ -125,7 +125,7 @@ export function isString(obj: unknown): obj is string {
  * @returns {string} either obj or notStr (whichever is a string)
  */
 export function asString(obj: unknown, notStr = ''): string {
-  return isString(obj) ? obj : notStr;
+  return asFn<string>(isString, notStr)(obj);
 }
 
 /**
@@ -175,7 +175,7 @@ export function isNumber(obj: unknown): obj is number {
  * @returns {number} obj, if it's a number, otherwise returns nonNum
  */
 export function asNumber(obj: unknown, notNum: number): number {
-  return isNumber(obj) ? obj : notNum;
+  return asFn(isNumber, notNum)(obj);
 }
 /**
  * Type check for number (and not NaN) or a string
@@ -198,8 +198,9 @@ export function asNumberOrString(
   obj: unknown,
   notNumOrStr: number | string,
 ): number | string {
-  return isNumberOrString(obj) ? obj : notNumOrStr;
+  return asFn(isNumberOrString, notNumOrStr)(obj);
 }
+
 /**
  * Type check for boolean
  * @param  {unknown} obj
@@ -344,6 +345,11 @@ export function is3TupleOfFn<T, U, V>(
 export function isArrayOfString(obj: unknown): obj is string[] {
   return isArrayOf(obj, isString);
 }
+
+export function asFn<T>(chk: typecheck<T>, defVal: T): (o: unknown) => T {
+  return (o) => (chk(o) ? o : defVal);
+}
+
 /**
  * Filter obj to an array of strings. If defVal is an array of strings, even if
  * a single element of obj is not a string, defVal will be used instead. If
@@ -756,14 +762,22 @@ export function isSpecificTypeFn<T>(
 // Property in keyof T is a "mapped type" that gives you all the keys from T
 // R extending from Partial<{...}> means that it should be a distinct subset of T
 // So you have to provide *all* keys for the type in the 'required' section, or else
-export function isObjectOfType<
-  T,
-  R extends Partial<{ [Property in keyof T]: boolcheck }>,
->(
+
+type NoOverlap<T, U> = {
+  [K in keyof T]: K extends keyof U ? never : T[K];
+} & U;
+type GenRec<T> = Record<keyof T, unknown>;
+
+export function isObjectOfType<T>(
   obj: unknown,
-  requiredFields: R,
-  optionalFields: { [Property in keyof Exclude<keyof T, keyof R>]: boolcheck },
-): obj is T {
+  requiredFields: Record<string | symbol | number, boolcheck>,
+  optionalFields: Record<string | symbol | number, boolcheck>,
+): obj is T extends NoOverlap<
+  GenRec<typeof requiredFields>,
+  GenRec<typeof optionalFields>
+>
+  ? T
+  : never {
   if (!isObjectNonNull(obj)) {
     return false;
   }
@@ -799,26 +813,37 @@ export function isObjectOfType<
   return required === 0 && len === 0;
 }
 
+export function isObjectOfTypeFn<T>(
+  requiredFields: Record<string | symbol | number, boolcheck>,
+  optionalFields: Record<string | symbol | number, boolcheck>,
+): typecheck<
+  T extends NoOverlap<
+    GenRec<typeof requiredFields>,
+    GenRec<typeof optionalFields>
+  >
+    ? T
+    : never
+> {
+  return (
+    obj,
+  ): obj is T extends NoOverlap<
+    GenRec<typeof requiredFields>,
+    GenRec<typeof optionalFields>
+  >
+    ? T
+    : never => isObjectOfType(obj, requiredFields, optionalFields);
+}
+
 export function isObjectOfFullType<T>(
   obj: unknown,
-  requiredFields: { [Property in keyof T]: boolcheck },
+  requiredFields: Required<Record<keyof T, boolcheck>>,
 ): obj is T {
   return isObjectOfType(obj, requiredFields, {});
 }
 
-export function isObjectOfTypeFn<
-  T,
-  R extends Partial<{ [Property in keyof T]: boolcheck }>,
->(
-  requiredFields: R,
-  optionalFields: { [Property in keyof Exclude<keyof T, keyof R>]: boolcheck },
+export function isObjectOfFullTypeFn<T>(
+  requiredFields: Required<Record<keyof T, boolcheck>>,
 ): typecheck<T> {
-  return (obj): obj is T => isObjectOfType(obj, requiredFields, optionalFields);
-}
-
-export function isObjectOfFullTypeFn<T>(requiredFields: {
-  [Property in keyof T]: boolcheck;
-}): typecheck<T> {
   return (obj): obj is T => isObjectOfType(obj, requiredFields, {});
 }
 

@@ -106,40 +106,43 @@ test('isSpecificType & stragglers', () => {
   expect(hasFn('a')({ b: 1 })).toBeFalsy();
 });
 test('isObjectOfType', () => {
+  type T = { a: number; b: () => number; c?: Set<string> };
+  type OptT = { a: number; b: () => number };
   const theType = { a: 1, b: () => 0, c: new Set<string>(['a']) };
   const theOptionalType = { a: 2, b: () => 1 };
   const required = { a: isNumber, b: isFunction };
   const optional = { c: isSetOfString };
   const allOf = { ...required, ...optional };
   const arrOf = [theType, theType];
-  const isType = isObjectOfFullTypeFn<Partial<typeof theType>>(required);
-  expect(isObjectOfType(theType, required, optional)).toBeTruthy();
-  expect(isObjectOfType(theType, optional, required)).toBeTruthy();
-  expect(isObjectOfFullType(theType, allOf)).toBeTruthy();
+  const isType = isObjectOfFullTypeFn<OptT>(required);
+  expect(isObjectOfType<T>(theType, required, optional)).toBeTruthy();
+  expect(isObjectOfType<T>(theType, optional, required)).toBeTruthy();
+  expect(isObjectOfFullType<T>(theType, allOf)).toBeTruthy();
   expect(isType(theOptionalType)).toBeTruthy();
-  expect(isObjectOfFullType(theOptionalType, allOf)).toBeFalsy();
-  expect(isObjectOfFullType(theOptionalType, allOf)).toBeFalsy();
-  expect(isArrayOf(arrOf, isObjectOfTypeFn(required, optional))).toBeTruthy();
+  expect(isObjectOfFullType<T>(theOptionalType, allOf)).toBeFalsy();
   expect(
-    isObjectOfType({ a: 2, b: () => '' }, required, optional),
+    isArrayOf(arrOf, isObjectOfTypeFn<T>(required, optional)),
+  ).toBeTruthy();
+  expect(
+    isObjectOfType<T>({ a: 2, b: () => '' }, required, optional),
   ).toBeTruthy();
   expect(isObjectOfType({ a: 2, b: 1 }, required, optional)).toBeFalsy();
   expect(
-    isObjectOfType({ a: 2, c: new Set(['a', 'b']) }, required, optional),
+    isObjectOfType<T>({ a: 2, c: new Set(['a', 'b']) }, required, optional),
   ).toBeFalsy();
   expect(
-    isObjectOfType(
+    isObjectOfType<T>(
       { a: 2, b: () => 0, c: new Set([1, 2]) },
       required,
       optional,
     ),
   ).toBeFalsy();
-  expect(isObjectOfType(null, required, optional)).toBeFalsy();
+  expect(isObjectOfType<T>(null, required, optional)).toBeFalsy();
   expect(
-    isObjectOfType({ a: 2, b: () => '', d: null }, required, optional),
+    isObjectOfType<T>({ a: 2, b: () => '', d: null }, required, optional),
   ).toBeTruthy();
   expect(
-    isObjectOfType({ a: 2, b: () => '', d: '' }, required, optional),
+    isObjectOfType<T>({ a: 2, b: () => '', d: '' }, required, optional),
   ).toBeFalsy();
 });
 test('The simple is/as tests', () => {
